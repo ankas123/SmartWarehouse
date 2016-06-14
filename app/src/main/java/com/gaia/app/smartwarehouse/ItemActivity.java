@@ -118,7 +118,9 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
             startActivity(i);
             finish();
         } else if (id == R.id.nav_slideshow) {
-
+            Intent i = new Intent(getApplicationContext(), ItemActivity.class);
+            startActivity(i);
+            finish();
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {

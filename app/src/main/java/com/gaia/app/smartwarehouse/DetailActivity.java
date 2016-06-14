@@ -89,7 +89,7 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout1);
 
 
 
@@ -102,7 +102,9 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
             startActivity(i);
             finish();
         } else if (id == R.id.nav_slideshow) {
-
+            Intent i = new Intent(getApplicationContext(), ItemActivity.class);
+            startActivity(i);
+            finish();
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
