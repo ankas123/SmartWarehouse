@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gaia.app.smartwarehouse.DetailActivity;
 import com.gaia.app.smartwarehouse.R;
 
 /**
@@ -64,7 +65,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
         public ItemRowHolder(View itemView) {
             super(itemView);
             recycler_view_list=(RecyclerView)itemView.findViewById(R.id.recycler_view_list);
-            textView= (TextView)itemView.findViewById(R.id.textView);
+            textView= (TextView)itemView.findViewById(R.id.textV);
             button=(Button)itemView.findViewById(R.id.buttonid);
             textView.setOnClickListener(this);
             button.setOnClickListener(this);
@@ -76,7 +77,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
             a++;
             String s="Category is   "+a;
             Toast.makeText(context,s, Toast.LENGTH_SHORT).show();
-            Intent intent =new Intent(context,ViewallAdapter.class);
+            Intent intent =new Intent(context,DetailActivity.class);
             intent.putExtra("Category ",s);
             context.startActivity(intent);
         }
