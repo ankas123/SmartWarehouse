@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.gaia.app.smartwarehouse.DetailActivity;
 import com.gaia.app.smartwarehouse.R;
+import com.gaia.app.smartwarehouse.SignupActivity;
 
 /**
  * Created by anant on 14/06/16.
@@ -38,19 +39,20 @@ public class NavItemSelect extends AppCompatActivity  {
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.detail) {
-            Intent i = new Intent(context, DetailActivity.class);
+        if (id == R.id.detail) {
+            Intent i = new Intent(getApplicationContext(), DetailActivity.class);
             startActivity(i);
-            finish();
-        } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
+        }
+        else if (id == R.id.wishlist) {
 
-        } else if (id == R.id.nav_share) {
+        }else if (id == R.id.login) {
+            Intent intent =new Intent(this,SignupActivity.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.notifications) {
+
+        } else if (id == R.id.account_settings) {
 
         }
 

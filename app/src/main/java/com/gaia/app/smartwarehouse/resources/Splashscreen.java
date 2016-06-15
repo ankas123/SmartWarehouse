@@ -32,23 +32,22 @@ public class Splashscreen extends AppCompatActivity {
             {
                 try {
                    int i;
-                    String ch1="Loading123...",ch=null;
+                    String ch1="Loading...",ch=null;
                     for(i=0;i<100;i+=2) {
                        progressBar.setProgress(i);
                         //textView.setText(ch1);
                         sleep(100);
                     }
-                    if(i==100) {
-                        Intent intent = new Intent(Splashscreen.this, MainActivity.class);
-                        startActivity(intent);
-                    }
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 finally {
                     finish();
+                    Intent intent = new Intent(Splashscreen.this, MainActivity.class);
+                    startActivity(intent);
                 }
-            }
+                           }
 
         };
         thread.start();
