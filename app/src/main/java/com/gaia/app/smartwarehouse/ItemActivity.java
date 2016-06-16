@@ -59,7 +59,7 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
 
         Intent intent=getIntent();
         str=intent.getStringExtra(str);
-       
+
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.viewall);
         recyclerView.setHasFixedSize(true);
