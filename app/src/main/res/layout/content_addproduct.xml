@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:layout_marginTop="50dp"
+    android:padding="6dp"
+    android:focusableInTouchMode="true">
+
+
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_marginTop="50dp"
+       >
+
+
+
+<android.support.design.widget.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:id="@+id/ti1"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+
+    >
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText_productname"
+        android:layout_alignParentTop="true"
+        android:hint="Product Name"
+        android:layout_marginTop="46dp" />
+</android.support.design.widget.TextInputLayout>
+       <android.support.design.widget.TextInputLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:paddingTop="15dp"
+           android:id="@+id/ti2"
+           android:layout_below="@+id/ti1"
+           android:paddingLeft="10dp"
+           android:paddingRight="10dp"
+
+           >
+           <EditText
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:id="@+id/editText_category"
+               android:layout_alignParentTop="true"
+               android:hint="Category Name"
+               android:layout_marginTop="46dp" />
+       </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:id="@+id/ti3"
+        android:layout_below="@+id/ti2"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText_unitweight"
+            android:layout_alignParentTop="true"
+            android:hint="Unit Weight"
+            android:inputType="number"
+            android:layout_marginTop="46dp" />
+    </android.support.design.widget.TextInputLayout>
+
+
+
+   </RelativeLayout>
+</LinearLayout>

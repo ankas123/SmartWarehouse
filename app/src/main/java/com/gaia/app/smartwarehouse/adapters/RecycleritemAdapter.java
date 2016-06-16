@@ -34,8 +34,8 @@ public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapte
         public ImageView imageView;
         public ViewHolder(View itemView) {
             super(itemView);
-            textView= (TextView)itemView.findViewById(R.id.text);
-            imageView=(ImageView)itemView.findViewById(R.id.itemimage);
+            textView= (TextView)itemView.findViewById(R.id.textView1);
+            imageView=(ImageView)itemView.findViewById(R.id.rectangle);
             textView.setOnClickListener(this);
             imageView.setOnClickListener(this);
         }
@@ -52,7 +52,7 @@ public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapte
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item,parent,false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item,parent,false);
         ViewHolder viewHolder=new ViewHolder(view);
         return viewHolder;
     }

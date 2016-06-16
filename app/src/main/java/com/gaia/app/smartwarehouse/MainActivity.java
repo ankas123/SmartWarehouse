@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -60,17 +58,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -84,9 +71,10 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void search(View view)
+    public void addproduct(View view)
     {
-
+        Intent intent=new Intent(this,Addproduct.class);
+        startActivity(intent);
     }
 
 
@@ -132,23 +120,21 @@ public class MainActivity extends AppCompatActivity
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.detail) {
+
+         if (id == R.id.detail) {
             Intent i = new Intent(getApplicationContext(), DetailActivity.class);
             startActivity(i);
-            finish();
-        } else if (id == R.id.nav_slideshow) {
-            Intent i = new Intent(getApplicationContext(), ItemActivity.class);
-            startActivity(i);
-            finish();
-        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.wishlist) {
+
+
+        } else if (id == R.id.notifications) {
 
         } else if (id == R.id.login) {
             Intent intent=new Intent(this,LoginActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.account_settings) {
 
         }
 

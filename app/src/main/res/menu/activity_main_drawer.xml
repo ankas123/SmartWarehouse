@@ -9,7 +9,7 @@
             android:title="Monitor Present Stock" />
         <item
             android:id="@+id/wishlist"
-            android:icon="@drawable/details"
+            android:icon="@drawable/wishlist"
             android:title="Wish List" />
 
     </group>

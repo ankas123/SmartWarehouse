@@ -213,6 +213,7 @@
         </GridLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
     <android.support.design.widget.FloatingActionButton
         app:fabSize="normal"
         android:elevation="6dp"

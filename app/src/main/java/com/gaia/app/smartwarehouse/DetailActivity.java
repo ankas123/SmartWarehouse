@@ -32,10 +32,6 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-
-
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbar);
 
 
@@ -99,18 +95,19 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
             Intent i = new Intent(getApplicationContext(), DetailActivity.class);
             startActivity(i);
 
-        }
-        else if (id == R.id.wishlist) {
+        } else if (id == R.id.wishlist) {
 
-        }else if (id == R.id.login) {
-            Intent intent =new Intent(this,SignupActivity.class);
-            startActivity(intent);
 
         } else if (id == R.id.notifications) {
+
+        } else if (id == R.id.login) {
+            Intent intent=new Intent(this,LoginActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.account_settings) {
 
         }
+
         drawer.closeDrawer(GravityCompat.START);
 
         return true;

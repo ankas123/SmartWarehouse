@@ -19,15 +19,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
+import com.gaia.app.smartwarehouse.classes.BackgroundTask;
 
 /**
  * Created by praveen_gadi on 6/15/2016.
  */
 public class SignupActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
-
+    EditText et1,et2,et3,et4;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,14 +43,6 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         layoutInflater.inflate(R.layout.content_signup, coordinatorLayout);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.signup);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,6 +56,40 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
     }
 
 
+
+    public void signup(View view)
+    {
+        String ch1="",ch2="",ch3="",ch4="",ch="signup";
+        et1=(EditText)findViewById(R.id.email);
+        et2=(EditText)findViewById(R.id.editText_username);
+        et3=(EditText)findViewById(R.id.editText_password);
+        et4=(EditText)findViewById(R.id.reenter_password);
+        ch1=et1.getText().toString().trim();
+        ch2=et2.getText().toString().trim();
+        ch3=et3.getText().toString().trim();
+        ch4=et4.getText().toString().trim();
+        int a=ch1.length(),b=ch2.length(),c=ch3.length(),d=ch4.length();
+        if(a!=0 && b!=0 && c!=0 && d!=0) {
+            if (ch3.equals(ch4)) {
+                BackgroundTask httprequest = new BackgroundTask(this);
+                httprequest.execute(ch, ch1, ch2, ch3);
+
+            } else {
+                Toast.makeText(getBaseContext(), "Passwords are not matching", Toast.LENGTH_LONG).show();
+            }
+        }
+        else
+        {
+            if(a==0)
+                Toast.makeText(getBaseContext(), "E-mail is Necessary", Toast.LENGTH_LONG).show();
+            else if (b==0)
+                Toast.makeText(getBaseContext(), "Username is Necessary", Toast.LENGTH_LONG).show();
+            else if (c==0)
+                Toast.makeText(getBaseContext(), "Password is Necessary", Toast.LENGTH_LONG).show();
+            else if (d==0)
+                Toast.makeText(getBaseContext(), "Password is Necessary", Toast.LENGTH_LONG).show();
+        }
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
