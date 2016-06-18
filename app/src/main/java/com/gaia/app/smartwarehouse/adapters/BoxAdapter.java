@@ -32,7 +32,7 @@ public class BoxAdapter extends RecyclerView.Adapter<BoxAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 16;
+        return 10;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

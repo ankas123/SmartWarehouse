@@ -43,9 +43,10 @@ public class Splashscreen extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 finally {
-                    finish();
+
                     Intent intent = new Intent(Splashscreen.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                            }
 
