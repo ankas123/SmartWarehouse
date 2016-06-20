@@ -3,9 +3,9 @@ package com.gaia.app.smartwarehouse.classes;
 /**
  * Created by praveen_gadi on 6/19/2016.
  */
-public class dataclass  {
+public class Dataclass {
     String a,b,c,d;
-    public dataclass(String a,String b,String c)
+    public Dataclass(String a, String b, String c)
     {
      this.a=a;
         this.b=b;

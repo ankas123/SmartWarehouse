@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.gaia.app.smartwarehouse.classes.BackgroundTask;
+import com.gaia.app.smartwarehouse.service.LoginTask;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 
 /**
@@ -70,7 +70,7 @@ public void signup(View view)
         if(a!=0 && b!=0)
         {
 
-            BackgroundTask httprequest= new BackgroundTask(LoginActivity.this);
+            LoginTask httprequest= new LoginTask(LoginActivity.this);
              httprequest.execute(ch,ch1,ch2);
               finish();
         }

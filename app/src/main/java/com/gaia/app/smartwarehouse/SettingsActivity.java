@@ -22,7 +22,7 @@ import android.widget.ListView;
 
 import com.gaia.app.smartwarehouse.adapters.dataAdapter;
 import com.gaia.app.smartwarehouse.adapters.listAdapter;
-import com.gaia.app.smartwarehouse.classes.dataclass;
+import com.gaia.app.smartwarehouse.classes.Dataclass;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 
 /**
@@ -91,7 +91,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
                 email=cursor.getString(0);
                 username=cursor.getString(1);
                 password=cursor.getString(2);
-                dataclass data=new dataclass(email,username,password);
+                Dataclass data=new Dataclass(email,username,password);
                 listAdapter.add(data);
 
             }while (cursor.moveToNext());

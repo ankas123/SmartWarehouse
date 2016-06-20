@@ -5,13 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.gaia.app.smartwarehouse.R;
-import com.gaia.app.smartwarehouse.classes.dataclass;
-
-import java.util.ArrayList;
+import com.gaia.app.smartwarehouse.classes.Dataclass;
 
 /**
  * Created by praveen_gadi on 6/19/2016.
@@ -36,7 +33,7 @@ this.context=context;
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        dataclass object= (dataclass) arrayAdapter.getItem(position);
+        Dataclass object= (Dataclass) arrayAdapter.getItem(position);
 
         holder.email.setText(object.getA());
         holder.username.setText(object.getB());

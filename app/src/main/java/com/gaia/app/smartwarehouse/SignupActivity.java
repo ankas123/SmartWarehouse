@@ -17,7 +17,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.gaia.app.smartwarehouse.classes.BackgroundTask;
+import com.gaia.app.smartwarehouse.service.LoginTask;
 
 /**
  * Created by praveen_gadi on 6/15/2016.
@@ -67,7 +67,7 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         int a=ch1.length(),b=ch2.length(),c=ch3.length(),d=ch4.length();
         if(a!=0 && b!=0 && c!=0 && d!=0) {
             if (ch3.equals(ch4)) {
-                BackgroundTask httprequest = new BackgroundTask(this);
+                LoginTask httprequest = new LoginTask(this);
                 httprequest.execute(ch, ch1, ch2, ch3);
                 finish();
             } else {
