@@ -23,6 +23,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import static com.gaia.app.smartwarehouse.service.CommonUtilities.SIGNUP_URL;
+
 /**
  * Created by praveen_gadi on 6/15/2016.
  */
@@ -32,15 +34,13 @@ public class SignupTask extends AsyncTask<String, Void, String> {
     private Context context;
     Userdata details;
     String JSON_STRING;
-    String SIGNUP_URL = "http://iotwithesp8266.net23.net/signup.php";
+
     public SignupTask(Context context) {
         this.context = context;
     }
 
     @Override
     protected String doInBackground(String... params) {
-
-        String id = params[0];
 
         details = new Userdata(context);
         String email = params[1], username = params[2], password = params[3];

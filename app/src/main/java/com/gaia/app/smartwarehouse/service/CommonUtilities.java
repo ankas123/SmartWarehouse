@@ -1,4 +1,4 @@
-package com.gaia.app.smartwarehouse.classes;
+package com.gaia.app.smartwarehouse.service;
 
 /**
  * Created by anant on 20/06/16.

@@ -9,7 +9,6 @@ import android.widget.Toast;
 import com.gaia.app.smartwarehouse.MainActivity;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +26,8 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import static com.gaia.app.smartwarehouse.service.CommonUtilities.LOGIN_URL;
+
 /**
  * Created by praveen_gadi on 6/15/2016.
  */
@@ -35,7 +36,20 @@ public class LoginTask extends AsyncTask<String, Void, String> {
 
     private Context context;
     Userdata details;
-    String JSON_STRING;
+    private String JSON_STRING;
+
+    private JSONObject jsonObject;
+    private String TAG_RESULT = "message";
+    private String TAG_ID = "id";
+    private String TAG_NAME = "name";
+    private String TAG_PASS = "pass";
+    private String TAG_FNAME = "fname";
+    private String TAG_LNAME = "lname";
+    private String TAG_ORGN = "orgn";
+    private String TAG_ADDRESS = "address";
+    private String TAG_DATE = "date";
+
+    private String username, password;
 
     public LoginTask(Context context) {
         this.context = context;
@@ -43,17 +57,14 @@ public class LoginTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        String id = params[0];
 
         details = new Userdata(context);
 
-
-
-
         try {
-            String username = params[1], password = params[2];
+            username = params[1];
+            password = params[2];
 
-            URL url = new URL(L);
+            URL url = new URL(LOGIN_URL);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoOutput(true);
@@ -78,7 +89,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
             bufferedReader.close();
             inputStream.close();
             httpURLConnection.disconnect();
-            return JSON_STRING;
+            stringBuilder.toString().trim();
 
 
         } catch (MalformedURLException e) {
@@ -97,47 +108,43 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        if (s.equals("SignUp Succesful")) {
-            Toast.makeText(context, s, Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(context, MainActivity.class);
-            context.startActivity(intent);
 
-        } else if (s.length() == 0)
-            Toast.makeText(context, "Problem in login", Toast.LENGTH_LONG).show();
-        else {
-            int c = 0;
-            JSONObject jsonObject = null;
-            String b = "login Successful", a = "", ch1 = null, ch2 = null, ch3 = null;
-            try {
-                jsonObject = new JSONObject(s);
-                JSONArray jsonArray = jsonObject.getJSONArray("jsonstring");
-
-
-                while (c < jsonArray.length()) {
-                    JSONObject jsonObject1 = jsonArray.getJSONObject(c);
-                    ch1 = jsonObject1.getString("email");
-                    ch2 = jsonObject1.getString("username");
-                    ch3 = jsonObject1.getString("password");
-                    c++;
-                }
-                if (ch1.length() > 0 && ch2.length() > 0 && ch3.length() > 0) {
-
+        String name, pass, id, fname, lname, orgn, address, date;
+        try {
+            jsonObject = new JSONObject(s);
+            String message = jsonObject.getString(TAG_RESULT);
+            id = jsonObject.getString(TAG_ID);
+            name = jsonObject.getString(TAG_NAME);
+            pass = jsonObject.getString(TAG_PASS);
+            fname = jsonObject.getString(TAG_FNAME);
+            lname = jsonObject.getString(TAG_LNAME);
+            orgn = jsonObject.getString(TAG_ORGN);
+            address = jsonObject.getString(TAG_ADDRESS);
+            date = jsonObject.getString(TAG_DATE);
+            switch (message) {
+                case "0":
+                    Toast.makeText(context, "Username does not exists", Toast.LENGTH_LONG).show();
+                    break;
+                case "1":
+                    Toast.makeText(context, "Password is Wrong", Toast.LENGTH_LONG).show();
+                    break;
+                case "100":
                     Userdata details = new Userdata(context);
                     SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
                     details.cleardata(sqLiteDatabase);
-
-                    details.updatedata(ch1, ch2, ch3, sqLiteDatabase);
+                    details.updatedata(id, name, pass, fname, lname, orgn, address, date, sqLiteDatabase);
                     details.close();
-
-                    Toast.makeText(context, b, Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(context, MainActivity.class);
                     context.startActivity(intent);
-                } else
-                    Toast.makeText(context, "Incorrect  Username or password ", Toast.LENGTH_LONG).show();
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+                    break;
+                default:
+                    Toast.makeText(context, "Connection Error", Toast.LENGTH_LONG).show();
+                    break;
             }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }
