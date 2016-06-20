@@ -33,7 +33,7 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
 
 
        public Context context;
-    userdatabase details;
+    Userdata details;
     String s;
         public BackgroundTask(Context context) {
         this.context = context;
@@ -44,14 +44,14 @@ protected String doInBackground(String... params) {
         String signupurl = "http://iotwithesp8266.net23.net/signup.php";
         String id = params[0];
 
-    details=new userdatabase(context);
+    details=new Userdata(context);
 
         if (id.equals("signup")) {
 
         String email = params[1], username = params[2], password = params[3];
         try {
 
-            userdatabase details =new userdatabase(context);
+            Userdata details =new Userdata(context);
             SQLiteDatabase sqLiteDatabase=details.getWritableDatabase();
             details.cleardata(sqLiteDatabase);
 
@@ -162,7 +162,7 @@ protected void onPostExecute(String s) {
             }
             if(ch1.length()>0 && ch2.length()>0 && ch3.length()>0) {
 
-                userdatabase details =new userdatabase(context);
+                Userdata details =new Userdata(context);
                 SQLiteDatabase sqLiteDatabase=details.getWritableDatabase();
                 details.cleardata(sqLiteDatabase);
 

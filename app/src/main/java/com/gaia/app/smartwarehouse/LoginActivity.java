@@ -2,9 +2,7 @@ package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,13 +15,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.classes.BackgroundTask;
-import com.gaia.app.smartwarehouse.classes.userdatabase;
+import com.gaia.app.smartwarehouse.classes.Userdata;
 
 /**
  * A login screen that offers login via email/password.
@@ -32,7 +28,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
 
 
     public EditText et1,et2;
-    userdatabase db;
+    Userdata db;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

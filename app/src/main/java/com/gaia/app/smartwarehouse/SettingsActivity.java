@@ -18,17 +18,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 
-import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
 import com.gaia.app.smartwarehouse.adapters.dataAdapter;
 import com.gaia.app.smartwarehouse.adapters.listAdapter;
 import com.gaia.app.smartwarehouse.classes.dataclass;
-import com.gaia.app.smartwarehouse.classes.userdatabase;
-
-import java.util.ArrayList;
+import com.gaia.app.smartwarehouse.classes.Userdata;
 
 /**
  * Created by praveen_gadi on 6/19/2016.
@@ -86,7 +81,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     public void insidedata(View view)
     {
        listAdapter listAdapter=new listAdapter(this,1);
-        userdatabase details =new userdatabase(this);
+        Userdata details =new Userdata(this);
         SQLiteDatabase db=details.getReadableDatabase();
         Cursor cursor=details.getdata(db);
         if(cursor.moveToFirst())

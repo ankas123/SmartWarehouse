@@ -12,7 +12,7 @@ import android.util.Log;
 /**
  * Created by praveen_gadi on 6/17/2016.
  */
-public class userdatabase extends SQLiteOpenHelper {
+public class Userdata extends SQLiteOpenHelper {
 
     public static final String DB_name="appdatabase";
     public static final int DB_version=1;
@@ -22,7 +22,7 @@ public class userdatabase extends SQLiteOpenHelper {
 
 
 
-    public userdatabase(Context context) {
+    public Userdata(Context context) {
         super(context,DB_name,null,DB_version);
         Log.e("Database     ","database created");
     }
