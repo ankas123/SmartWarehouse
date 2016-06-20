@@ -2,6 +2,7 @@ package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
 import com.gaia.app.smartwarehouse.classes.BackgroundTask;
+import com.gaia.app.smartwarehouse.classes.userdatabase;
 
 /**
  * Created by praveen_gadi on 6/15/2016.
@@ -30,6 +32,7 @@ import com.gaia.app.smartwarehouse.classes.BackgroundTask;
 public class SignupActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
     EditText et1,et2,et3,et4;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +76,7 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
             if (ch3.equals(ch4)) {
                 BackgroundTask httprequest = new BackgroundTask(this);
                 httprequest.execute(ch, ch1, ch2, ch3);
-
+                finish();
             } else {
                 Toast.makeText(getBaseContext(), "Passwords are not matching", Toast.LENGTH_LONG).show();
             }
@@ -144,6 +147,8 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         } else if (id == R.id.notifications) {
 
         } else if (id == R.id.account_settings) {
+            Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(i);
 
         }
         drawer.closeDrawer(GravityCompat.START);

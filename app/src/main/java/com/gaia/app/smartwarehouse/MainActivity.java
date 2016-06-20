@@ -2,6 +2,8 @@ package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -16,8 +18,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
+import com.gaia.app.smartwarehouse.classes.dataclass;
+import com.gaia.app.smartwarehouse.classes.userdatabase;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,12 +35,29 @@ public class MainActivity extends AppCompatActivity
     String itemArray[]=new String[]{
             "item 1","item 2","item 3","item 4","item 5","item 6","item 7","item 8","item 9","item 10","item 11","item 12"
     };
-
-
+TextView nav_username,nav_email;
+    String email,username,password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        nav_username = (TextView) findViewById(R.id.nav_username);
+        nav_email = (TextView) findViewById(R.id.nav_email);
+        userdatabase details =new userdatabase(this);
+        SQLiteDatabase db=details.getReadableDatabase();
+        Cursor cursor=details.getdata(db);
+        if(cursor.moveToFirst()) {
+            do {
+
+                email = cursor.getString(0);
+                username = cursor.getString(1);
+                password = cursor.getString(2);
+
+            } while (cursor.moveToNext());
+        }
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -135,6 +157,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.account_settings) {
+             Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+             startActivity(i);
 
         }
 

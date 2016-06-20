@@ -39,6 +39,8 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
 
         RecyclerView grid = (RecyclerView) findViewById(R.id.grid);
         grid.setHasFixedSize(true);
+
+
         QuantityLoader quantityLoader = new QuantityLoader(getApplicationContext(),6.0f);
         grid.setAdapter(quantityLoader.returnAdapter());
         grid.setLayoutManager(quantityLoader.returnManager());
@@ -105,6 +107,8 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
             startActivity(intent);
 
         } else if (id == R.id.account_settings) {
+            Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(i);
 
         }
 

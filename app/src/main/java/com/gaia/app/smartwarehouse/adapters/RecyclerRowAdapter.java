@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.gaia.app.smartwarehouse.DetailActivity;
 import com.gaia.app.smartwarehouse.ItemActivity;
 import com.gaia.app.smartwarehouse.R;
+import com.gaia.app.smartwarehouse.SettingsActivity;
 
 /**
  * Created by praveen_gadi on 6/14/2016.
@@ -30,6 +32,8 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
         dataarray=dataArray;
         this.itemarray=itemarray;
     }
+
+
 
     @Override
     public ItemRowHolder onCreateViewHolder(ViewGroup parent, int viewType) {
