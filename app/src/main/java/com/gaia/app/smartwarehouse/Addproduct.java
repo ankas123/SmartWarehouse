@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.gaia.app.smartwarehouse.classes.BackgroundTask;
 
 /**
  * Created by praveen_gadi on 6/16/2016.

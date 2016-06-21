@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.gaia.app.smartwarehouse.LoginActivity;
 import com.gaia.app.smartwarehouse.MainActivity;
@@ -28,42 +27,21 @@ public class Splashscreen extends AppCompatActivity {
     public void progress()
     {
 
-        Thread thread =new Thread()
+        Userdata details =new Userdata(Splashscreen.this);
+        SQLiteDatabase db=details.getReadableDatabase();
+        Cursor cursor=details.getdata(db);
+        if(cursor.moveToFirst())
         {
-            public void run()
-            {
-                try {
-                   int i;
-                    String ch1="Loading...",ch=null;
-                    for(i=0;i<100;i+=2) {
-                       progressBar.setProgress(i);
-                        sleep(50);
-                    }
+            Intent intent = new Intent(Splashscreen.this, MainActivity.class);
+            startActivity(intent);
+        }
+        else
+        {
+            Intent intent = new Intent(Splashscreen.this, LoginActivity.class);
+            startActivity(intent);
+        }
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                finally {
+        finish();
 
-                    Userdata details =new Userdata(Splashscreen.this);
-                    SQLiteDatabase db=details.getReadableDatabase();
-                    Cursor cursor=details.getdata(db);
-                    if(cursor.moveToFirst())
-                    {
-                        Intent intent = new Intent(Splashscreen.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                    else
-                    {
-                        Intent intent = new Intent(Splashscreen.this, LoginActivity.class);
-                        startActivity(intent);
-                    }
-
-                    finish();
-                }
-                           }
-
-        };
-        thread.start();
     }
 }

@@ -15,7 +15,7 @@ public class Userdata extends SQLiteOpenHelper {
     private static final String DB_name="appdatabase";
     private static final int DB_version=1;
     private static final String Table_name="userdata";
-    private static final String create_Table_query="CREATE TABLE userdata(USERNAME TEXT,PASSWORD TEXT,FNAME TEXT,LNAME TEXT,ORGN TEXT,ADDRESS TEXT,DATE TEXT)";
+    private static final String create_Table_query="CREATE TABLE userdata(email TEXT,pass TEXT,fname TEXT,lname TEXT,orgn TEXT,address TEXT,date TEXT)";
     private static final String clear_Table_query="DELETE * FROM userdata";
     private String TAG_NAME = "email";
     private String TAG_PASS = "pass";
@@ -70,7 +70,7 @@ public class Userdata extends SQLiteOpenHelper {
 
 public Cursor getdata(SQLiteDatabase db) {
     Cursor cursor;
-    String[] projections = {"ID","USERNAME","PASSWORD",""};
+    String[] projections = {TAG_NAME,TAG_PASS};
     cursor = db.query(Table_name, projections, null, null, null, null, null);
     return cursor;
 }
