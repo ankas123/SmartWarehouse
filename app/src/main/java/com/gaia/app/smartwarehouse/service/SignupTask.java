@@ -36,7 +36,7 @@ public class SignupTask extends AsyncTask<String, Void, String> {
     private Context context;
     private Userdata details;
     private JSONObject jsonObject;
-    private String JSON_STRING, email,username,password;
+    private String JSON_STRING, email, username, password;
     private String TAG_RESULT = "message";
 
 
@@ -48,7 +48,9 @@ public class SignupTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
 
         details = new Userdata(context);
-        email = params[1]; username = params[2]; password = params[3];
+        email = params[1];
+        username = params[2];
+        password = params[3];
         try {
 
 
@@ -95,23 +97,24 @@ public class SignupTask extends AsyncTask<String, Void, String> {
         try {
             jsonObject = new JSONObject(s);
             String message = jsonObject.getString(TAG_RESULT);
+            switch (message) {
+                case "100":
+                    details = new Userdata(context);
+                    SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
+                    details.cleardata(sqLiteDatabase);
 
+                    details.updatedata(email, username, password, sqLiteDatabase);
+                    details.close();
 
+                    Intent intent = new Intent(context, MainActivity.class);
+                    context.startActivity(intent);
+                    break;
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
 
-
-        Intent intent = new Intent(context, MainActivity.class);
-        context.startActivity(intent);
-
-        details = new Userdata(context);
-        SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
-        details.cleardata(sqLiteDatabase);
-
-        details.updatedata(email, username, password, sqLiteDatabase);
-        details.close();
     }
 }
 }
