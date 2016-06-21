@@ -13,9 +13,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -32,8 +34,11 @@ public class SignupTask extends AsyncTask<String, Void, String> {
 
 
     private Context context;
-    Userdata details;
-    String JSON_STRING;
+    private Userdata details;
+    private JSONObject jsonObject;
+    private String JSON_STRING, email,username,password;
+    private String TAG_RESULT = "message";
+
 
     public SignupTask(Context context) {
         this.context = context;
@@ -43,15 +48,9 @@ public class SignupTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
 
         details = new Userdata(context);
-        String email = params[1], username = params[2], password = params[3];
+        email = params[1]; username = params[2]; password = params[3];
         try {
 
-            Userdata details = new Userdata(context);
-            SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
-            details.cleardata(sqLiteDatabase);
-
-            details.updatedata(email, username, password, sqLiteDatabase);
-            details.close();
 
             URL url = new URL(SIGNUP_URL);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -67,10 +66,18 @@ public class SignupTask extends AsyncTask<String, Void, String> {
             bufferedWriter.close();
 
             InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "ISO-8859-1"));
+            StringBuilder stringBuilder = new StringBuilder();
+
+            while ((JSON_STRING = bufferedReader.readLine()) != null) {
+                stringBuilder.append(JSON_STRING + "\n");
+            }
+
+            bufferedReader.close();
             inputStream.close();
 
             httpURLConnection.disconnect();
-            return "SignUp Succesful";
+            return stringBuilder.toString().trim();
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -84,47 +91,27 @@ public class SignupTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        if (s.equals("SignUp Succesful")) {
-            Toast.makeText(context, s, Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(context, MainActivity.class);
-            context.startActivity(intent);
 
-        } else if (s.length() == 0)
-            Toast.makeText(context, "Problem in login", Toast.LENGTH_LONG).show();
-        else {
-            int c = 0;
-            JSONObject jsonObject = null;
-            String b = "login Successful", a = "", ch1 = null, ch2 = null, ch3 = null;
-            try {
-                jsonObject = new JSONObject(s);
-                JSONArray jsonArray = jsonObject.getJSONArray("jsonstring");
+        try {
+            jsonObject = new JSONObject(s);
+            String message = jsonObject.getString(TAG_RESULT);
 
 
-                while (c < jsonArray.length()) {
-                    JSONObject jsonObject1 = jsonArray.getJSONObject(c);
-                    ch1 = jsonObject1.getString("email");
-                    ch2 = jsonObject1.getString("username");
-                    ch3 = jsonObject1.getString("password");
-                    c++;
-                }
-                if (ch1.length() > 0 && ch2.length() > 0 && ch3.length() > 0) {
-
-                    Userdata details = new Userdata(context);
-                    SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
-                    details.cleardata(sqLiteDatabase);
-
-                    details.updatedata(ch1, ch2, ch3, sqLiteDatabase);
-                    details.close();
-
-                    Toast.makeText(context, b, Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(context, MainActivity.class);
-                    context.startActivity(intent);
-                } else
-                    Toast.makeText(context, "Incorrect  Username or password ", Toast.LENGTH_LONG).show();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
+
+
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+
+        details = new Userdata(context);
+        SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
+        details.cleardata(sqLiteDatabase);
+
+        details.updatedata(email, username, password, sqLiteDatabase);
+        details.close();
     }
+}
 }

@@ -40,8 +40,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
 
     private JSONObject jsonObject;
     private String TAG_RESULT = "message";
-    private String TAG_ID = "id";
-    private String TAG_NAME = "name";
+    private String TAG_NAME = "email";
     private String TAG_PASS = "pass";
     private String TAG_FNAME = "fname";
     private String TAG_LNAME = "lname";
@@ -49,7 +48,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     private String TAG_ADDRESS = "address";
     private String TAG_DATE = "date";
 
-    private String username, password;
+    private String email, password;
 
     public LoginTask(Context context) {
         this.context = context;
@@ -61,7 +60,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
         details = new Userdata(context);
 
         try {
-            username = params[1];
+            email = params[1];
             password = params[2];
 
             URL url = new URL(LOGIN_URL);
@@ -72,7 +71,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
             OutputStream outputStream = httpURLConnection.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-            String data = URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8") + "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+            String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8") + "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
             bufferedWriter.write(data);
             bufferedWriter.flush();
             bufferedWriter.close();
@@ -109,12 +108,11 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        String name, pass, id, fname, lname, orgn, address, date;
+        String mail, pass, fname, lname, orgn, address, date;
         try {
             jsonObject = new JSONObject(s);
             String message = jsonObject.getString(TAG_RESULT);
-            id = jsonObject.getString(TAG_ID);
-            name = jsonObject.getString(TAG_NAME);
+            mail = jsonObject.getString(TAG_NAME);
             pass = jsonObject.getString(TAG_PASS);
             fname = jsonObject.getString(TAG_FNAME);
             lname = jsonObject.getString(TAG_LNAME);
@@ -123,7 +121,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
             date = jsonObject.getString(TAG_DATE);
             switch (message) {
                 case "0":
-                    Toast.makeText(context, "Username does not exists", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "email does not exists", Toast.LENGTH_LONG).show();
                     break;
                 case "1":
                     Toast.makeText(context, "Password is Wrong", Toast.LENGTH_LONG).show();
@@ -132,7 +130,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
                     Userdata details = new Userdata(context);
                     SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
                     details.cleardata(sqLiteDatabase);
-                    details.updatedata(id, name, pass, fname, lname, orgn, address, date, sqLiteDatabase);
+                    details.updatedata(mail, pass, fname, lname, orgn, address, date, sqLiteDatabase);
                     details.close();
                     Intent intent = new Intent(context, MainActivity.class);
                     context.startActivity(intent);
