@@ -15,17 +15,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.gaia.app.smartwarehouse.classes.BackgroundTask;
 
 /**
  * Created by praveen_gadi on 6/16/2016.
  */
 public class Addproduct extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
-    EditText et1,et2,et3,et4;
+    EditText et1,et2,et3;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addproduct);
+
+        et1=(EditText)findViewById(R.id.editText_productname);
+        et2=(EditText)findViewById(R.id.editText_category);
+        et3=(EditText)findViewById(R.id.editText_unitweight);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,7 +56,28 @@ public class Addproduct extends AppCompatActivity implements NavigationView.OnNa
 
 public void addproduct(View view)
 {
-
+    String ch1="",ch2="",ch3="",ch="addproduct";
+    et1=(EditText)findViewById(R.id.email);
+    et2=(EditText)findViewById(R.id.editText_username);
+    et3=(EditText)findViewById(R.id.editText_password);
+    ch1=et1.getText().toString().trim();
+    ch2=et2.getText().toString().trim();
+    ch3=et3.getText().toString().trim();
+    int a=ch1.length(),b=ch2.length(),c=ch3.length();
+    if(a!=0 && b!=0 && c!=0) {
+              // BackgroundTask httprequest = new BackgroundTask(this);
+            //httprequest.execute(ch, ch1, ch2, ch3);
+            //finish();
+        }
+    else
+    {
+        if(a==0)
+            Toast.makeText(getBaseContext(), "Productname is Necessary", Toast.LENGTH_LONG).show();
+        else if (b==0)
+            Toast.makeText(getBaseContext(), "Category is Necessary", Toast.LENGTH_LONG).show();
+        else if (c==0)
+            Toast.makeText(getBaseContext(), "weight  is Necessary", Toast.LENGTH_LONG).show();
+    }
 }
 
 
@@ -109,7 +137,8 @@ public void addproduct(View view)
         } else if (id == R.id.notifications) {
 
         } else if (id == R.id.account_settings) {
-
+            Intent i = new Intent(getApplicationContext(),SettingsActivity.class);
+            startActivity(i);
         }
         drawer.closeDrawer(GravityCompat.START);
 

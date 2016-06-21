@@ -14,17 +14,30 @@ import android.util.Log;
  */
 public class Userdata extends SQLiteOpenHelper {
 
-    public static final String DB_name="appdatabase";
-    public static final int DB_version=1;
-    public static final String Table_name="userdata";
-    public static final String create_Table_query="CREATE TABLE userdata(email TEXT,username TEXT,password TEXT)";
-    public static final String clear_Table_query="DELETE * FROM userdata";
+    private static final String DB_name="appdatabase";
+    private static final int DB_version=1;
+    private static final String Table_name="userdata";
+    private static final String create_Table_query="CREATE TABLE userdata(ID TEXT,USERNAME TEXT,PASSWORD TEXT,FNAME TEXT,LNAME TEXT,ORGN TEXT,ADDRESS TEXT,DATE TEXT)";
+    private static final String clear_Table_query="DELETE * FROM userdata";
+    private String TAG_ID = "ID";
+    private String TAG_NAME = "USERNAME";
+    private String TAG_PASS = "PASSWORD";
+    private String TAG_FNAME = "FNAME";
+    private String TAG_LNAME = "LNAME";
+    private String TAG_ORGN = "ORGN";
+    private String TAG_ADDRESS = "ADDRESS";
+    private String TAG_DATE = "DATE";
 
 
 
     public Userdata(Context context) {
         super(context,DB_name,null,DB_version);
         Log.e("Database     ","database created");
+    }
+
+
+    public Userdata(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
     }
 
     @Override
@@ -41,12 +54,17 @@ public class Userdata extends SQLiteOpenHelper {
 
 
 
-    public void updatedata(String email,String username,String password,SQLiteDatabase db)
+    public void updatedata(String id,String username,String password,String fname,String lname,String orgn,String address,String date,SQLiteDatabase db)
     {
         ContentValues contentValues=new ContentValues();
-        contentValues.put("email",email);
-        contentValues.put("username",username);
-        contentValues.put("password",password);
+        contentValues.put(TAG_ID,id);
+        contentValues.put(TAG_NAME,username);
+        contentValues.put(TAG_PASS,password);
+        contentValues.put(TAG_FNAME,fname);
+        contentValues.put(TAG_LNAME,lname);
+        contentValues.put(TAG_ORGN,orgn);
+        contentValues.put(TAG_ADDRESS,address);
+        contentValues.put(TAG_DATE,date);
         db.insert(Table_name,null,contentValues);
 
         Log.e("Update Table  ","Table updated");
@@ -55,7 +73,7 @@ public class Userdata extends SQLiteOpenHelper {
 
 public Cursor getdata(SQLiteDatabase db) {
     Cursor cursor;
-    String[] projections = {"email", "password", "username"};
+    String[] projections = {"ID","USERNAME","PASSWORD",""};
     cursor = db.query(Table_name, projections, null, null, null, null, null);
     return cursor;
 }
