@@ -2,7 +2,6 @@ package com.gaia.app.smartwarehouse.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +33,8 @@ public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapte
         public ImageView imageView;
         public ViewHolder(View itemView) {
             super(itemView);
-            textView= (TextView)itemView.findViewById(R.id.textView1);
-            imageView=(ImageView)itemView.findViewById(R.id.rectangle);
+            textView= (TextView)itemView.findViewById(R.id.itemtext);
+            imageView=(ImageView)itemView.findViewById(R.id.itemrec);
             textView.setOnClickListener(this);
             imageView.setOnClickListener(this);
         }
@@ -52,7 +51,7 @@ public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapte
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item,parent,false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item,parent,false);
         ViewHolder viewHolder=new ViewHolder(view);
         return viewHolder;
     }

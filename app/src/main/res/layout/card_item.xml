@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="120dp"
-    android:layout_height="200dp"
-    android:id="@+id/card_view1"
+    android:layout_width="100dp"
+    android:layout_height="150dp"
+    android:id="@+id/card_item"
     android:layout_gravity="center"
     android:elevation="4dp"
     app:cardElevation="5dp"
@@ -20,13 +20,13 @@
            android:layout_height="match_parent">
 
            <ImageView
-               android:id="@+id/rectangle"
-               android:layout_width="50dp"
-               android:layout_height="50dp"
+               android:id="@+id/cardrec"
+               android:layout_width="60dp"
+               android:layout_height="60dp"
                android:src="@drawable/rectangle"
                android:layout_alignParentTop="true"
                android:layout_centerHorizontal="true"
-               android:layout_marginTop="52dp"
+               android:layout_marginTop="32dp"
                android:cropToPadding="false"
                android:adjustViewBounds="false" />
 
@@ -35,10 +35,10 @@
 
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_below="@+id/rectangle"
-               android:layout_alignStart="@+id/rectangle"
-               android:layout_marginTop="26dp"
-               android:id="@+id/textView1"
+               android:layout_below="@+id/cardrec"
+               android:layout_alignStart="@+id/cardrec"
+               android:layout_marginTop="16dp"
+               android:id="@+id/cardtext"
                />
        </RelativeLayout>
 
