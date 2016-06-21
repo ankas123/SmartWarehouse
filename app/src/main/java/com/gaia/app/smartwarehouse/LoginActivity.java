@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
     }
 
     public void login(View view) {
-        String ch1, ch2, ch = "login";
+        String ch1, ch2;
         et1 = (EditText) findViewById(R.id.username);
         et2 = (EditText) findViewById(R.id.password);
         ch1 = et1.getText().toString().trim();
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         if (a != 0 && b != 0) {
 
             LoginTask httprequest = new LoginTask(LoginActivity.this);
-            httprequest.execute(ch, ch1, ch2);
+            httprequest.execute(ch1, ch2);
 
         } else {
             if (a == 0)

@@ -60,8 +60,8 @@ public class LoginTask extends AsyncTask<String, Void, String> {
         details = new Userdata(context);
 
         try {
-            email = params[1];
-            password = params[2];
+            email = params[0];
+            password = params[1];
 
             URL url = new URL(LOGIN_URL);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
