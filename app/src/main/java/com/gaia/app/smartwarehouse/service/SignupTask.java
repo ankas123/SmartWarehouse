@@ -89,42 +89,6 @@ public class SignupTask extends AsyncTask<String, Void, String> {
             Intent intent = new Intent(context, MainActivity.class);
             context.startActivity(intent);
 
-        } else if (s.length() == 0)
-            Toast.makeText(context, "Problem in login", Toast.LENGTH_LONG).show();
-        else {
-            int c = 0;
-            JSONObject jsonObject = null;
-            String b = "login Successful", a = "", ch1 = null, ch2 = null, ch3 = null;
-            try {
-                jsonObject = new JSONObject(s);
-                JSONArray jsonArray = jsonObject.getJSONArray("jsonstring");
-
-
-                while (c < jsonArray.length()) {
-                    JSONObject jsonObject1 = jsonArray.getJSONObject(c);
-                    ch1 = jsonObject1.getString("email");
-                    ch2 = jsonObject1.getString("username");
-                    ch3 = jsonObject1.getString("password");
-                    c++;
-                }
-                if (ch1.length() > 0 && ch2.length() > 0 && ch3.length() > 0) {
-
-                    Userdata details = new Userdata(context);
-                    SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
-                    details.cleardata(sqLiteDatabase);
-
-                    details.updatedata(ch1, ch2, ch3, sqLiteDatabase);
-                    details.close();
-
-                    Toast.makeText(context, b, Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(context, MainActivity.class);
-                    context.startActivity(intent);
-                } else
-                    Toast.makeText(context, "Incorrect  Username or password ", Toast.LENGTH_LONG).show();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

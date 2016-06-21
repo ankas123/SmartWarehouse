@@ -26,7 +26,6 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
 
     EditText et1,et2,et3,et4;
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);

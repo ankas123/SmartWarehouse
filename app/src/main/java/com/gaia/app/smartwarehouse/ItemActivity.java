@@ -130,7 +130,8 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.notifications) {
 
         } else if (id == R.id.account_settings) {
-
+            Intent i = new Intent(getApplicationContext(),SettingsActivity.class);
+            startActivity(i);
         }
 
         drawer.closeDrawer(GravityCompat.START);

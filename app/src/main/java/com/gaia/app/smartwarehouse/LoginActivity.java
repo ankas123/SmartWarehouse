@@ -72,7 +72,7 @@ public void signup(View view)
 
             LoginTask httprequest= new LoginTask(LoginActivity.this);
              httprequest.execute(ch,ch1,ch2);
-              finish();
+
         }
         else
         {
