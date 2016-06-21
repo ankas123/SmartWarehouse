@@ -17,7 +17,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.gaia.app.smartwarehouse.service.LoginTask;
+import com.gaia.app.smartwarehouse.service.SignupTask;
 
 /**
  * Created by praveen_gadi on 6/15/2016.
@@ -54,20 +54,18 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
 
     public void signup(View view)
     {
-        String ch1="",ch2="",ch3="",ch4="",ch="signup";
+        String ch1="",ch2="",ch3="",ch4="";
         et1=(EditText)findViewById(R.id.email);
-        et2=(EditText)findViewById(R.id.editText_username);
         et3=(EditText)findViewById(R.id.editText_password);
         et4=(EditText)findViewById(R.id.reenter_password);
         ch1=et1.getText().toString().trim();
-        ch2=et2.getText().toString().trim();
         ch3=et3.getText().toString().trim();
         ch4=et4.getText().toString().trim();
         int a=ch1.length(),b=ch2.length(),c=ch3.length(),d=ch4.length();
         if(a!=0 && b!=0 && c!=0 && d!=0) {
             if (ch3.equals(ch4)) {
-                LoginTask httprequest = new LoginTask(this);
-                httprequest.execute(ch, ch1, ch2, ch3);
+                SignupTask httprequest = new SignupTask(this);
+                httprequest.execute(ch1, ch3);
                 finish();
             } else {
                 Toast.makeText(getBaseContext(), "Passwords are not matching", Toast.LENGTH_LONG).show();

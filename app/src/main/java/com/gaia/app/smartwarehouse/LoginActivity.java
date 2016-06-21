@@ -24,10 +24,10 @@ import com.gaia.app.smartwarehouse.classes.Userdata;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class LoginActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    public EditText et1,et2;
+    public EditText et1, et2;
     Userdata db;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,34 +52,31 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         navigationView.setNavigationItemSelectedListener(this);
 
     }
-public void signup(View view)
-{
-    finish();
-    Intent intent =new Intent(this,SignupActivity.class);
-    startActivity(intent);
-}
-    public void login(View view)
-    {
-        String ch1,ch2,ch="login";
-        et1=(EditText)findViewById(R.id.username);
-        et2=(EditText)findViewById(R.id.password);
-        ch1=et1.getText().toString().trim();
-        ch2=et2.getText().toString().trim();
 
-        int a=ch1.length(),b=ch2.length();
-        if(a!=0 && b!=0)
-        {
+    public void signup(View view) {
+        finish();
+        Intent intent = new Intent(this, SignupActivity.class);
+        startActivity(intent);
+    }
 
-            LoginTask httprequest= new LoginTask(LoginActivity.this);
-             httprequest.execute(ch,ch1,ch2);
+    public void login(View view) {
+        String ch1, ch2, ch = "login";
+        et1 = (EditText) findViewById(R.id.username);
+        et2 = (EditText) findViewById(R.id.password);
+        ch1 = et1.getText().toString().trim();
+        ch2 = et2.getText().toString().trim();
 
-        }
-        else
-        {
-            if (a==0)
-            Toast.makeText(getBaseContext(), "Username is Necessary", Toast.LENGTH_LONG).show();
-        else if (b==0)
-            Toast.makeText(getBaseContext(), "Password is Necessary", Toast.LENGTH_LONG).show();
+        int a = ch1.length(), b = ch2.length();
+        if (a != 0 && b != 0) {
+
+            LoginTask httprequest = new LoginTask(LoginActivity.this);
+            httprequest.execute(ch, ch1, ch2);
+
+        } else {
+            if (a == 0)
+                Toast.makeText(getBaseContext(), "Username is Necessary", Toast.LENGTH_LONG).show();
+            else if (b == 0)
+                Toast.makeText(getBaseContext(), "Password is Necessary", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -120,7 +117,6 @@ public void signup(View view)
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
 
 
         int id = item.getItemId();

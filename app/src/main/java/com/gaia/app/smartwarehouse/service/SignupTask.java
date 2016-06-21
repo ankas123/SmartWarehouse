@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.MainActivity;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,9 +46,8 @@ public class SignupTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
 
         details = new Userdata(context);
-        email = params[1];
-        username = params[2];
-        password = params[3];
+        email = params[0];
+        password = params[1];
         try {
 
 
@@ -116,5 +113,4 @@ public class SignupTask extends AsyncTask<String, Void, String> {
 
 
     }
-}
 }
