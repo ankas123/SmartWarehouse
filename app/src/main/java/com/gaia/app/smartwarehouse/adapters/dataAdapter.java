@@ -1,24 +1,30 @@
 package com.gaia.app.smartwarehouse.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.gaia.app.smartwarehouse.LoginActivity;
 import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.classes.Dataclass;
+import com.gaia.app.smartwarehouse.classes.Userdata;
 
 /**
  * Created by praveen_gadi on 6/19/2016.
  */
-public class dataAdapter extends RecyclerView.Adapter<dataAdapter.ViewHolder> {
+public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     Context context;
+    private Userdata details;
   listAdapter arrayAdapter;
 
-    public dataAdapter(Context context, listAdapter arrayAdapter)
+    public DataAdapter(Context context, listAdapter arrayAdapter)
     {
 this.context=context;
         this.arrayAdapter=arrayAdapter;
@@ -35,10 +41,11 @@ this.context=context;
     public void onBindViewHolder(ViewHolder holder, int position) {
         Dataclass object= (Dataclass) arrayAdapter.getItem(position);
 
-        holder.email.setText(object.getA());
-        holder.username.setText(object.getB());
-        holder.password.setText(object.getC());
-
+        /*holder.email.setText(object.getEmail());
+        holder.username.setText(object.getName());
+        holder.orgn.setText(object.getOrgn());
+        holder.address.setText(object.getAddress());
+        holder.logindate.setText(object.getDate());*/
 
     }
 
@@ -48,16 +55,25 @@ this.context=context;
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView email,username,password,flag;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView email,username,orgn,logindate,address;
+        Button logout;
         RecyclerView recyclerView;
         public ViewHolder(View itemView) {
             super(itemView);
-            email=(TextView)itemView.findViewById(R.id.email);
-            username=(TextView)itemView.findViewById(R.id.username);
-            password=(TextView)itemView.findViewById(R.id.password);
+            logout=(Button)itemView.findViewById(R.id.button4) ;
+            logout.setOnClickListener(this);
             recyclerView=(RecyclerView) itemView.findViewById(R.id.rvdata);
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            Userdata details = new Userdata(context);
+            SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
+            details.cleardata(sqLiteDatabase);
+            Intent intent =new Intent(context,LoginActivity.class);
+            context.startActivity(intent);
         }
     }
 }

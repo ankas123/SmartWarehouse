@@ -20,7 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import com.gaia.app.smartwarehouse.adapters.dataAdapter;
+import com.gaia.app.smartwarehouse.adapters.DataAdapter;
 import com.gaia.app.smartwarehouse.adapters.listAdapter;
 import com.gaia.app.smartwarehouse.classes.Dataclass;
 import com.gaia.app.smartwarehouse.classes.Userdata;
@@ -32,21 +32,50 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
     ListView listView;
     public LinearLayoutManager layoutManager;
-
+    private Userdata details;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordi);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater.inflate(R.layout.content_settings, coordinatorLayout);
 
+        listAdapter listAdapter=new listAdapter(this,1);
+        Userdata details =new Userdata(this);
+        SQLiteDatabase db=details.getReadableDatabase();
+        Cursor cursor=details.getdata(db);
+        if(cursor.moveToFirst())
+        {
+            do{
+                String email,fname,lname,orgn,address,date;
+                email=cursor.getString(0);
+                fname=cursor.getString(1);
+                lname=cursor.getString(2);
+                orgn=cursor.getString(3);
+                address=cursor.getString(4);
+                date=cursor.getString(5);
+                Dataclass data=new Dataclass(email,fname+" "+lname,orgn,address,date);
+                listAdapter.add(data);
+
+            }while (cursor.moveToNext());
+
+            RecyclerView recyclerView=(RecyclerView)findViewById(R.id.rvdata) ;
+
+            layoutManager=new LinearLayoutManager(this);
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(layoutManager);
+
+            DataAdapter adapter=new DataAdapter(this,listAdapter);
+            recyclerView.setAdapter(adapter);
+
+        }
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordi);
-        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layoutInflater.inflate(R.layout.content_settings, coordinatorLayout);
 
 
 
@@ -65,6 +94,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     {
         Intent intent=new Intent(this,Addproduct.class);
         startActivity(intent);
+
     }
 
 
@@ -78,34 +108,15 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         }
     }
 
-    public void insidedata(View view)
+    public void logout(View view)
     {
-       listAdapter listAdapter=new listAdapter(this,1);
-        Userdata details =new Userdata(this);
-        SQLiteDatabase db=details.getReadableDatabase();
-        Cursor cursor=details.getdata(db);
-        if(cursor.moveToFirst())
-        {
-            do{
-                 String email,username,password,flag;
-                email=cursor.getString(0);
-                username=cursor.getString(1);
-                password=cursor.getString(2);
-                Dataclass data=new Dataclass(email,username,password);
-                listAdapter.add(data);
+        details = new Userdata(this);
+        SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
+        details.cleardata(sqLiteDatabase);
+        finish();
+        Intent intent =new Intent(this,LoginActivity.class);
+        startActivity(intent);
 
-            }while (cursor.moveToNext());
-
-            RecyclerView recyclerView=(RecyclerView)findViewById(R.id.rvdata) ;
-
-            layoutManager=new LinearLayoutManager(this);
-            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-              recyclerView.setLayoutManager(layoutManager);
-
-            dataAdapter adapter=new dataAdapter(this,listAdapter);
-            recyclerView.setAdapter(adapter);
-
-        }
     }
 
     @Override

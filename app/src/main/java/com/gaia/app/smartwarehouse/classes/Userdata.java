@@ -71,7 +71,7 @@ public class Userdata extends SQLiteOpenHelper {
 
 public Cursor getdata(SQLiteDatabase db) {
     Cursor cursor;
-    String[] projections = {TAG_NAME,TAG_PASS};
+    String[] projections = {TAG_NAME,TAG_FNAME,TAG_LNAME,TAG_ORGN,TAG_ADDRESS,TAG_DATE};
     cursor = db.query(Table_name, projections, null, null, null, null, null);
     return cursor;
 }

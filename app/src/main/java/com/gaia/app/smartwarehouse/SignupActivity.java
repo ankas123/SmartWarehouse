@@ -17,18 +17,24 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gaia.app.smartwarehouse.service.LoginTask;
 import com.gaia.app.smartwarehouse.service.SignupTask;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by praveen_gadi on 6/15/2016.
  */
 public class SignupActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
-    EditText et1,et2,et3,et4;
+    private EditText et1,et3,et4;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -37,7 +43,9 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.content_signup, coordinatorLayout);
 
-
+        et1=(EditText)findViewById(R.id.email);
+        et3=(EditText)findViewById(R.id.editText_password);
+        et4=(EditText)findViewById(R.id.reenter_password);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -54,33 +62,63 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
 
     public void signup(View view)
     {
-        String ch1="",ch2="",ch3="",ch4="";
-        et1=(EditText)findViewById(R.id.email);
-        et3=(EditText)findViewById(R.id.editText_password);
-        et4=(EditText)findViewById(R.id.reenter_password);
-        ch1=et1.getText().toString().trim();
-        ch3=et3.getText().toString().trim();
-        ch4=et4.getText().toString().trim();
-        int a=ch1.length(),c=ch3.length(),d=ch4.length();
-        if(a!=0 && c!=0 && d!=0) {
-            if (ch3.equals(ch4)) {
-                SignupTask httprequest = new SignupTask(this);
-                httprequest.execute(ch1, ch3);
-                finish();
-            } else {
-                Toast.makeText(getBaseContext(), "Passwords are not matching", Toast.LENGTH_LONG).show();
-            }
-        }
+        String email,password,reenter_password,result;
+
+        email=et1.getText().toString().trim();
+        password=et3.getText().toString().trim();
+        reenter_password=et4.getText().toString().trim();
+        if(!validateEmail(email))
+            et1.setError("E-mail is required");
         else
         {
-            if(a==0)
-                Toast.makeText(getBaseContext(), "E-mail is Necessary", Toast.LENGTH_LONG).show();
-            else if (c==0)
-                Toast.makeText(getBaseContext(), "Password is Necessary", Toast.LENGTH_LONG).show();
-            else if (d==0)
-                Toast.makeText(getBaseContext(), "Password is Necessary", Toast.LENGTH_LONG).show();
+            result=(String) validatePassword(password,reenter_password);
+            if((result.length()>0))
+            {
+                switch (result)
+                {
+                    case "01" :
+                        et3.setError("Password must have minimum 6 characters");
+                        break;
+                    case "10" :
+                        et4.setError("Password must have minimum 6 characters");
+                        break;
+                    case "00" :
+                        Toast.makeText(getBaseContext(),"Passwords are not matching",Toast.LENGTH_LONG).show();
+                        break;
+                    case "11" :
+                        SignupTask httprequest = new SignupTask(SignupActivity.this);
+                        httprequest.execute(email,password);
+                        break;
+                    default:
+                        Toast.makeText(getBaseContext(),"problem in validate password",Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+
         }
     }
+
+
+    public boolean validateEmail(String email)
+    {
+
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        Pattern pattern=Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher=pattern.matcher(email);
+        return matcher.matches();
+    }
+    public String validatePassword(String password,String repassword)
+    {
+        if(password.length()<6)
+            return "01";
+        else if(repassword.length()<6)
+            return "10";
+        else if (password.equals(repassword))
+            return "11";
+        else
+            return "00";
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -124,8 +162,6 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         int id = item.getItemId();
 
         if (id == R.id.detail) {
-            Intent i = new Intent(getApplicationContext(), DetailActivity.class);
-            startActivity(i);
 
         }
         else if (id == R.id.wishlist) {
@@ -135,9 +171,6 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         } else if (id == R.id.notifications) {
 
         } else if (id == R.id.account_settings) {
-            Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
-            startActivity(i);
-
         }
         drawer.closeDrawer(GravityCompat.START);
 

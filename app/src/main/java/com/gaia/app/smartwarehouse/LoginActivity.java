@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,14 +22,17 @@ import android.widget.Toast;
 import com.gaia.app.smartwarehouse.service.LoginTask;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    public EditText et1, et2;
-    Userdata db;
+    private EditText et1, et2;
+    private TextInputLayout textInput1,textInput2;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,14 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordi);
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.content_login, coordinatorLayout);
+
+        //textInput1=(TextInputLayout)findViewById(R.id.login_textinput1);
+        //textInput2=(TextInputLayout)findViewById(R.id.login_textinput2);
+        et1 = (EditText) findViewById(R.id.username);
+        et2 = (EditText) findViewById(R.id.password);
+
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -60,24 +72,38 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
     }
 
     public void login(View view) {
-        String ch1, ch2;
-        et1 = (EditText) findViewById(R.id.username);
-        et2 = (EditText) findViewById(R.id.password);
-        ch1 = et1.getText().toString().trim();
-        ch2 = et2.getText().toString().trim();
+        String email,password;
+        email = et1.getText().toString().trim();
+        password = et2.getText().toString().trim();
 
-        int a = ch1.length(), b = ch2.length();
-        if (a != 0 && b != 0) {
+        if(!validateEmail(email))
+            et1.setError("E-mail is required");
+        else
+        {
+            if((password.length())<6)
+                et2.setError("Password must have minimum 6 characters");
+                else
+            {
+                LoginTask httprequest = new LoginTask(LoginActivity.this);
+                httprequest.execute(email,password);
+            }
 
-            LoginTask httprequest = new LoginTask(LoginActivity.this);
-            httprequest.execute(ch1, ch2);
-
-        } else {
-            if (a == 0)
-                Toast.makeText(getBaseContext(), "Username is Necessary", Toast.LENGTH_LONG).show();
-            else if (b == 0)
-                Toast.makeText(getBaseContext(), "Password is Necessary", Toast.LENGTH_LONG).show();
         }
+
+
+    }
+public boolean validateEmail(String email)
+{
+
+    final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    Pattern pattern=Pattern.compile(EMAIL_PATTERN);
+    Matcher matcher=pattern.matcher(email);
+        return matcher.matches();
+}
+
+    public boolean validatePassword(String password)
+    {
+        return false;
     }
 
     @Override
@@ -122,8 +148,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         int id = item.getItemId();
 
         if (id == R.id.detail) {
-            Intent i = new Intent(getApplicationContext(), DetailActivity.class);
-            startActivity(i);
+
 
         } else if (id == R.id.wishlist) {
 
@@ -133,8 +158,6 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         } else if (id == R.id.login) {
 
         } else if (id == R.id.account_settings) {
-            Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
-            startActivity(i);
 
         }
 

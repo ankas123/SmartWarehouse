@@ -33,13 +33,14 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="20dp"
-                android:id="@+id/view">
+                android:id="@+id/login_textinput1">
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:hint="Username"
+
                     android:ems="10"
                     android:id="@+id/username"
                     android:layout_below="@+id/editText"
@@ -53,8 +54,8 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/view1"
-                android:layout_below="@+id/view"
+                android:id="@+id/login_textinput2"
+                android:layout_below="@+id/login_textinput1"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="20dp"
@@ -85,7 +86,7 @@
                 android:id="@+id/button2"
                 android:layout_marginTop="104dp"
                 android:layout_marginEnd="36dp"
-                android:layout_below="@+id/view1"
+                android:layout_below="@+id/login_textinput2"
                 android:layout_alignParentEnd="true" />
 
             <Button

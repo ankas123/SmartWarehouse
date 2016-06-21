@@ -4,22 +4,40 @@ package com.gaia.app.smartwarehouse.classes;
  * Created by praveen_gadi on 6/19/2016.
  */
 public class Dataclass {
-    String a,b,c,d;
-    public Dataclass(String a, String b, String c)
+    String email,name,orgn,address,date;
+    public Dataclass(String email, String name, String orgn,String address,String date)
     {
-     this.a=a;
-        this.b=b;
-        this.c=c;
+     this.email=email;
+        this.name=name;
+        this.orgn=orgn;
+        this.address=address;
+        this.date=date;
 
     }
-public String getA() {
-    return a;
+public String getEmail()
+{
+    return email;
+
 }
-    public String getB() {
-        return b;
+    public String getName()
+    {
+        return name;
+
     }
-    public String getC() {
-        return c;
+    public String getOrgn()
+    {
+        return orgn;
+
+    }
+    public String getAddress()
+    {
+        return address;
+
+    }
+    public String getDate()
+    {
+        return date;
+
     }
 
 }
