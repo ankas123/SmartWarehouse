@@ -32,8 +32,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
         TextView textView;
         public ViewHolder(View v){
             super(v);
-            imageView = (ImageView) v.findViewById(R.id.rectangle);
-            textView = (TextView) v.findViewById(R.id.textView1);
+            imageView = (ImageView) v.findViewById(R.id.cardrec);
+            textView = (TextView) v.findViewById(R.id.cardtext);
             imageView.setOnClickListener(this);
         }
 
