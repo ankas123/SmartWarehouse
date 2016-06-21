@@ -3,10 +3,8 @@ package com.gaia.app.smartwarehouse.classes;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteTransactionListener;
 import android.util.Log;
 
 /**
@@ -17,16 +15,16 @@ public class Userdata extends SQLiteOpenHelper {
     private static final String DB_name="appdatabase";
     private static final int DB_version=1;
     private static final String Table_name="userdata";
-    private static final String create_Table_query="CREATE TABLE userdata(ID TEXT,USERNAME TEXT,PASSWORD TEXT,FNAME TEXT,LNAME TEXT,ORGN TEXT,ADDRESS TEXT,DATE TEXT)";
+    private static final String create_Table_query="CREATE TABLE userdata(USERNAME TEXT,PASSWORD TEXT,FNAME TEXT,LNAME TEXT,ORGN TEXT,ADDRESS TEXT,DATE TEXT)";
     private static final String clear_Table_query="DELETE * FROM userdata";
-    private String TAG_ID = "ID";
-    private String TAG_NAME = "USERNAME";
-    private String TAG_PASS = "PASSWORD";
-    private String TAG_FNAME = "FNAME";
-    private String TAG_LNAME = "LNAME";
-    private String TAG_ORGN = "ORGN";
-    private String TAG_ADDRESS = "ADDRESS";
-    private String TAG_DATE = "DATE";
+    private String TAG_NAME = "email";
+    private String TAG_PASS = "pass";
+    private String TAG_FNAME = "fname";
+    private String TAG_LNAME = "lname";
+    private String TAG_ORGN = "orgn";
+    private String TAG_ADDRESS = "address";
+    private String TAG_DATE = "date";
+
 
 
 
@@ -54,11 +52,10 @@ public class Userdata extends SQLiteOpenHelper {
 
 
 
-    public void updatedata(String id,String username,String password,String fname,String lname,String orgn,String address,String date,SQLiteDatabase db)
+    public void updatedata(String email,String password,String fname,String lname,String orgn,String address,String date,SQLiteDatabase db)
     {
         ContentValues contentValues=new ContentValues();
-        contentValues.put(TAG_ID,id);
-        contentValues.put(TAG_NAME,username);
+        contentValues.put(TAG_NAME,email);
         contentValues.put(TAG_PASS,password);
         contentValues.put(TAG_FNAME,fname);
         contentValues.put(TAG_LNAME,lname);

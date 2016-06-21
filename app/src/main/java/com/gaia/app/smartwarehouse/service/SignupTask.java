@@ -103,7 +103,7 @@ public class SignupTask extends AsyncTask<String, Void, String> {
                     SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
                     details.cleardata(sqLiteDatabase);
 
-                    details.updatedata(email, username, password, sqLiteDatabase);
+                    details.updatedata(email, password, null, null, null, null, null, sqLiteDatabase);
                     details.close();
 
                     Intent intent = new Intent(context, MainActivity.class);
