@@ -57,7 +57,7 @@ public void addproduct(View view)
 {
     String ch1="",ch2="",ch3="",ch="addproduct";
     et1=(EditText)findViewById(R.id.email);
-    et2=(EditText)findViewById(R.id.editText_username);
+
     et3=(EditText)findViewById(R.id.editText_password);
     ch1=et1.getText().toString().trim();
     ch2=et2.getText().toString().trim();

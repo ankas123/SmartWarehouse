@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.gaia.app.smartwarehouse.MainActivity;
 import com.gaia.app.smartwarehouse.classes.Userdata;
@@ -34,7 +35,7 @@ public class SignupTask extends AsyncTask<String, Void, String> {
     private Context context;
     private Userdata details;
     private JSONObject jsonObject;
-    private String JSON_STRING, email, username, password;
+    private String JSON_STRING, email, password;
     private String TAG_RESULT = "message";
 
 
@@ -59,7 +60,7 @@ public class SignupTask extends AsyncTask<String, Void, String> {
             OutputStream outputStream = httpURLConnection.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-            String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8") + "&" + URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8") + "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+            String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8")  + "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
             bufferedWriter.write(data);
             bufferedWriter.flush();
             bufferedWriter.close();
@@ -76,6 +77,7 @@ public class SignupTask extends AsyncTask<String, Void, String> {
             inputStream.close();
 
             httpURLConnection.disconnect();
+            Log.v("fkjhkj",stringBuilder.toString().trim());
             return stringBuilder.toString().trim();
 
         } catch (MalformedURLException e) {

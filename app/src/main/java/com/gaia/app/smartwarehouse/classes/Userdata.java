@@ -30,7 +30,7 @@ public class Userdata extends SQLiteOpenHelper {
 
     public Userdata(Context context) {
         super(context,DB_name,null,DB_version);
-        Log.e("Database     ","database created");
+        Log.e("Database  ","database created");
     }
 
 
@@ -43,6 +43,7 @@ public class Userdata extends SQLiteOpenHelper {
            db.execSQL(create_Table_query);
         Log.e("Table ","Table created");
     }
+
     public void cleardata(SQLiteDatabase db)
     {
           db.delete(Table_name,null,null);

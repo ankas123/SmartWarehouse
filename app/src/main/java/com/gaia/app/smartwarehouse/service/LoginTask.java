@@ -88,7 +88,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
             bufferedReader.close();
             inputStream.close();
             httpURLConnection.disconnect();
-            stringBuilder.toString().trim();
+            return stringBuilder.toString().trim();
 
 
         } catch (MalformedURLException e) {

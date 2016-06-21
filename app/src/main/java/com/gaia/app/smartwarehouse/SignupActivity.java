@@ -61,8 +61,8 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         ch1=et1.getText().toString().trim();
         ch3=et3.getText().toString().trim();
         ch4=et4.getText().toString().trim();
-        int a=ch1.length(),b=ch2.length(),c=ch3.length(),d=ch4.length();
-        if(a!=0 && b!=0 && c!=0 && d!=0) {
+        int a=ch1.length(),c=ch3.length(),d=ch4.length();
+        if(a!=0 && c!=0 && d!=0) {
             if (ch3.equals(ch4)) {
                 SignupTask httprequest = new SignupTask(this);
                 httprequest.execute(ch1, ch3);
@@ -75,8 +75,6 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         {
             if(a==0)
                 Toast.makeText(getBaseContext(), "E-mail is Necessary", Toast.LENGTH_LONG).show();
-            else if (b==0)
-                Toast.makeText(getBaseContext(), "Username is Necessary", Toast.LENGTH_LONG).show();
             else if (c==0)
                 Toast.makeText(getBaseContext(), "Password is Necessary", Toast.LENGTH_LONG).show();
             else if (d==0)
