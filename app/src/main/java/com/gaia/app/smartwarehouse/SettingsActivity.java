@@ -21,7 +21,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.gaia.app.smartwarehouse.adapters.DataAdapter;
-import com.gaia.app.smartwarehouse.adapters.listAdapter;
+import com.gaia.app.smartwarehouse.adapters.ListAdapter;
 import com.gaia.app.smartwarehouse.classes.Dataclass;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 
@@ -42,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.content_settings, coordinatorLayout);
 
-        listAdapter listAdapter=new listAdapter(this,1);
+        ListAdapter listAdapter=new ListAdapter(this,1);
 
         Userdata details =new Userdata(this);
         Cursor cursor=details.getdata();

@@ -41,6 +41,20 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
     private JSONObject jsonObject,JO;
     private JSONArray jsonArray;
     private ArrayList<Item> itemArrayList= new ArrayList<>();
+    private ArrayList<String> categories;
+
+    public interface PlottingItems {
+        void setItems(String cname ,ArrayList<Item> items);
+
+    }
+
+     PlottingItems plot = null;
+
+    public ItemGetTask(PlottingItems plot){
+        this.plot = plot;
+    }
+
+
     @Override
     protected String doInBackground(String... strings) {
         try {
@@ -87,28 +101,45 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
         return null;
     }
 
+
+
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         try {
 
             jsonObject = new JSONObject(s);
-            jsonArray = jsonObject.getJSONArray(TAG_ITEM);
-            for (int i=0; i<jsonArray.length(); i++){
-                JO = jsonArray.getJSONObject(i);
+            jsonArray = jsonObject.getJSONArray(email);
 
-                iname = JO.getString(TAG_NAME);
-                cname = JO.getString(TAG_CAT);
-                weight = JO.getString(TAG_WEIGHT);
-                unit = JO.getString(TAG_UNIT);
-                quant = JO.getString(TAG_QUANT);
-                Item item = new Item(iname,cname,unit,weight,quant);
-                itemArrayList.add(item);
+
+
+            for (int i=0; i<jsonArray.length(); i++){
+
+
+                JO = jsonArray.getJSONObject(i);
+                cname=JO.getString(TAG_CAT);
+                //categories.add(cname);
+                JSONArray items=JO.getJSONArray(TAG_ITEM);
+                itemArrayList.clear();
+
+                for (int j=0; j<items.length(); j++) {
+                    JO=items.getJSONObject(j);
+                    iname = JO.getString(TAG_NAME);
+                    weight = JO.getString(TAG_WEIGHT);
+                    unit = JO.getString(TAG_UNIT);
+                    quant = JO.getString(TAG_QUANT);
+                    Item item = new Item(iname, cname, unit, weight, quant);
+                    itemArrayList.add(item);
+
+                }
+                plot.setItems(cname,itemArrayList);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
 
 
     }

@@ -22,9 +22,9 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     Context context;
     private Userdata details;
-  listAdapter arrayAdapter;
+  ListAdapter arrayAdapter;
 
-    public DataAdapter(Context context, listAdapter arrayAdapter)
+    public DataAdapter(Context context, ListAdapter arrayAdapter)
     {
 this.context=context;
         this.arrayAdapter=arrayAdapter;

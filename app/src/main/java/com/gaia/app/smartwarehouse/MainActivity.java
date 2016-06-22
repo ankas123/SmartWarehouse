@@ -20,18 +20,16 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
+import com.gaia.app.smartwarehouse.classes.Item;
+import com.gaia.app.smartwarehouse.service.ItemGetTask;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public RecyclerView recyclerView;
-    public RecyclerView.Adapter adapter;
-    public LinearLayoutManager layoutManager;
-    String dataArray[]=new String[]{
-            "Category 1","Category 2","Category 3","Category 4","Category 5","Category 6","Category 7","Category 8","Category 9","Category 10"
-    };
-    String itemArray[]=new String[]{
-            "item 1","item 2","item 3","item 4","item 5","item 6","item 7","item 8","item 9","item 10","item 11","item 12"
-    };
+    private RecyclerView recyclerView;
+    private RecyclerRowAdapter adapter;
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -63,10 +61,18 @@ public class MainActivity extends AppCompatActivity
         layoutManager=new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-
-
-        adapter=new RecyclerRowAdapter(this,dataArray,itemArray);
+        adapter = new RecyclerRowAdapter(getApplicationContext(),new ArrayList<String>(),new ArrayList<Item>());
         recyclerView.setAdapter(adapter);
+        ItemGetTask asyncTask = (ItemGetTask) new ItemGetTask(new ItemGetTask.PlottingItems(){
+
+            @Override
+            public void setItems(String cname,ArrayList<Item> output){
+
+                adapter.clear();
+                adapter.addAll(cname,output);
+            }
+        }).execute("a");
+
 
 
 
@@ -155,4 +161,6 @@ public class MainActivity extends AppCompatActivity
 
         return true;
     }
+
+
 }

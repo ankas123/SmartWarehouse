@@ -9,10 +9,10 @@ import java.util.List;
 /**
  * Created by praveen_gadi on 6/19/2016.
  */
-public class listAdapter extends ArrayAdapter {
+public class ListAdapter extends ArrayAdapter {
 
     public List list=new ArrayList();
-    public listAdapter(Context context, int resource) {
+    public ListAdapter(Context context, int resource) {
         super(context, resource);
     }
 

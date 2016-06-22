@@ -7,34 +7,44 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gaia.app.smartwarehouse.DetailActivity;
 import com.gaia.app.smartwarehouse.ItemActivity;
 import com.gaia.app.smartwarehouse.R;
-import com.gaia.app.smartwarehouse.SettingsActivity;
+import com.gaia.app.smartwarehouse.classes.Item;
+
+import java.util.ArrayList;
 
 /**
  * Created by praveen_gadi on 6/14/2016.
  */
 public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.ItemRowHolder> {
-    public LinearLayoutManager layoutManager;
-    public Context context;
-    public String[] dataarray,itemarray;
+    private LinearLayoutManager layoutManager;
+    private Context context;
+    private ArrayList<Item> items;
+    private ArrayList<String> cname;
 
-    public RecyclerRowAdapter(Context context,String[] dataArray,String[] itemarray)
+    public RecyclerRowAdapter(Context context,ArrayList<String> cname,ArrayList<Item> items)
     {
 
         this.context=context;
-        dataarray=dataArray;
-        this.itemarray=itemarray;
+        this.cname=cname;
+        this.items=items;
     }
 
 
+    public void clear() {
+        items.clear();
+        notifyDataSetChanged();
+    }
 
+    public void addAll(String cat, ArrayList<Item> catitems) {
+        items.addAll(catitems);
+        cname.add(cat);
+        notifyDataSetChanged();
+    }
     @Override
     public ItemRowHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -46,9 +56,8 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     @Override
     public void onBindViewHolder(ItemRowHolder holder, int position) {
 
-        holder.textView.setText(dataarray[position]);
-
-        RecycleritemAdapter recyclerAdapter=new RecycleritemAdapter(context,itemarray,dataarray[position]);
+        holder.textView.setText(cname.get(position).toString().trim());
+        RecycleritemAdapter recyclerAdapter=new RecycleritemAdapter(context,items);
         holder.recycler_view_list.setHasFixedSize(true);
         layoutManager=new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -60,7 +69,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
 
     @Override
     public int getItemCount() {
-        return dataarray.length;
+        return cname.size();
     }
 
     public class ItemRowHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -73,7 +82,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
             recycler_view_list=(RecyclerView)itemView.findViewById(R.id.recycler_view_list);
             textView= (TextView)itemView.findViewById(R.id.textV);
             button=(Button)itemView.findViewById(R.id.buttonid);
-            textView.setOnClickListener(this);
+
             button.setOnClickListener(this);
         }
 
