@@ -16,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.gaia.app.smartwarehouse.adapters.ItemAdapter;
 
@@ -65,6 +64,7 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         recyclerView.setHasFixedSize(true);
         GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),3);
         recyclerView.setLayoutManager(layoutManager);
+
         ItemAdapter itemAdapter = new ItemAdapter(this,itemArray);
         recyclerView.setAdapter(itemAdapter);
 

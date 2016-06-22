@@ -5,28 +5,63 @@ package com.gaia.app.smartwarehouse.classes;
  */
 
 public class Item {
-    String Itname;
-    int size;
+    private String iname, cname, unit, weight, quant;
+    private int size;
 
-    public void setItname(String itname) {
-        Itname = itname;
+    public Item(String iname, String cname, String unit, String weight, String quant) {
+        this.iname = iname;
+        this.cname = cname;
+        this.unit = unit;
+        this.weight = weight;
+        this.quant = quant;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public String getIname() {
+
+        return iname;
     }
 
-    public String getItname() {
+    public void setIname(String iname) {
+        this.iname = iname;
+    }
 
-        return Itname;
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getQuant() {
+        return quant;
+    }
+
+    public void setQuant(String quant) {
+        this.quant = quant;
     }
 
     public int getSize() {
         return size;
     }
 
-    public Item(String itname, int size) {
-        Itname = itname;
+    public void setSize(int size) {
         this.size = size;
     }
 }

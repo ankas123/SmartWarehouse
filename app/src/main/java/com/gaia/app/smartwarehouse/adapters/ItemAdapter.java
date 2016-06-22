@@ -2,6 +2,7 @@ package com.gaia.app.smartwarehouse.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,8 @@ import com.gaia.app.smartwarehouse.R;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
-    Context context;
-    String[] dataarray;
+    private Context context;
+    private String[] dataarray;
 
     public ItemAdapter(Context context, String[] dataarray)
     {
@@ -28,13 +29,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
         ImageView imageView;
         TextView textView;
+        ImageView fill;
+        CardView card;
         public ViewHolder(View v){
             super(v);
+            card = (CardView) v.findViewById(R.id.card_item);
             imageView = (ImageView) v.findViewById(R.id.cardrec);
             textView = (TextView) v.findViewById(R.id.cardtext);
-            imageView.setOnClickListener(this);
+            fill = (ImageView) v.findViewById(R.id.cardrec);
+            card.setOnClickListener(this);
         }
 
         @Override
@@ -59,6 +65,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textView.setText(dataarray[position]);
+        holder.fill.getLayoutParams().height=20;
     }
 
     @Override
