@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     }
 
     public void addAll(String cat, ArrayList<Item> catitems) {
+
         items.addAll(catitems);
         cname.add(cat);
         notifyDataSetChanged();
@@ -58,7 +60,8 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
 
         holder.textView.setText(cname.get(position).toString().trim());
         RecycleritemAdapter recyclerAdapter=new RecycleritemAdapter(context,items);
-        holder.recycler_view_list.setHasFixedSize(true);
+        Integer in =items.size();
+        Log.v("catsize",in.toString());
         layoutManager=new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.recycler_view_list.setLayoutManager(layoutManager);

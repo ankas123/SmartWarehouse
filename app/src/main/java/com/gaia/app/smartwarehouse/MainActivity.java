@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,9 +68,12 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void setItems(String cname,ArrayList<Item> output){
+                Integer in =output.size();
+                Log.v("mainsize",in.toString());
 
                 adapter.clear();
                 adapter.addAll(cname,output);
+                adapter.notifyDataSetChanged();
             }
         }).execute("a");
 

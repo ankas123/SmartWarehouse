@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gaia.app.smartwarehouse.DetailActivity;
@@ -33,13 +33,12 @@ public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView textView;
-        private ImageView imageView;
         private CardView card;
         public ViewHolder(View itemView) {
             super(itemView);
             card = (CardView) itemView.findViewById(R.id.cv2);
             textView= (TextView)itemView.findViewById(R.id.itemtext);
-            imageView=(ImageView)itemView.findViewById(R.id.itemrec);
+
             card.setOnClickListener(this);
 
         }
@@ -63,12 +62,15 @@ public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(dataarray.get(position).getIname().toString().trim());
+        holder.textView.setText(dataarray.get(position).getIname().trim());
+        Integer in =dataarray.size();
+        Log.v("size",in.toString());
 
     }
 
     @Override
     public int getItemCount() {
+
         return dataarray.size();
     }
 

@@ -1,6 +1,7 @@
 package com.gaia.app.smartwarehouse.service;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.gaia.app.smartwarehouse.classes.Item;
 
@@ -130,7 +131,7 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
                     quant = JO.getString(TAG_QUANT);
                     Item item = new Item(iname, cname, unit, weight, quant);
                     itemArrayList.add(item);
-
+                    Log.v("itemg",itemArrayList.get(j).getIname());
                 }
                 plot.setItems(cname,itemArrayList);
             }
