@@ -43,9 +43,10 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         layoutInflater.inflate(R.layout.content_settings, coordinatorLayout);
 
         listAdapter listAdapter=new listAdapter(this,1);
+
         Userdata details =new Userdata(this);
-        SQLiteDatabase db=details.getReadableDatabase();
-        Cursor cursor=details.getdata(db);
+        Cursor cursor=details.getdata();
+
         if(cursor.moveToFirst())
         {
             do{
@@ -112,7 +113,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     {
         details = new Userdata(this);
         SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
-        details.cleardata(sqLiteDatabase);
+        details.cleardata();
         finish();
         Intent intent =new Intent(this,LoginActivity.class);
         startActivity(intent);

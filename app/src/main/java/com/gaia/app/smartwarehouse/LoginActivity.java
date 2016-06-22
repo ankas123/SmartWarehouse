@@ -46,8 +46,8 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.content_login, coordinatorLayout);
 
-        //textInput1=(TextInputLayout)findViewById(R.id.login_textinput1);
-        //textInput2=(TextInputLayout)findViewById(R.id.login_textinput2);
+        textInput1=(TextInputLayout)findViewById(R.id.login_textinput1);
+        textInput2=(TextInputLayout)findViewById(R.id.login_textinput2);
         et1 = (EditText) findViewById(R.id.username);
         et2 = (EditText) findViewById(R.id.password);
 
@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         password = et2.getText().toString().trim();
 
         if(!validateEmail(email))
-            et1.setError("E-mail is required");
+            et1.setError("Enter a valid E-mail address");
         else
         {
             if((password.length())<6)

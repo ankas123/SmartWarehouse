@@ -41,7 +41,7 @@ this.context=context;
     public void onBindViewHolder(ViewHolder holder, int position) {
         Dataclass object= (Dataclass) arrayAdapter.getItem(position);
 
-        /*holder.email.setText(object.getEmail());
+     /*   holder.email.setText(object.getEmail());
         holder.username.setText(object.getName());
         holder.orgn.setText(object.getOrgn());
         holder.address.setText(object.getAddress());
@@ -71,7 +71,7 @@ this.context=context;
         public void onClick(View v) {
             Userdata details = new Userdata(context);
             SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
-            details.cleardata(sqLiteDatabase);
+            details.cleardata();
             Intent intent =new Intent(context,LoginActivity.class);
             context.startActivity(intent);
         }

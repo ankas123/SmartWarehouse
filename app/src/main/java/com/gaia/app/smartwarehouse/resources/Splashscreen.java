@@ -28,8 +28,7 @@ public class Splashscreen extends AppCompatActivity {
     {
 
         Userdata details =new Userdata(Splashscreen.this);
-        SQLiteDatabase db=details.getReadableDatabase();
-        Cursor cursor=details.getdata(db);
+        Cursor cursor=details.getdata();
         if(cursor.moveToFirst())
         {
             Intent intent = new Intent(Splashscreen.this, MainActivity.class);

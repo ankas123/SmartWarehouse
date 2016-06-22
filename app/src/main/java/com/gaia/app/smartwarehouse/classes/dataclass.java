@@ -12,7 +12,6 @@ public class Dataclass {
         this.orgn=orgn;
         this.address=address;
         this.date=date;
-
     }
 public String getEmail()
 {

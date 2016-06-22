@@ -68,7 +68,7 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         password=et3.getText().toString().trim();
         reenter_password=et4.getText().toString().trim();
         if(!validateEmail(email))
-            et1.setError("E-mail is required");
+            et1.setError("Enter a valid E-mail address");
         else
         {
             result=(String) validatePassword(password,reenter_password);

@@ -99,10 +99,9 @@ public class SignupTask extends AsyncTask<String, Void, String> {
             switch (message) {
                 case "100":
                     details = new Userdata(context);
-                    SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
-                    details.cleardata(sqLiteDatabase);
+                    details.cleardata();
 
-                    details.updatedata(email, password, null, null, null, null, null, sqLiteDatabase);
+                    details.updatedata(email, password, null, null, null, null, null);
                     details.close();
 
                     Intent intent = new Intent(context, MainActivity.class);

@@ -47,6 +47,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     public void onBindViewHolder(ItemRowHolder holder, int position) {
 
         holder.textView.setText(dataarray[position]);
+
         RecycleritemAdapter recyclerAdapter=new RecycleritemAdapter(context,itemarray,dataarray[position]);
         holder.recycler_view_list.setHasFixedSize(true);
         layoutManager=new LinearLayoutManager(context);
