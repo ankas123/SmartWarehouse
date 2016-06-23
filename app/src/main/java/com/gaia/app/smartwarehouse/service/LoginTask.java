@@ -129,7 +129,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
                 case "100":
                     Userdata details = new Userdata(context);
                     details.cleardata();
-                    details.updatedata(mail, pass, fname, lname, orgn, address, date);
+                    details.updateuserdata(mail, pass, fname, lname, orgn, address, date);
                     details.close();
                     Intent intent = new Intent(context, MainActivity.class);
                     context.startActivity(intent);

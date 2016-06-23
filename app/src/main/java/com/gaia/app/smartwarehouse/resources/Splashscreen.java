@@ -28,7 +28,7 @@ public class Splashscreen extends AppCompatActivity {
     {
 
         Userdata details =new Userdata(Splashscreen.this);
-        Cursor cursor=details.getdata();
+        Cursor cursor=details.getuserdata();
         if(cursor.moveToFirst())
         {
             Intent intent = new Intent(Splashscreen.this, MainActivity.class);

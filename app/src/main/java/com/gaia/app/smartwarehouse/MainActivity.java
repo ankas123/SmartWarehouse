@@ -66,8 +66,6 @@ public class MainActivity extends AppCompatActivity
 
 
         recyclerView=(RecyclerView)findViewById(R.id.rv1) ;
-
-
         layoutManager=new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -81,27 +79,43 @@ public class MainActivity extends AppCompatActivity
             builder.setPositiveButton("Refresh",null);
             builder.setNegativeButton("Cancel",null);
             builder.show();
+
+            final Userdata details =new Userdata(this);
+            details.getofflinedata();
+            Userdata data=new Userdata(this,new Userdata.plotting_offline_data() {
+                @Override
+                public void setoffline(Category cat) {
+                    adapter.add(cat);
+                }
+            });
+
+
         }
+        else
+        {
+            final Userdata details =new Userdata(this);
+            Cursor cursor=details.getuserdata();
 
-        final Userdata details =new Userdata(this);
-        Cursor cursor=details.getdata();
+            if(cursor.moveToFirst()) {
+                do {
+                    email = cursor.getString(0);
 
-        if(cursor.moveToFirst()) {
-            do {
-                email = cursor.getString(0);
-
-            } while (cursor.moveToNext());
-        }
+                } while (cursor.moveToNext());
+            }
 
 
             ItemGetTask asyncTask = (ItemGetTask) new ItemGetTask(new ItemGetTask.PlottingItems(){
 
-            @Override
-            public void setItems(Category output){
-                adapter.add(output);
-                details.create_category_table(output);
-            }
-        }).execute(email);
+                @Override
+                public void setItems(Category output){
+                    adapter.add(output);
+                    details.create_category_table(output);
+                }
+            }).execute(email);
+
+
+        }
+
 
 
 

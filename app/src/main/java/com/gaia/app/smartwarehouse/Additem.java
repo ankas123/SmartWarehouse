@@ -34,7 +34,7 @@ public class Additem extends AppCompatActivity {
         String name =  editTexttname.getText().toString().trim();
         String unit = editTextunit.getText().toString().trim();
         Userdata details =new Userdata(this);
-        Cursor cursor=details.getdata();
+        Cursor cursor=details.getuserdata();
 
         if(cursor.moveToFirst()) {
             do {

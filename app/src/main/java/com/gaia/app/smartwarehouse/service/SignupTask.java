@@ -101,7 +101,7 @@ public class SignupTask extends AsyncTask<String, Void, String> {
                     details = new Userdata(context);
                     details.cleardata();
 
-                    details.updatedata(email, password, null, null, null, null, null);
+                    details.updateuserdata(email, password, null, null, null, null, null);
                     details.close();
 
                     Intent intent = new Intent(context, MainActivity.class);

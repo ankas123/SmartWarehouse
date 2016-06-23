@@ -45,7 +45,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         ListAdapter listAdapter=new ListAdapter(this,1);
 
         Userdata details =new Userdata(this);
-        Cursor cursor=details.getdata();
+        Cursor cursor=details.getuserdata();
 
         if(cursor.moveToFirst())
         {
