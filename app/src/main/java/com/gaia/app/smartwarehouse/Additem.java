@@ -28,10 +28,7 @@ public class Additem extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-
-        Intent intent=getIntent();
-        Bundle bundle=intent.getBundleExtra("cname");
-        String cname =(String) bundle.get("cname");
+        String cname =getIntent().getStringExtra("cname");
         EditText editTexttname = (EditText) findViewById(R.id.additem_edittext);
         EditText editTextunit = (EditText) findViewById(R.id.additem_edittext1);
         String name =  editTexttname.getText().toString().trim();
