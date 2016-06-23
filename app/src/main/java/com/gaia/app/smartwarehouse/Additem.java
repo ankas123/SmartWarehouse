@@ -20,15 +20,10 @@ public class Additem extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newitem);
-
+           String cname=getIntent().getStringExtra("cname");
         Toolbar toolbar = (Toolbar) findViewById(R.id.additem_MyToolbar);
 
         setSupportActionBar(toolbar);
-
-
-        Intent intent=getIntent();
-        Bundle bundle=intent.getBundleExtra("cname");
-        String cname =(String) bundle.get("cname");
 
 
     }

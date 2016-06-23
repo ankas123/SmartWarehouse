@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
 import com.gaia.app.smartwarehouse.classes.Category;
@@ -63,9 +65,6 @@ public class MainActivity extends AppCompatActivity
         layoutInflater.inflate(R.layout.content_main, coordinatorLayout );
 
 
-
-
-
         recyclerView=(RecyclerView)findViewById(R.id.rv1) ;
 
 
@@ -74,6 +73,15 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerRowAdapter(this,new ArrayList<Category>());
         recyclerView.setAdapter(adapter);
+
+        if(!isNetworkConnected()) {
+            AlertDialog.Builder builder=new AlertDialog.Builder(this,R.style.DialogBoxStyle);
+
+            builder.setTitle(" No Internet Connection !");
+            builder.setPositiveButton("Refresh",null);
+            builder.setNegativeButton("Cancel",null);
+            builder.show();
+        }
 
         final Userdata details =new Userdata(this);
         Cursor cursor=details.getdata();
@@ -108,6 +116,12 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
+    }
+
 
     public void addproduct(View view)
     {
@@ -121,7 +135,10 @@ public class MainActivity extends AppCompatActivity
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+               String string=editText_dialog.getText().toString().trim();
+                Intent intent=new Intent(MainActivity.this,Additem.class);
+                intent.putExtra("cname",string);
+                startActivity(intent);
             }
         });
         builder.setNegativeButton("Cancel",null);
