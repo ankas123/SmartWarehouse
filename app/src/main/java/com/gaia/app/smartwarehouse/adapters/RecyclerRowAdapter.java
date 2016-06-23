@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.ItemActivity;
 import com.gaia.app.smartwarehouse.R;
-import com.gaia.app.smartwarehouse.classes.Item;
+import com.gaia.app.smartwarehouse.classes.Category;
 
 import java.util.ArrayList;
 
@@ -24,14 +24,12 @@ import java.util.ArrayList;
 public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.ItemRowHolder> {
     private LinearLayoutManager layoutManager;
     private Context context;
-    private ArrayList<Item> items;
-    private ArrayList<String> cname;
+    private ArrayList<Category> items;
 
-    public RecyclerRowAdapter(Context context,ArrayList<String> cname,ArrayList<Item> items)
+    public RecyclerRowAdapter(Context context,ArrayList<Category> items)
     {
 
         this.context=context;
-        this.cname=cname;
         this.items=items;
     }
 
@@ -41,11 +39,10 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
         notifyDataSetChanged();
     }
 
-    public void addAll(String cat, ArrayList<Item> catitems) {
+    public void add(Category catitems) {
 
-        items.addAll(catitems);
-        cname.add(cat);
-        notifyDataSetChanged();
+        items.add(catitems);
+
     }
     @Override
     public ItemRowHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,8 +55,8 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     @Override
     public void onBindViewHolder(ItemRowHolder holder, int position) {
 
-        holder.textView.setText(cname.get(position).toString().trim());
-        RecycleritemAdapter recyclerAdapter=new RecycleritemAdapter(context,items);
+        holder.textView.setText(items.get(position).getCname().trim());
+        RecycleritemAdapter recyclerAdapter=new RecycleritemAdapter(context,items.get(position).getItems());
         Integer in =items.size();
         Log.v("catsize",in.toString());
         layoutManager=new LinearLayoutManager(context);
@@ -72,7 +69,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
 
     @Override
     public int getItemCount() {
-        return cname.size();
+        return items.size();
     }
 
     public class ItemRowHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

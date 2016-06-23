@@ -14,14 +14,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
-import com.gaia.app.smartwarehouse.classes.Item;
+import com.gaia.app.smartwarehouse.classes.Category;
 import com.gaia.app.smartwarehouse.service.ItemGetTask;
 
 import java.util.ArrayList;
@@ -62,18 +61,14 @@ public class MainActivity extends AppCompatActivity
         layoutManager=new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerRowAdapter(getApplicationContext(),new ArrayList<String>(),new ArrayList<Item>());
+        adapter = new RecyclerRowAdapter(getApplicationContext(),new ArrayList<Category>());
         recyclerView.setAdapter(adapter);
         ItemGetTask asyncTask = (ItemGetTask) new ItemGetTask(new ItemGetTask.PlottingItems(){
 
             @Override
-            public void setItems(String cname,ArrayList<Item> output){
-                Integer in =output.size();
-                Log.v("mainsize",in.toString());
+            public void setItems(Category output){
+                adapter.add(output);
 
-                adapter.clear();
-                adapter.addAll(cname,output);
-                adapter.notifyDataSetChanged();
             }
         }).execute("a");
 

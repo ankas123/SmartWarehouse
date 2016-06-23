@@ -3,6 +3,7 @@ package com.gaia.app.smartwarehouse.service;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.gaia.app.smartwarehouse.classes.Category;
 import com.gaia.app.smartwarehouse.classes.Item;
 
 import org.json.JSONArray;
@@ -41,11 +42,11 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
     private String TAG_QUANT="quant";
     private JSONObject jsonObject,JO;
     private JSONArray jsonArray;
-    private ArrayList<Item> itemArrayList= new ArrayList<>();
-    private ArrayList<String> categories;
+
+
 
     public interface PlottingItems {
-        void setItems(String cname ,ArrayList<Item> items);
+        void setItems(Category cat);
 
     }
 
@@ -115,13 +116,14 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
 
 
             for (int i=0; i<jsonArray.length(); i++){
-
+                Integer in = new Integer(jsonArray.length());
+                Log.v("itemsize",in.toString());
 
                 JO = jsonArray.getJSONObject(i);
                 cname=JO.getString(TAG_CAT);
-                //categories.add(cname);
+
                 JSONArray items=JO.getJSONArray(TAG_ITEM);
-                itemArrayList.clear();
+                ArrayList<Item> itemArrayList= new ArrayList<>();
 
                 for (int j=0; j<items.length(); j++) {
                     JO=items.getJSONObject(j);
@@ -133,7 +135,10 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
                     itemArrayList.add(item);
                     Log.v("itemg",itemArrayList.get(j).getIname());
                 }
-                plot.setItems(cname,itemArrayList);
+
+                Category cat = new Category(cname,itemArrayList);
+
+                plot.setItems(cat);
             }
 
         } catch (JSONException e) {
