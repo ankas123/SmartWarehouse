@@ -1,6 +1,7 @@
 package com.gaia.app.smartwarehouse.service;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +45,9 @@ public class AddItemTask extends AsyncTask<String,Void,String> {
         String name = strings[1];
         String unit = strings[2];
         String cat = strings[3];
+        Log.v("email",email);
+        Log.v("email",name);
+        Log.v("email",unit);Log.v("email",cat);
 
         try {
 
@@ -55,14 +59,11 @@ public class AddItemTask extends AsyncTask<String,Void,String> {
             OutputStream outputStream = httpURLConnection.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-            String data = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8")
-                    +URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8")
-                    + URLEncoder.encode("unit", "UTF-8") + "=" + URLEncoder.encode(unit, "UTF-8")
-                    + URLEncoder.encode("cat", "UTF-8") + "=" + URLEncoder.encode(cat, "UTF-8") ;
+            String data = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(name.trim(), "UTF-8") + "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email.trim(), "UTF-8") + "&" + URLEncoder.encode("unit", "UTF-8") + "=" + URLEncoder.encode(unit.trim(), "UTF-8") + "&" + URLEncoder.encode("cname", "UTF-8") + "=" + URLEncoder.encode(cat.trim(), "UTF-8") ;
             bufferedWriter.write(data);
             bufferedWriter.flush();
             bufferedWriter.close();
-
+            Log.v("email",data);
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "ISO-8859-1"));
             StringBuilder stringBuilder = new StringBuilder();
@@ -75,6 +76,7 @@ public class AddItemTask extends AsyncTask<String,Void,String> {
             bufferedReader.close();
             inputStream.close();
             httpURLConnection.disconnect();
+            Log.v("email",stringBuilder.toString().trim());
             return stringBuilder.toString().trim();
 
 
@@ -95,6 +97,7 @@ public class AddItemTask extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         try {
+            Log.v("email",s);
             JSONObject object = new JSONObject(s);
             String TAG_RESULT = "message";
             String message = object.getString(TAG_RESULT);
