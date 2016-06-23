@@ -21,12 +21,7 @@ import com.gaia.app.smartwarehouse.adapters.QuantityLoader;
  */
 
 public class DetailActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    Toolbar toolbar;
-    public void setSupportActionBar(@Nullable Toolbar toolbar) {
-        super.setSupportActionBar(toolbar);
-        this.toolbar=toolbar;
 
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

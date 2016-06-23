@@ -22,7 +22,6 @@ import android.view.View;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
 import com.gaia.app.smartwarehouse.classes.Category;
-import com.gaia.app.smartwarehouse.classes.Dataclass;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 import com.gaia.app.smartwarehouse.service.ItemGetTask;
 
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity
         layoutManager=new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerRowAdapter(getApplicationContext(),new ArrayList<Category>());
+        adapter = new RecyclerRowAdapter(this,new ArrayList<Category>());
         recyclerView.setAdapter(adapter);
 
         Userdata details =new Userdata(this);
