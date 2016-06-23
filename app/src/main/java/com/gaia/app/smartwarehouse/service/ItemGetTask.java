@@ -47,7 +47,6 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
 
     public interface PlottingItems {
         void setItems(Category cat);
-
     }
 
      PlottingItems plot = null;
@@ -61,7 +60,6 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
     protected String doInBackground(String... strings) {
         try {
             email = strings[0];
-
 
             URL url = new URL(ITEM_URL);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();

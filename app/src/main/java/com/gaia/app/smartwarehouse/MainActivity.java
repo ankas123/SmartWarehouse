@@ -2,6 +2,7 @@ package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -21,12 +22,16 @@ import android.view.View;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
 import com.gaia.app.smartwarehouse.classes.Category;
+import com.gaia.app.smartwarehouse.classes.Dataclass;
+import com.gaia.app.smartwarehouse.classes.Userdata;
 import com.gaia.app.smartwarehouse.service.ItemGetTask;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private String email;
     private RecyclerView recyclerView;
     private RecyclerRowAdapter adapter;
     private LinearLayoutManager layoutManager;
@@ -63,14 +68,26 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerRowAdapter(getApplicationContext(),new ArrayList<Category>());
         recyclerView.setAdapter(adapter);
-        ItemGetTask asyncTask = (ItemGetTask) new ItemGetTask(new ItemGetTask.PlottingItems(){
+
+        Userdata details =new Userdata(this);
+        Cursor cursor=details.getdata();
+
+        if(cursor.moveToFirst()) {
+            do {
+                email = cursor.getString(0);
+
+            } while (cursor.moveToNext());
+        }
+
+
+            ItemGetTask asyncTask = (ItemGetTask) new ItemGetTask(new ItemGetTask.PlottingItems(){
 
             @Override
             public void setItems(Category output){
                 adapter.add(output);
 
             }
-        }).execute("a");
+        }).execute(email);
 
 
 
