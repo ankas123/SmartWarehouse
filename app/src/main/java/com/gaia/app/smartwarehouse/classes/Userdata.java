@@ -133,7 +133,7 @@ public class Userdata extends SQLiteOpenHelper {
         cnames.put(ITEM_CATEGORY,category.getCname());
         writable_db.insert(Category_Table_name,null,cnames);
 
-        String create_category_table="CREATE TABLE "+category+"(iname TEXT PRIMARY,unit TEXT,weight TEXT,quant TEXT)";
+        String create_category_table="CREATE TABLE "+ category.getCname().trim()+"(iname TEXT ,unit TEXT,weight TEXT,quant TEXT)";
         writable_db.execSQL(create_category_table);
 
         ArrayList<Item> items=category.getItems();

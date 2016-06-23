@@ -86,6 +86,7 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
             bufferedReader.close();
             inputStream.close();
             httpURLConnection.disconnect();
+            Log.v("email",stringBuilder.toString().trim());
             return stringBuilder.toString().trim();
 
 

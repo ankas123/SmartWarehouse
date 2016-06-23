@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,7 +19,7 @@ import com.gaia.app.smartwarehouse.service.AddItemTask;
 
 public class Additem extends AppCompatActivity {
 
-    String email;
+    String email,cname,name,unit;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,11 +29,17 @@ public class Additem extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        String cname =getIntent().getStringExtra("cname");
+         cname =getIntent().getStringExtra("cname");
+
+
+
+    }
+    public void go(View view)
+    {
         EditText editTexttname = (EditText) findViewById(R.id.additem_edittext);
         EditText editTextunit = (EditText) findViewById(R.id.additem_edittext1);
-        String name =  editTexttname.getText().toString().trim();
-        String unit = editTextunit.getText().toString().trim();
+        name =  editTexttname.getText().toString().trim();
+        unit = editTextunit.getText().toString().trim();
         Userdata details =new Userdata(this);
         Cursor cursor=details.getuserdata();
 
@@ -48,12 +55,13 @@ public class Additem extends AppCompatActivity {
             public void getMessage(String s) {
                 switch (s){
                     case "100":
+                        Intent intent = new Intent(Additem.this,MainActivity.class);
+                        startActivity(intent);
                         break;
                     default:
                         Toast.makeText(Additem.this,"Error in sending",Toast.LENGTH_SHORT).show();
                 }
             }
         }).execute(email,name,unit,cname);
-
     }
 }
