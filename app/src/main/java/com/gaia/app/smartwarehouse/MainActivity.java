@@ -1,6 +1,7 @@
 package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
 import com.gaia.app.smartwarehouse.classes.Category;
@@ -31,6 +34,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private EditText editText_dialog;
     private String email;
     private RecyclerView recyclerView;
     private RecyclerRowAdapter adapter;
@@ -60,6 +64,9 @@ public class MainActivity extends AppCompatActivity
         layoutInflater.inflate(R.layout.content_main, coordinatorLayout );
 
 
+
+
+
         recyclerView=(RecyclerView)findViewById(R.id.rv1) ;
 
 
@@ -69,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         adapter = new RecyclerRowAdapter(getApplicationContext(),new ArrayList<Category>());
         recyclerView.setAdapter(adapter);
 
-        Userdata details =new Userdata(this);
+        final Userdata details =new Userdata(this);
         Cursor cursor=details.getdata();
 
         if(cursor.moveToFirst()) {
@@ -85,11 +92,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void setItems(Category output){
                 adapter.add(output);
-
+                details.create_category_table(output);
             }
         }).execute(email);
-
-
 
 
 
@@ -107,8 +112,21 @@ public class MainActivity extends AppCompatActivity
 
     public void addproduct(View view)
     {
-        Intent intent=new Intent(this,Addproduct.class);
-        startActivity(intent);
+        AlertDialog.Builder builder=new AlertDialog.Builder(this,R.style.DialogBoxStyle);
+
+        LayoutInflater inflater=this.getLayoutInflater();
+        final View dialogview=inflater.inflate(R.layout.content_dialogbox,null);
+        builder.setView(dialogview);
+        editText_dialog=(EditText)dialogview.findViewById(R.id.editText_dialogbox);
+        builder.setTitle("Add Category");
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setNegativeButton("Cancel",null);
+        builder.show();
     }
 
 
