@@ -45,8 +45,7 @@ public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapte
 
         @Override
         public void onClick(View v) {
-            int a=getAdapterPosition();
-            a++;
+
 
             Intent intent=new Intent(context, DetailActivity.class);
             context.startActivity(intent);

@@ -10,5 +10,5 @@ public class CommonUtilities {
     static final String SIGNUP_URL = "http://192.168.0.115:8888/signup.php";
     static final String LOGIN_URL = "http://192.168.0.115:8888/login.php";
     static final String ITEM_URL = "http://192.168.0.115:8888/getitems.php";
-
+    static final String ADDITEM_URL = "http://192.168.0.115:8888/additems.php";
 }
