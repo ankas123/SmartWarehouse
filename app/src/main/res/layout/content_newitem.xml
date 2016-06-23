@@ -81,7 +81,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:textSize="20sp"
-                android:id="@+id/additem_textView4"
+                android:id="@+id/additem_edittext"
                 android:layout_row="0"
                 android:layout_column="0"
                 tools:textSize="30sp" />
@@ -113,7 +113,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
                     android:textSize="20sp"
-                    android:id="@+id/additem_textView6"
+                    android:id="@+id/additem_edittext1"
                     android:layout_row="1"
                     android:layout_column="1" />
 
