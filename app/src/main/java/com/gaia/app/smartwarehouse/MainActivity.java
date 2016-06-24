@@ -85,8 +85,9 @@ public class MainActivity extends AppCompatActivity
             Cursor cursor=details.getofflinedata();
             if(cursor.moveToFirst())
             {
-                ArrayList<Item> itemArrayList= new ArrayList<>();
+
                 do{
+                    ArrayList<Item> itemArrayList= new ArrayList<>();
                     String cname=cursor.getString(0);
                    Cursor cursor2=details.getitemsdata(cname);
                     if(cursor2.moveToFirst()) {
