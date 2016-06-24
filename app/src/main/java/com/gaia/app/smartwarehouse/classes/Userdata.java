@@ -39,12 +39,6 @@ public class Userdata extends SQLiteOpenHelper {
 
 
 
-    public interface plotting_offline_data
-    {
-         void setoffline(Category cat);
-    }
-    plotting_offline_data plot=null;
-
 
 
     public Userdata(Context context) {
@@ -52,10 +46,6 @@ public class Userdata extends SQLiteOpenHelper {
         Log.e("Database  ","database created");
     }
 
-    public Userdata(Context context,plotting_offline_data plot){
-        super(context,DB_name,null,DB_version);
-        this.plot = plot;
-    }
 
 
     public Userdata(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -151,42 +141,22 @@ public class Userdata extends SQLiteOpenHelper {
        Log.e("Offline data","Offline data updated");
     }
 
-    public void getofflinedata()
+    public Cursor getofflinedata()
     {
         readable_db=this.getReadableDatabase();
 
         String[] projections={ITEM_CATEGORY};
         Cursor cursor=readable_db.query(Category_Table_name,projections,null,null,null,null,null);
 
-
-        if(cursor.moveToFirst())
-        {
-            ArrayList<Item> itemArrayList= new ArrayList<>();
-            do{
-                String cname=cursor.getString(0);
-                String[] category_projections={ITEM_NAME,ITEM_UNIT,ITEM_WEIGHT,ITEM_QUANTITY};
-                Cursor cursor2=readable_db.query(cname,category_projections,null,null,null,null,null);
-                if(cursor2.moveToFirst()) {
-                    do {
-                        String iname, unit, weight, quant;
-                        iname = cursor2.getString(0);
-                        unit = cursor2.getString(1);
-                        weight = cursor2.getString(2);
-                        quant = cursor2.getString(3);
-                        Item item = new Item(iname, cname, unit, weight, quant);
-                        itemArrayList.add(item);
-                    } while (cursor2.moveToNext());
-
-                }
-
-                Category cat = new Category(cname,itemArrayList);
-
-                plot.setoffline(cat);
-
-            }while (cursor.moveToNext());
-
-        }
         Log.e("Offline data","Data Reading");
+        return cursor;
+    }
+
+    public Cursor getitemsdata(String cname)
+    {
+        String[] category_projections={ITEM_NAME,ITEM_UNIT,ITEM_WEIGHT,ITEM_QUANTITY};
+        Cursor cursor2=readable_db.query(cname,category_projections,null,null,null,null,null);
+        return cursor2;
     }
 
 

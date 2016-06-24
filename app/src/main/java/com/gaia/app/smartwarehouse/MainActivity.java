@@ -27,6 +27,7 @@ import android.widget.ImageView;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
 import com.gaia.app.smartwarehouse.classes.Category;
+import com.gaia.app.smartwarehouse.classes.Item;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 import com.gaia.app.smartwarehouse.service.ItemGetTask;
 
@@ -81,14 +82,31 @@ public class MainActivity extends AppCompatActivity
             builder.show();
 
             final Userdata details =new Userdata(this);
-            details.getofflinedata();
-            Userdata data=new Userdata(this,new Userdata.plotting_offline_data() {
-                @Override
-                public void setoffline(Category cat) {
-                    adapter.add(cat);
-                }
-            });
+            Cursor cursor=details.getofflinedata();
+            if(cursor.moveToFirst())
+            {
+                ArrayList<Item> itemArrayList= new ArrayList<>();
+                do{
+                    String cname=cursor.getString(0);
+                   Cursor cursor2=details.getitemsdata(cname);
+                    if(cursor2.moveToFirst()) {
+                        do {
+                            String iname, unit, weight, quant;
+                            iname = cursor2.getString(0);
+                            unit = cursor2.getString(1);
+                            weight = cursor2.getString(2);
+                            quant = cursor2.getString(3);
+                            Item item = new Item(iname, cname, unit, weight, quant);
+                            itemArrayList.add(item);
+                        } while (cursor2.moveToNext());
 
+                    }
+                    Category cat = new Category(cname,itemArrayList);
+
+                      adapter.add(cat);
+                }while (cursor.moveToNext());
+
+            }
 
         }
         else
