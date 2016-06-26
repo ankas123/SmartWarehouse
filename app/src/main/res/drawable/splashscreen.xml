@@ -7,7 +7,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/box"/>
+            android:src="@mipmap/parcel256"/>
     </item>
 
 </layer-list>
