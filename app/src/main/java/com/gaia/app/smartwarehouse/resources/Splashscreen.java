@@ -5,30 +5,42 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.gaia.app.smartwarehouse.LoginActivity;
 import com.gaia.app.smartwarehouse.MainActivity;
-import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 
 public class Splashscreen extends AppCompatActivity {
 
-    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splashscreen);
 
-        progress();
+        new Progress().execute();
 
     }
 
     class Progress extends AsyncTask<Void,Void,Void>{
         Userdata details =new Userdata(Splashscreen.this);
+        Intent intent;
+        ProgressBar progressBar;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar = new ProgressBar(Splashscreen.this);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            startActivity(intent);
+            finish();
+            progressBar.setVisibility(View.INVISIBLE);
         }
 
         @Override
@@ -36,16 +48,16 @@ public class Splashscreen extends AppCompatActivity {
             Cursor cursor=details.getuserdata();
             if(cursor.moveToFirst())
             {
-                Intent intent = new Intent(Splashscreen.this, MainActivity.class);
-                startActivity(intent);
+                intent= new Intent(Splashscreen.this, MainActivity.class);
+
             }
             else
             {
-                Intent intent = new Intent(Splashscreen.this, LoginActivity.class);
-                startActivity(intent);
+                 intent = new Intent(Splashscreen.this, LoginActivity.class);
+
             }
 
-            finish();
+
 
 
             return null;
@@ -53,11 +65,5 @@ public class Splashscreen extends AppCompatActivity {
 
         }
     }
-    public void progress()
-    {
 
-
-
-
-    }
 }
