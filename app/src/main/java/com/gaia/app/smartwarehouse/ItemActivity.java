@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.gaia.app.smartwarehouse.adapters.ItemAdapter;
-import com.gaia.app.smartwarehouse.classes.Category;
 import com.gaia.app.smartwarehouse.classes.Item;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 
@@ -33,14 +32,15 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
 
     Context context;
     Toolbar toolbar;
-    String itemArray[]=new String[]{
-            "item 1","item 2","item 3","item 4","item 5","item 6","item 7","item 8","item 9","item 10","item 11","item 12"
+    String itemArray[] = new String[]{
+            "item 1", "item 2", "item 3", "item 4", "item 5", "item 6", "item 7", "item 8", "item 9", "item 10", "item 11", "item 12"
     };
+    String str;
 
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
         super.setSupportActionBar(toolbar);
-        this.toolbar=toolbar;
+        this.toolbar = toolbar;
 
     }
 
@@ -48,127 +48,121 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        Intent intent = getIntent();
+        str = intent.getStringExtra("Category");
+
         // Adding custom toolbar to the page
 
-
+        context = getApplicationContext();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(str);
+        setSupportActionBar(toolbar);
 
 
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordi);
-        LayoutInflater layoutInflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layoutInflater.inflate(R.layout.activity_item, coordinatorLayout );
-
-
-
-         Intent intent=getIntent();
-         String cname=intent.getStringExtra("Category");
-
-
-
-        context =getApplicationContext();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(cname);
-        setSupportActionBar(toolbar);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater.inflate(R.layout.activity_item, coordinatorLayout);
 
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.viewall);
         recyclerView.setHasFixedSize(true);
-        GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),3);
+        GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
+        ItemAdapter itemAdapter = new ItemAdapter(this, new ArrayList<Item>());
 
 
+        final Userdata details = new Userdata(this);
 
-        ArrayList<Item> itemArrayList= new ArrayList<>();
+        ArrayList<Item> itemArrayList = new ArrayList<>();
 
-        final Userdata details =new Userdata(this);
-        Cursor cursor2=details.getitemsdata(cname);
-        if(cursor2.moveToFirst()) {
+        Cursor cursor2 = details.getitemsdata(str);
+        if (cursor2.moveToFirst()) {
             do {
                 String iname, unit, weight, quant;
                 iname = cursor2.getString(0);
                 unit = cursor2.getString(1);
                 weight = cursor2.getString(2);
                 quant = cursor2.getString(3);
-                Item item = new Item(iname, cname, unit, weight, quant);
+                Item item = new Item(iname, str, unit, weight, quant);
                 itemArrayList.add(item);
             } while (cursor2.moveToNext());
 
-        }
-        ItemAdapter itemAdapter = new ItemAdapter(this,itemArrayList);
-        recyclerView.setAdapter(itemAdapter);
 
+            itemAdapter.add(itemArrayList);
 
+            recyclerView.setAdapter(itemAdapter);
 
+            //Navigation drawer code
+            //TODO change navigation drawer
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
 
-
-
-        //Navigation drawer code
-        //TODO change navigation drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+        @Override
+        public void onBackPressed () {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
+        }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.notifications) {
+        @Override
+        public boolean onCreateOptionsMenu (Menu menu){
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.main, menu);
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        @Override
+        public boolean onOptionsItemSelected (MenuItem item){
+            // Handle action bar item clicks here. The action bar will
+            // automatically handle clicks on the Home/Up button, so long
+            // as you specify a parent activity in AndroidManifest.xml.
+            int id = item.getItemId();
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.notifications) {
+                return true;
+            }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        int id = item.getItemId();
-
-        if (id == R.id.detail) {
-            Intent i = new Intent(getApplicationContext(), DetailActivity.class);
-            startActivity(i);
-            finish();
-        } else if (id == R.id.login) {
-
-        } else if (id == R.id.notifications) {
-
-        } else if (id == R.id.account_settings) {
-            Intent i = new Intent(getApplicationContext(),SettingsActivity.class);
-            startActivity(i);
+            return super.onOptionsItemSelected(item);
         }
 
-        drawer.closeDrawer(GravityCompat.START);
+        @SuppressWarnings("StatementWithEmptyBody")
+        @Override
+        public boolean onNavigationItemSelected (MenuItem item){
+            // Handle navigation view item clicks here.
 
-        return true;
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+            int id = item.getItemId();
+
+            if (id == R.id.detail) {
+                Intent i = new Intent(getApplicationContext(), DetailActivity.class);
+                startActivity(i);
+                finish();
+            } else if (id == R.id.login) {
+
+            } else if (id == R.id.notifications) {
+
+            } else if (id == R.id.account_settings) {
+                Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(i);
+            }
+
+            drawer.closeDrawer(GravityCompat.START);
+
+            return true;
+        }
     }
-}

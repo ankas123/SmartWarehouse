@@ -2,7 +2,7 @@ package com.gaia.app.smartwarehouse.resources;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
@@ -19,28 +19,45 @@ public class Splashscreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashscreen);
-        progressBar=(ProgressBar)findViewById(R.id.progressBar);
-        progressBar.setProgress(0);
+
         progress();
 
+    }
+
+    class Progress extends AsyncTask<Void,Void,Void>{
+        Userdata details =new Userdata(Splashscreen.this);
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Cursor cursor=details.getuserdata();
+            if(cursor.moveToFirst())
+            {
+                Intent intent = new Intent(Splashscreen.this, MainActivity.class);
+                startActivity(intent);
+            }
+            else
+            {
+                Intent intent = new Intent(Splashscreen.this, LoginActivity.class);
+                startActivity(intent);
+            }
+
+            finish();
+
+
+            return null;
+
+
+        }
     }
     public void progress()
     {
 
-        Userdata details =new Userdata(Splashscreen.this);
-        Cursor cursor=details.getuserdata();
-        if(cursor.moveToFirst())
-        {
-            Intent intent = new Intent(Splashscreen.this, MainActivity.class);
-            startActivity(intent);
-        }
-        else
-        {
-            Intent intent = new Intent(Splashscreen.this, LoginActivity.class);
-            startActivity(intent);
-        }
 
-        finish();
+
 
     }
 }

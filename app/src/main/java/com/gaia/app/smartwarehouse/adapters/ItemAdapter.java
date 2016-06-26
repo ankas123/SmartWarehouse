@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,12 @@ import java.util.ArrayList;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
     private Context context;
-    private ArrayList<Item> items;
+    private ArrayList<Item> dataarray;
 
-    public ItemAdapter(Context context, ArrayList<Item> items)
+    public ItemAdapter(Context context, ArrayList<Item> dataarray)
     {
         this.context=context;
-        this.items=items;
+        this.dataarray=dataarray;
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -40,6 +41,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
         public ViewHolder(View v){
             super(v);
             card = (CardView) v.findViewById(R.id.card_item);
+            imageView = (ImageView) v.findViewById(R.id.cardrec);
             textView = (TextView) v.findViewById(R.id.cardtext);
             fill = (ImageView) v.findViewById(R.id.cardrec);
             card.setOnClickListener(this);
@@ -52,6 +54,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
         }
     }
 
+    public void add(ArrayList<Item> items) {
+         dataarray.addAll(items);
+            notifyDataSetChanged();
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -66,14 +72,23 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(items.get(position).getIname());
-        holder.fill.getLayoutParams().height=20;
+        holder.textView.setText(dataarray.get(position).getIname());
+        Float weight = new Float(dataarray.get(position).getWeight());
+        holder.fill.getLayoutParams().height=getPercentHeight(weight);
+
+
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return dataarray.size();
     }
 
+    int getPercentHeight(float weight){
+        int height;
+        height= (int) ((weight/120)*60);
+        int dimension = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, height, context.getResources().getDisplayMetrics());
 
+        return dimension;
+    }
 }

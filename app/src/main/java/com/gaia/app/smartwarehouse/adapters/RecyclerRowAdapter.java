@@ -2,7 +2,6 @@ package com.gaia.app.smartwarehouse.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,12 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.ItemActivity;
 import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.classes.Category;
-import com.gaia.app.smartwarehouse.classes.Userdata;
 
 import java.util.ArrayList;
 
@@ -44,6 +41,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     public void add(Category catitems) {
 
         items.add(catitems);
+        notifyDataSetChanged();
 
     }
     @Override
@@ -90,22 +88,10 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
 
         @Override
         public void onClick(View v) {
-            String cname = null;
             int a=getAdapterPosition();
-            final Userdata details =new Userdata(context);
-            Cursor cursor=details.getcategorydata();
-          if(cursor.moveToFirst())
-          {
-           while (a>0)
-           {
-               cursor.moveToNext();
-               a--;
-           }
-              cname=cursor.getString(0);
 
-          }
             Intent intent =new Intent(context,ItemActivity.class);
-            intent.putExtra("Category",cname);
+            intent.putExtra("Category",items.get(a).getCname());
             context.startActivity(intent);
         }
     }
