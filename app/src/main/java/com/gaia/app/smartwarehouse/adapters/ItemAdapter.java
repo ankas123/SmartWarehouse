@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import com.gaia.app.smartwarehouse.DetailActivity;
 import com.gaia.app.smartwarehouse.R;
+import com.gaia.app.smartwarehouse.classes.Item;
+
+import java.util.ArrayList;
 
 /**
  * Created by anant on 13/06/16.
@@ -20,12 +23,12 @@ import com.gaia.app.smartwarehouse.R;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
     private Context context;
-    private String[] dataarray;
+    private ArrayList<Item> items;
 
-    public ItemAdapter(Context context, String[] dataarray)
+    public ItemAdapter(Context context, ArrayList<Item> items)
     {
         this.context=context;
-        this.dataarray=dataarray;
+        this.items=items;
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -37,7 +40,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
         public ViewHolder(View v){
             super(v);
             card = (CardView) v.findViewById(R.id.card_item);
-            imageView = (ImageView) v.findViewById(R.id.cardrec);
             textView = (TextView) v.findViewById(R.id.cardtext);
             fill = (ImageView) v.findViewById(R.id.cardrec);
             card.setOnClickListener(this);
@@ -64,13 +66,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(dataarray[position]);
+        holder.textView.setText(items.get(position).getIname());
         holder.fill.getLayoutParams().height=20;
     }
 
     @Override
     public int getItemCount() {
-        return dataarray.length;
+        return items.size();
     }
 
 

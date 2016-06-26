@@ -141,7 +141,7 @@ public class Userdata extends SQLiteOpenHelper {
        Log.e("Offline data","Offline data updated");
     }
 
-    public Cursor getofflinedata()
+    public Cursor getcategorydata()
     {
         readable_db=this.getReadableDatabase();
 

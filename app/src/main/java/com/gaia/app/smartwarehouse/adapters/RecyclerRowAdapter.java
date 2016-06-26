@@ -2,6 +2,7 @@ package com.gaia.app.smartwarehouse.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.gaia.app.smartwarehouse.ItemActivity;
 import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.classes.Category;
+import com.gaia.app.smartwarehouse.classes.Userdata;
 
 import java.util.ArrayList;
 
@@ -88,12 +90,22 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
 
         @Override
         public void onClick(View v) {
+            String cname = null;
             int a=getAdapterPosition();
-            a++;
-            String s="Category "+a;
-            Toast.makeText(context,s, Toast.LENGTH_SHORT).show();
+            final Userdata details =new Userdata(context);
+            Cursor cursor=details.getcategorydata();
+          if(cursor.moveToFirst())
+          {
+           while (a>0)
+           {
+               cursor.moveToNext();
+               a--;
+           }
+              cname=cursor.getString(0);
+
+          }
             Intent intent =new Intent(context,ItemActivity.class);
-            intent.putExtra("Category ",s);
+            intent.putExtra("Category",cname);
             context.startActivity(intent);
         }
     }

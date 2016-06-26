@@ -5,11 +5,11 @@
 
         <item
             android:id="@+id/detail"
-            android:icon="@drawable/details"
+            android:icon="@mipmap/monitor"
             android:title="Monitor Present Stock" />
         <item
             android:id="@+id/wishlist"
-            android:icon="@drawable/wishlist"
+            android:icon="@mipmap/wishlist"
             android:title="Wish List" />
 
     </group>
@@ -18,15 +18,15 @@
         <menu>
             <item
                 android:id="@+id/login"
-                android:icon="@drawable/login"
+                android:icon="@mipmap/login"
                 android:title="Login" />
             <item
                 android:id="@+id/notifications"
-                android:icon="@drawable/notifications2"
+                android:icon="@mipmap/notifications"
                 android:title="Notifications" />
             <item
                 android:id="@+id/account_settings"
-                android:icon="@drawable/ic_menu_manage"
+                android:icon="@mipmap/settings"
                 android:title="Account Settings" />
         </menu>
     </item>

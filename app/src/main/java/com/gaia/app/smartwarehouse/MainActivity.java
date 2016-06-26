@@ -1,37 +1,58 @@
 package com.gaia.app.smartwarehouse;
 
+import android.app.Dialog;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
 import com.gaia.app.smartwarehouse.classes.Category;
 import com.gaia.app.smartwarehouse.classes.Item;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 import com.gaia.app.smartwarehouse.service.ItemGetTask;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
+
+import static android.view.WindowManager.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,6 +62,11 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     private RecyclerRowAdapter adapter;
     private LinearLayoutManager layoutManager;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -58,39 +84,39 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordi);
-        LayoutInflater layoutInflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layoutInflater.inflate(R.layout.content_main, coordinatorLayout );
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater.inflate(R.layout.content_main, coordinatorLayout);
 
 
-        recyclerView=(RecyclerView)findViewById(R.id.rv1) ;
-        layoutManager=new LinearLayoutManager(this);
+        recyclerView = (RecyclerView) findViewById(R.id.rv1);
+        layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerRowAdapter(this,new ArrayList<Category>());
+        adapter = new RecyclerRowAdapter(this, new ArrayList<Category>());
         recyclerView.setAdapter(adapter);
 
-        if(!isNetworkConnected()) {
-            AlertDialog.Builder builder=new AlertDialog.Builder(this,R.style.DialogBoxStyle);
+        if (!isNetworkConnected()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogBoxStyle);
 
             builder.setTitle(" No Internet Connection !");
-            builder.setPositiveButton("Refresh",null);
-            builder.setNegativeButton("Cancel",null);
+            builder.setPositiveButton("Refresh", null);
+            builder.setNegativeButton("Cancel", null);
             builder.show();
 
-            final Userdata details =new Userdata(this);
-            Cursor cursor=details.getofflinedata();
-            if(cursor.moveToFirst())
-            {
+            final Userdata details = new Userdata(this);
+            Cursor cursor = details.getcategorydata();
+            if (cursor.moveToFirst()) {
 
-                do{
-                    ArrayList<Item> itemArrayList= new ArrayList<>();
-                    String cname=cursor.getString(0);
-                   Cursor cursor2=details.getitemsdata(cname);
-                    if(cursor2.moveToFirst()) {
+                do {
+                    ArrayList<Item> itemArrayList = new ArrayList<>();
+                    String cname = cursor.getString(0);
+                    Cursor cursor2 = details.getitemsdata(cname);
+                    if (cursor2.moveToFirst()) {
                         do {
                             String iname, unit, weight, quant;
                             iname = cursor2.getString(0);
@@ -102,20 +128,18 @@ public class MainActivity extends AppCompatActivity
                         } while (cursor2.moveToNext());
 
                     }
-                    Category cat = new Category(cname,itemArrayList);
+                    Category cat = new Category(cname, itemArrayList);
 
-                      adapter.add(cat);
-                }while (cursor.moveToNext());
+                    adapter.add(cat);
+                } while (cursor.moveToNext());
 
             }
 
-        }
-        else
-        {
-            final Userdata details =new Userdata(this);
-            Cursor cursor=details.getuserdata();
+        } else {
+            final Userdata details = new Userdata(this);
+            Cursor cursor = details.getuserdata();
 
-            if(cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 do {
                     email = cursor.getString(0);
 
@@ -123,10 +147,10 @@ public class MainActivity extends AppCompatActivity
             }
 
 
-            ItemGetTask asyncTask = (ItemGetTask) new ItemGetTask(new ItemGetTask.PlottingItems(){
+            ItemGetTask asyncTask = (ItemGetTask) new ItemGetTask(new ItemGetTask.PlottingItems() {
 
                 @Override
-                public void setItems(Category output){
+                public void setItems(Category output) {
                     adapter.add(output);
                     details.create_category_table(output);
                 }
@@ -134,9 +158,6 @@ public class MainActivity extends AppCompatActivity
 
 
         }
-
-
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -147,6 +168,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private boolean isNetworkConnected() {
@@ -156,25 +180,24 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void addproduct(View view)
-    {
-        AlertDialog.Builder builder=new AlertDialog.Builder(this,R.style.DialogBoxStyle);
+    public void addproduct(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogBoxStyle);
 
-        LayoutInflater inflater=this.getLayoutInflater();
-        final View dialogview=inflater.inflate(R.layout.content_dialogbox,null);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogview = inflater.inflate(R.layout.content_dialogbox, null);
         builder.setView(dialogview);
-        editText_dialog=(EditText)dialogview.findViewById(R.id.editText_dialogbox);
+        editText_dialog = (EditText) dialogview.findViewById(R.id.editText_dialogbox);
         builder.setTitle("Add Category");
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               String string=editText_dialog.getText().toString().trim();
-                Intent intent=new Intent(MainActivity.this,Additem.class);
-                intent.putExtra("cname",string);
+                String string = editText_dialog.getText().toString().trim();
+                Intent intent = new Intent(MainActivity.this, Additem.class);
+                intent.putExtra("cname", string);
                 startActivity(intent);
             }
         });
-        builder.setNegativeButton("Cancel",null);
+        builder.setNegativeButton("Cancel", null);
         builder.show();
     }
 
@@ -193,8 +216,14 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+
+
+
+            return true;
+
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -204,12 +233,51 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.notifications) {
+        if (id == R.id.action_search) {
+            final Dialog dialog=new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.content_searchdialogbox);
+            final Window window = dialog.getWindow();
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+           final  EditText search_EditText= (EditText) dialog.findViewById(R.id.search_product);
+            final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+             dialog.show();
+
+            ImageButton back_button= (ImageButton) dialog.findViewById(R.id.back_button);
+            ImageButton searchbutton= (ImageButton) dialog.findViewById(R.id.search_go);
+
+            back_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                }
+            });
+
+            searchbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final  EditText search_EditText= (EditText) dialog.findViewById(R.id.search_product);
+                    String ch=search_EditText.getText().toString().trim();
+                    dialog.dismiss();
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                    Toast.makeText(getBaseContext(),ch,Toast.LENGTH_LONG).show();
+                }
+            });
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -218,11 +286,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
-
         int id = item.getItemId();
 
 
-         if (id == R.id.detail) {
+        if (id == R.id.detail) {
             Intent i = new Intent(getApplicationContext(), DetailActivity.class);
             startActivity(i);
 
@@ -232,12 +299,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.notifications) {
 
         } else if (id == R.id.login) {
-            Intent intent=new Intent(this,LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.account_settings) {
-             Intent i = new Intent(getApplicationContext(),SettingsActivity.class);
-             startActivity(i);
+            Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(i);
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -246,4 +313,43 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.gaia.app.smartwarehouse/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.gaia.app.smartwarehouse/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
 }

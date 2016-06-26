@@ -2,6 +2,7 @@ package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -18,6 +19,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.gaia.app.smartwarehouse.adapters.ItemAdapter;
+import com.gaia.app.smartwarehouse.classes.Category;
+import com.gaia.app.smartwarehouse.classes.Item;
+import com.gaia.app.smartwarehouse.classes.Userdata;
+
+import java.util.ArrayList;
 
 /**
  * Created by anant on 13/06/16.
@@ -30,7 +36,7 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
     String itemArray[]=new String[]{
             "item 1","item 2","item 3","item 4","item 5","item 6","item 7","item 8","item 9","item 10","item 11","item 12"
     };
-    String str="Category ";
+
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
         super.setSupportActionBar(toolbar);
@@ -43,10 +49,7 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Adding custom toolbar to the page
-        context =getApplicationContext();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Category");
-        setSupportActionBar(toolbar);
+
 
 
 
@@ -56,8 +59,15 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        Intent intent=getIntent();
-        str=intent.getStringExtra(str);
+         Intent intent=getIntent();
+         String cname=intent.getStringExtra("Category");
+
+
+
+        context =getApplicationContext();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(cname);
+        setSupportActionBar(toolbar);
 
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.viewall);
@@ -65,8 +75,31 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),3);
         recyclerView.setLayoutManager(layoutManager);
 
-        ItemAdapter itemAdapter = new ItemAdapter(this,itemArray);
+
+
+        ArrayList<Item> itemArrayList= new ArrayList<>();
+
+        final Userdata details =new Userdata(this);
+        Cursor cursor2=details.getitemsdata(cname);
+        if(cursor2.moveToFirst()) {
+            do {
+                String iname, unit, weight, quant;
+                iname = cursor2.getString(0);
+                unit = cursor2.getString(1);
+                weight = cursor2.getString(2);
+                quant = cursor2.getString(3);
+                Item item = new Item(iname, cname, unit, weight, quant);
+                itemArrayList.add(item);
+            } while (cursor2.moveToNext());
+
+        }
+        ItemAdapter itemAdapter = new ItemAdapter(this,itemArrayList);
         recyclerView.setAdapter(itemAdapter);
+
+
+
+
+
 
         //Navigation drawer code
         //TODO change navigation drawer

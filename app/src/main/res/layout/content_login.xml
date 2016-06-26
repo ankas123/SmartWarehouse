@@ -40,7 +40,6 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:hint="Username"
-
                     android:ems="10"
                     android:id="@+id/username"
                     android:layout_below="@+id/editText"
