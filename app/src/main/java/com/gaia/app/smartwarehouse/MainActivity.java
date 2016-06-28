@@ -246,8 +246,8 @@ public class MainActivity extends AppCompatActivity
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
              dialog.show();
 
-            ImageButton back_button= (ImageButton) dialog.findViewById(R.id.back_button);
-            ImageButton searchbutton= (ImageButton) dialog.findViewById(R.id.search_go);
+            ImageView back_button= (ImageView) dialog.findViewById(R.id.back_button);
+            ImageView searchbutton= (ImageView) dialog.findViewById(R.id.search_go);
 
             back_button.setOnClickListener(new View.OnClickListener() {
                 @Override
