@@ -73,9 +73,17 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textView.setText(dataarray.get(position).getIname());
-        Float weight = new Float(dataarray.get(position).getWeight());
-        holder.fill.getLayoutParams().height=getPercentHeight(weight);
+        String weight = dataarray.get(position).getWeight();
 
+        if(weight.equals("null")) {
+            holder.fill.getLayoutParams().height = 0;
+
+        }
+        else{
+
+            Float value = new Float(weight);
+            holder.fill.getLayoutParams().height=getPercentHeight(value);
+        }
 
     }
 
@@ -85,10 +93,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
     }
 
     int getPercentHeight(float weight){
-        int height;
-        height= (int) ((weight/120)*60);
-        int dimension = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, height, context.getResources().getDisplayMetrics());
 
-        return dimension;
+            int height;
+            height= (int) ((weight/120)*60);
+            int dimension = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, height, context.getResources().getDisplayMetrics());
+            return dimension;
+
+
     }
 }
