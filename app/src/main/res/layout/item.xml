@@ -15,15 +15,42 @@
     <RelativeLayout android:layout_height="match_parent"
         android:layout_width="match_parent">
 
-        <ImageView
-            android:layout_width="20dp"
+        <FrameLayout
+            android:id="@+id/itframe"
+            android:layout_width="27dp"
             android:layout_height="50dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/rectangle"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/itemrec"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp">
+            <ImageView
+                android:id="@+id/itborder"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:scaleType="fitXY"
+
+                android:src="@drawable/border" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/itcardrec"
+                    android:layout_width="26dp"
+                    android:layout_height="41dp"
+
+
+                    android:scaleType="fitXY"
+                    android:src="@drawable/rectangle"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="1dp" />
+
+            </RelativeLayout>
+
+
+
+        </FrameLayout>
 
         <TextView
             android:text="TextView"
