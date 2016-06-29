@@ -2,10 +2,14 @@ package com.gaia.app.smartwarehouse.classes;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.gaia.app.smartwarehouse.DetailActivity;
+import com.gaia.app.smartwarehouse.ItemActivity;
 
 import java.util.ArrayList;
 
@@ -37,12 +41,13 @@ public class Userdata extends SQLiteOpenHelper {
 
     private static SQLiteDatabase readable_db,writable_db;
 
-
+    private Context context;
 
 
 
     public Userdata(Context context) {
-        super(context,DB_name,null,DB_version);
+                super(context,DB_name,null,DB_version);
+        this.context=context;
         Log.e("Database  ","database created");
     }
 
@@ -119,6 +124,8 @@ public class Userdata extends SQLiteOpenHelper {
         writable_db=this.getWritableDatabase();
         writable_db.execSQL("DROP TABLE IF EXISTS " + category.getCname());
 
+        writable_db.delete(Category_Table_name,"cname = ?", new String[]{category.getCname().trim()});
+
         ContentValues cnames=new ContentValues();
         cnames.put(ITEM_CATEGORY,category.getCname());
         writable_db.insert(Category_Table_name,null,cnames);
@@ -163,5 +170,38 @@ public class Userdata extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public boolean search_result(String name) {
+        readable_db=this.getReadableDatabase();
+            Cursor cursor=readable_db.query(Category_Table_name,new String[]{ITEM_CATEGORY},"cname = ?", new String[]{name},null,null,null);
+        if(cursor.moveToFirst())
+        {
+            Intent intent =new Intent(context,ItemActivity.class);
+            intent.putExtra("Category",name);
+            context.startActivity(intent);
+            return true;
+        }
+        else
+        {
+            String[] projections={ITEM_CATEGORY};
+            Cursor cursor2=readable_db.query(Category_Table_name,projections,null,null,null,null,null);
+            if (cursor2.moveToFirst()) {
+
+                do {
+                    String cname = cursor2.getString(0);
+                    Cursor cursor4=readable_db.query(cname,new String[]{ITEM_NAME},"iname = ?", new String[]{name},null,null,null);
+                    if(cursor4.moveToFirst())
+                    {
+                        Intent intent =new Intent(context,DetailActivity.class);
+                        context.startActivity(intent);
+                        return true;
+                    }
+                } while (cursor2.moveToNext());
+
+            }
+
+        }
+        return false;
     }
 }

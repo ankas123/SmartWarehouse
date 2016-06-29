@@ -32,9 +32,6 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
 
     Context context;
     Toolbar toolbar;
-    String itemArray[] = new String[]{
-            "item 1", "item 2", "item 3", "item 4", "item 5", "item 6", "item 7", "item 8", "item 9", "item 10", "item 11", "item 12"
-    };
     String str;
 
     @Override
