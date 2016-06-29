@@ -1,7 +1,8 @@
 package com.gaia.app.smartwarehouse.service;
 
-import android.util.Log;
+import android.database.Cursor;
 
+import com.gaia.app.smartwarehouse.classes.Userdata;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -11,17 +12,25 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 
 public class InstanceIDService extends FirebaseInstanceIdService {
 
+    private final Userdata details = new Userdata(this);;
+
     @Override
     public void onTokenRefresh() {
         super.onTokenRefresh();
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.v("token","1"+refreshedToken);
+        sendToken(refreshedToken);
     }
 
-    private void sendRegistrationToServer(String token) {
+    private void sendToken(String refreshedToken) {
 
+        Cursor cursor = details.getuserdata();
+        String email;
+        if (cursor.moveToFirst()) {
+            email = cursor.getString(0);
+            SendTokenTask send = new SendTokenTask();
+            send.execute(refreshedToken,email);
+        }
 
     }
-
 
 }

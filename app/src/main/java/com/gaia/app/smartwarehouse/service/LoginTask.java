@@ -1,5 +1,6 @@
 package com.gaia.app.smartwarehouse.service;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -36,7 +37,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     private Context context;
     Userdata details;
     private String JSON_STRING;
-
+    private Activity activity;
     private JSONObject jsonObject;
     private String TAG_RESULT = "message";
     private String TAG_NAME = "email";
@@ -49,7 +50,8 @@ public class LoginTask extends AsyncTask<String, Void, String> {
 
     private String email, password;
 
-    public LoginTask(Context context) {
+    public LoginTask(Context context, Activity activity) {
+        this.activity = activity;
         this.context = context;
     }
 
@@ -110,7 +112,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
         if (s == null)
             Toast.makeText(context, "Connection Error", Toast.LENGTH_LONG).show();
         else {
-            String mail, pass, fname, lname, orgn, address, date;
+            String email, pass, fname, lname, orgn, address, date;
             try {
                 jsonObject = new JSONObject(s);
                 String message = jsonObject.getString(TAG_RESULT);
@@ -123,16 +125,24 @@ public class LoginTask extends AsyncTask<String, Void, String> {
                         Toast.makeText(context, "Password is Wrong", Toast.LENGTH_LONG).show();
                         break;
                     case "100":
-                        mail = jsonObject.getString(TAG_NAME);
+                        activity.finish();
+                        email = jsonObject.getString(TAG_NAME);
                         pass = jsonObject.getString(TAG_PASS);
                         fname = jsonObject.getString(TAG_FNAME);
                         lname = jsonObject.getString(TAG_LNAME);
                         orgn = jsonObject.getString(TAG_ORGN);
                         address = jsonObject.getString(TAG_ADDRESS);
                         date = jsonObject.getString(TAG_DATE);
+
+                        //Sending token generated back to the database when the app is installed for the first time but the user
+                        //is already a registered
+
+                        RefreshTokenTask send = new RefreshTokenTask();
+                        send.execute(email);
+
                         Userdata details = new Userdata(context);
                         details.cleardata();
-                        details.updateuserdata(mail, pass, fname, lname, orgn, address, date);
+                        details.updateuserdata(email, pass, fname, lname, orgn, address, date);
                         details.close();
                         Intent intent = new Intent(context, MainActivity.class);
                         context.startActivity(intent);
