@@ -1,8 +1,6 @@
 package com.gaia.app.smartwarehouse;
 
 import android.app.Dialog;
-import android.app.SearchManager;
-import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,23 +12,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -40,8 +33,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
@@ -55,8 +48,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 
-import static android.view.WindowManager.*;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -66,7 +57,9 @@ public class MainActivity extends AppCompatActivity
     private RecyclerRowAdapter adapter;
     private LinearLayoutManager layoutManager;
     private ArrayList<String> itemSearchList = new ArrayList<String>();
-    private String[] searchList;
+
+    private ProgressBar spinner;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -104,6 +97,8 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerRowAdapter(this, new ArrayList<Category>());
         recyclerView.setAdapter(adapter);
+
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
 
         if (!isNetworkConnected()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogBoxStyle);
@@ -159,7 +154,7 @@ public class MainActivity extends AppCompatActivity
                     adapter.add(output);
                     details.create_category_table(output);
                 }
-            }).execute(email);
+            },spinner).execute(email);
 
 
         }

@@ -2,7 +2,6 @@ package com.gaia.app.smartwarehouse.service;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -108,40 +107,45 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        String mail, pass, fname, lname, orgn, address, date;
-        try {
-            jsonObject = new JSONObject(s);
-            String message = jsonObject.getString(TAG_RESULT);
-            mail = jsonObject.getString(TAG_NAME);
-            pass = jsonObject.getString(TAG_PASS);
-            fname = jsonObject.getString(TAG_FNAME);
-            lname = jsonObject.getString(TAG_LNAME);
-            orgn = jsonObject.getString(TAG_ORGN);
-            address = jsonObject.getString(TAG_ADDRESS);
-            date = jsonObject.getString(TAG_DATE);
-            switch (message) {
-                case "0":
-                    Toast.makeText(context, "email does not exists", Toast.LENGTH_LONG).show();
-                    break;
-                case "1":
-                    Toast.makeText(context, "Password is Wrong", Toast.LENGTH_LONG).show();
-                    break;
-                case "100":
-                    Userdata details = new Userdata(context);
-                    details.cleardata();
-                    details.updateuserdata(mail, pass, fname, lname, orgn, address, date);
-                    details.close();
-                    Intent intent = new Intent(context, MainActivity.class);
-                    context.startActivity(intent);
+        if (s == null)
+            Toast.makeText(context, "Connection Error", Toast.LENGTH_LONG).show();
+        else {
+            String mail, pass, fname, lname, orgn, address, date;
+            try {
+                jsonObject = new JSONObject(s);
+                String message = jsonObject.getString(TAG_RESULT);
 
-                    break;
-                default:
-                    Toast.makeText(context, "Connection Error", Toast.LENGTH_LONG).show();
-                    break;
+                switch (message) {
+                    case "0":
+                        Toast.makeText(context, "email does not exists", Toast.LENGTH_LONG).show();
+                        break;
+                    case "1":
+                        Toast.makeText(context, "Password is Wrong", Toast.LENGTH_LONG).show();
+                        break;
+                    case "100":
+                        mail = jsonObject.getString(TAG_NAME);
+                        pass = jsonObject.getString(TAG_PASS);
+                        fname = jsonObject.getString(TAG_FNAME);
+                        lname = jsonObject.getString(TAG_LNAME);
+                        orgn = jsonObject.getString(TAG_ORGN);
+                        address = jsonObject.getString(TAG_ADDRESS);
+                        date = jsonObject.getString(TAG_DATE);
+                        Userdata details = new Userdata(context);
+                        details.cleardata();
+                        details.updateuserdata(mail, pass, fname, lname, orgn, address, date);
+                        details.close();
+                        Intent intent = new Intent(context, MainActivity.class);
+                        context.startActivity(intent);
+
+                        break;
+                    default:
+                        Toast.makeText(context, "Connection Error", Toast.LENGTH_LONG).show();
+                        break;
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "343131626410",
+    "firebase_url": "https://gaia-smart-warehouse.firebaseio.com",
+    "project_id": "gaia-smart-warehouse",
+    "storage_bucket": "gaia-smart-warehouse.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343131626410:android:ee48ad39bae5b620",
+        "android_client_info": {
+          "package_name": "com.gaia.app.smartwarehouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343131626410-4ocmb8gq8pp7tiq8ihf28btpcvrr2fr8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gaia.app.smartwarehouse",
+            "certificate_hash": "17608EDAF54DDA0D266F9252690C6FE99FDE0E23"
+          }
+        },
+        {
+          "client_id": "343131626410-lvescghr0ek3928uofo8dn15464r0jkl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrPDjI8zuUlGmziYLUkgXyJ_UIjeJOJeU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343131626410-lvescghr0ek3928uofo8dn15464r0jkl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
