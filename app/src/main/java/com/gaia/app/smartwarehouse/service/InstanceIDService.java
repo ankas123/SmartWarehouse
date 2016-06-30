@@ -1,6 +1,7 @@
 package com.gaia.app.smartwarehouse.service;
 
 import android.database.Cursor;
+import android.util.Log;
 
 import com.gaia.app.smartwarehouse.classes.Userdata;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -18,6 +19,7 @@ public class InstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         super.onTokenRefresh();
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.v("token",refreshedToken);
         sendToken(refreshedToken);
     }
 

@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
@@ -45,6 +47,7 @@ import com.gaia.app.smartwarehouse.service.ItemGetTask;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 
@@ -57,7 +60,8 @@ public class MainActivity extends AppCompatActivity
     private RecyclerRowAdapter adapter;
     private LinearLayoutManager layoutManager;
     private ArrayList<String> itemSearchList = new ArrayList<String>();
-    private String[] searchList;
+
+    private ProgressBar spinner;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -83,7 +87,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.v("token",refreshedToken);
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordi);
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.content_main, coordinatorLayout);
@@ -95,6 +100,9 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerRowAdapter(this, new ArrayList<Category>());
         recyclerView.setAdapter(adapter);
+
+        spinner = (ProgressBar) findViewById(R.id.progressBar1);
+
 
         if (!isNetworkConnected()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogBoxStyle);
@@ -152,9 +160,9 @@ public class MainActivity extends AppCompatActivity
                 public void setItems(Category output) {
                     adapter.add(output);
 
-                   // details.create_category_table(output);
+                   details.create_category_table(output);
                 }
-            }).execute(email);
+            },spinner).execute(email);
 
 
         }
@@ -344,6 +352,10 @@ public void searchResult(String name)
             Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(i);
         }
+
+
+
+
 
         drawer.closeDrawer(GravityCompat.START);
 

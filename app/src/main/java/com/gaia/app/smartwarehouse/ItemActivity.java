@@ -34,7 +34,8 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
     private Context context;
     private Toolbar toolbar;
     private static String str;
-    private  static ItemAdapter itemAdapter;
+    private static ItemAdapter itemAdapter;
+
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
         super.setSupportActionBar(toolbar);
@@ -105,69 +106,72 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-        @Override
-        public void onBackPressed () {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            if (drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.closeDrawer(GravityCompat.START);
-            } else {
-                super.onBackPressed();
-            }
-        }
-
-        @Override
-        public boolean onCreateOptionsMenu (Menu menu){
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.main, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onOptionsItemSelected (MenuItem item){
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
-            int id = item.getItemId();
-
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.notifications) {
-                return true;
-            }
-
-            return super.onOptionsItemSelected(item);
-        }
-
-        @SuppressWarnings("StatementWithEmptyBody")
-        @Override
-        public boolean onNavigationItemSelected (MenuItem item){
-            // Handle navigation view item clicks here.
-
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-            int id = item.getItemId();
-
-            if (id == R.id.detail) {
-                Intent i = new Intent(getApplicationContext(), DetailActivity.class);
-                startActivity(i);
-                finish();
-            } else if (id == R.id.login) {
-
-            } else if (id == R.id.notifications) {
-
-            } else if (id == R.id.account_settings) {
-                Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
-                startActivity(i);
-            }
-
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.notifications) {
             return true;
         }
 
-        public static void refreshItem(String cat,String name, String weight){
-            if(str.equals(cat)){
-                Log.v("cat",cat);
-                itemAdapter.changeWeight(name,weight);
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        int id = item.getItemId();
+
+        if (id == R.id.detail) {
+            Intent i = new Intent(getApplicationContext(), DetailActivity.class);
+            startActivity(i);
+            finish();
+        } else if (id == R.id.login) {
+
+        } else if (id == R.id.notifications) {
+
+        } else if (id == R.id.account_settings) {
+            Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(i);
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
+    }
+
+    public static void refreshItem(String cat, String name, String weight) {
+        Log.v("cat", cat);
+
+        if (str != null) {
+            if (str.equals(cat)) {
+                itemAdapter.changeWeight(name, weight);
             }
         }
     }
+}

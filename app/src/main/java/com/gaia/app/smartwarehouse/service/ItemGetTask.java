@@ -55,9 +55,9 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
 
      PlottingItems plot = null;
 
-    public ItemGetTask(PlottingItems plot){
+    public ItemGetTask(PlottingItems plot,ProgressBar spinner){
         this.plot = plot;
-        //this.spinner = spinner;
+        this.spinner = spinner;
     }
 
     @Override

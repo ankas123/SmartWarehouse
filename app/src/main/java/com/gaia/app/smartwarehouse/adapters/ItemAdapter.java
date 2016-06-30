@@ -103,13 +103,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
     }
 
-    public void changeWeight(String name, String weight){
+    public void changeWeight(String name, String w){
         final int size = dataarray.size();
         for(int i = size - 1; i>= 0; i--) {
             if (dataarray.get(i).getIname().equals(name)) {
-                dataarray.get(i).setWeight(weight);
+                dataarray.get(i).setWeight(w);
                 notifyItemChanged(i);
-                Log.v("change",weight);
+                Log.v("change",w);
             }
         }
     }

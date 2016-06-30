@@ -20,7 +20,7 @@ public class MessageService extends FirebaseMessagingService{
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.v("message","9"+remoteMessage.getData().get("weight"));
+
         Intent i = new Intent(this,MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -37,10 +37,10 @@ public class MessageService extends FirebaseMessagingService{
 
         manager.notify(0,builder.build());
 
-        String cat = remoteMessage.getData().get("weight"),
-                name = remoteMessage.getData().get("weight") ,
+        String cat = remoteMessage.getData().get("cat"),
+                name = remoteMessage.getData().get("name") ,
                 weight = remoteMessage.getData().get("weight");
-
+        Log.v("data", cat+" "+name+ " "+ weight );
 
         ItemActivity.refreshItem(cat,name,weight);
     }
