@@ -18,9 +18,7 @@ public class Splashscreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         new Progress().execute();
-
     }
 
     class Progress extends AsyncTask<Void,Void,Void>{
@@ -56,10 +54,6 @@ public class Splashscreen extends AppCompatActivity {
                  intent = new Intent(Splashscreen.this, LoginActivity.class);
 
             }
-
-
-
-
             return null;
 
 
