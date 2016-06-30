@@ -95,9 +95,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
     }
 
     int getPercentHeight(float weight){
-
             int height;
             height= (int) ((weight/120)*60);
+
             int dimension = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, height, context.getResources().getDisplayMetrics());
             return dimension;
 
