@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,10 +31,10 @@ import java.util.ArrayList;
 
 public class ItemActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    Context context;
-    Toolbar toolbar;
-    String str;
-
+    private Context context;
+    private Toolbar toolbar;
+    private static String str;
+    private  static ItemAdapter itemAdapter;
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
         super.setSupportActionBar(toolbar);
@@ -67,7 +68,7 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         recyclerView.setHasFixedSize(true);
         GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
-        ItemAdapter itemAdapter = new ItemAdapter(this, new ArrayList<Item>());
+        itemAdapter = new ItemAdapter(this, new ArrayList<Item>());
 
 
         final Userdata details = new Userdata(this);
@@ -161,5 +162,12 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
 
             return true;
+        }
+
+        public static void refreshItem(String cat,String name, String weight){
+            if(str.equals(cat)){
+                Log.v("cat",cat);
+                itemAdapter.changeWeight(name,weight);
+            }
         }
     }
