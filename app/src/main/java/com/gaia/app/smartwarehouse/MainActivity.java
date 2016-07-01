@@ -248,76 +248,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
-            final Dialog dialog = new Dialog(this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.content_searchdialogbox);
-            final Window window = dialog.getWindow();
-            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            dialog.show();
-
-
-            final ProductsData details;
-            details = new ProductsData(this);
-            Cursor cursor = details.getcategorydata();
-            if (cursor.moveToFirst()) {
-
-                do {
-                    String cname = cursor.getString(0);
-                    itemSearchList.add(cname);
-                    Cursor cursor2 = details.getitemsdata(cname);
-                    if (cursor2.moveToFirst()) {
-                        do {
-                            String iname;
-                            iname = cursor2.getString(0);
-                            itemSearchList.add(iname);
-                        } while (cursor2.moveToNext());
-
-                    }
-                } while (cursor.moveToNext());
-
-            }
-            EditText search_bar = (EditText) dialog.findViewById(R.id.search_product);
-            final ArrayAdapter<String> search_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, itemSearchList);
-            search_bar.setAdapter(search_adapter);
-            search_bar.setThreshold(1);
-            search_bar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String ch = search_adapter.getItem(position).toString().trim();
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                    dialog.dismiss();
-                   searchResult(ch);
-                }
-            });
-
-
-            ImageView back_button = (ImageView) dialog.findViewById(R.id.back_button);
-            ImageView searchbutton = (ImageView) dialog.findViewById(R.id.search_go);
-
-            back_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                    dialog.dismiss();
-
-                }
-            });
-
-            searchbutton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final EditText search_EditText = (EditText) dialog.findViewById(R.id.search_product);
-                    String ch = search_EditText.getText().toString().trim();
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                    dialog.dismiss();
-                 searchResult(ch);
-                }
-            });
-
+           Intent intent=new Intent(this,SearchbarActivity.class);
+            startActivity(intent);
             return true;
 
         }
