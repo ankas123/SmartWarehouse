@@ -11,7 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gaia.app.smartwarehouse.R;
-import com.gaia.app.smartwarehouse.adapters.FragmentDataAdapter;
+import com.gaia.app.smartwarehouse.adapters.CategoryTabAdapter;
+import com.gaia.app.smartwarehouse.adapters.ItemTabAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 public class ItemsFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private FragmentDataAdapter adapter;
+    private ItemTabAdapter adapter;
     private LinearLayoutManager layoutManager;
     private List<String> itemList = new ArrayList<String>();
 
@@ -46,7 +47,7 @@ public class ItemsFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new FragmentDataAdapter(this, (ArrayList<String>) itemList);
+        adapter = new ItemTabAdapter(this, (ArrayList<String>) itemList);
         recyclerView.setAdapter(adapter);
 
         return view;

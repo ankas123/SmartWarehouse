@@ -21,6 +21,7 @@ import android.view.MenuItem;
 
 import com.gaia.app.smartwarehouse.adapters.ItemAdapter;
 import com.gaia.app.smartwarehouse.classes.Item;
+import com.gaia.app.smartwarehouse.classes.ProductsData;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         itemAdapter = new ItemAdapter(this, new ArrayList<Item>());
 
 
-        final Userdata details = new Userdata(this);
+        ProductsData details = new ProductsData(this);
 
         ArrayList<Item> itemArrayList = new ArrayList<>();
 

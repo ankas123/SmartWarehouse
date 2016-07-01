@@ -42,6 +42,7 @@ import android.widget.Toast;
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
 import com.gaia.app.smartwarehouse.classes.Category;
 import com.gaia.app.smartwarehouse.classes.Item;
+import com.gaia.app.smartwarehouse.classes.ProductsData;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 import com.gaia.app.smartwarehouse.service.ItemGetTask;
 import com.google.android.gms.appindexing.Action;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerRowAdapter adapter;
     private LinearLayoutManager layoutManager;
     private ArrayList<String> itemSearchList = new ArrayList<String>();
-
+    private ArrayList<Category> cname_list=new ArrayList<>();
     private ProgressBar spinner;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity
             builder.setNegativeButton("Cancel", null);
             builder.show();
 
-            final Userdata details = new Userdata(this);
+            final ProductsData details = new ProductsData(this);
 
             Cursor cursor = details.getcategorydata();
             if (cursor.moveToFirst()) {
@@ -159,11 +160,11 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void setItems(Category output) {
                     adapter.add(output);
-
+                    cname_list.add(output);
                    details.create_category_table(output);
                 }
             },spinner).execute(email);
-
+         new Updatedata().execute(cname_list);
 
         }
 
@@ -239,74 +240,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
-            final Dialog dialog = new Dialog(this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.content_searchdialogbox);
-            final Window window = dialog.getWindow();
-            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            dialog.show();
-
-
-            final Userdata details = new Userdata(this);
-            Cursor cursor = details.getcategorydata();
-            if (cursor.moveToFirst()) {
-
-                do {
-                    String cname = cursor.getString(0);
-                    itemSearchList.add(cname);
-                    Cursor cursor2 = details.getitemsdata(cname);
-                    if (cursor2.moveToFirst()) {
-                        do {
-                            String iname;
-                            iname = cursor2.getString(0);
-                            itemSearchList.add(iname);
-                        } while (cursor2.moveToNext());
-
-                    }
-                } while (cursor.moveToNext());
-
-            }
-            AutoCompleteTextView search_bar = (AutoCompleteTextView) dialog.findViewById(R.id.search_product);
-            final ArrayAdapter<String> search_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, itemSearchList);
-            search_bar.setAdapter(search_adapter);
-            search_bar.setThreshold(1);
-            search_bar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String ch = search_adapter.getItem(position).toString().trim();
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                    dialog.dismiss();
-                   searchResult(ch);
-                }
-            });
-
-
-            ImageView back_button = (ImageView) dialog.findViewById(R.id.back_button);
-            ImageView searchbutton = (ImageView) dialog.findViewById(R.id.search_go);
-
-            back_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                    dialog.dismiss();
-
-                }
-            });
-
-            searchbutton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final EditText search_EditText = (EditText) dialog.findViewById(R.id.search_product);
-                    String ch = search_EditText.getText().toString().trim();
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                    dialog.dismiss();
-                 searchResult(ch);
-                }
-            });
+            Intent intent =new Intent(this,SearchbarActivity.class);
+            startActivity(intent);
 
             return true;
 
@@ -315,12 +250,7 @@ public class MainActivity extends AppCompatActivity
 
 
     }
-public void searchResult(String name)
-{
-    Userdata userdata=new Userdata(this);
-    if(!userdata.search_result(name))
-        Toast.makeText(getBaseContext(),"No such category or item found",Toast.LENGTH_LONG).show();
-}
+
 
 
 
@@ -404,12 +334,15 @@ public void searchResult(String name)
     }
 
 
-    class Updatedata extends AsyncTask<Category,Void,Void>
+    class Updatedata extends AsyncTask<ArrayList<Category>,Void,Void>
     {
         Userdata details =new Userdata(MainActivity.this);
         @Override
-        protected Void doInBackground(Category... params) {
-          details.create_category_table(params[0]);
+        protected Void doInBackground(ArrayList<Category>... params) {
+          for(int i=0;i<params[0].size();i++)
+          {
+              details.create_category_table(params[0].get(i));
+          }
             return null;
         }
     }

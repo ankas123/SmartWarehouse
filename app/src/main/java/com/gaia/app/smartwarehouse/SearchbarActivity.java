@@ -1,7 +1,10 @@
 package com.gaia.app.smartwarehouse;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -16,8 +19,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.gaia.app.smartwarehouse.classes.ProductsData;
 import com.gaia.app.smartwarehouse.classes.TabViewerAdapter;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 import com.google.android.gms.appindexing.Action;
@@ -47,6 +60,7 @@ public class SearchbarActivity extends AppCompatActivity implements NavigationVi
     private List<String> cnameList=new ArrayList<>();
     private List<String> inameList=new ArrayList<>();
     private List<String> wishList=new ArrayList<>();
+    private List<String> itemSearchList= new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +97,7 @@ public class SearchbarActivity extends AppCompatActivity implements NavigationVi
         TabViewerAdapter adapter = new TabViewerAdapter(getSupportFragmentManager());
 
        wishList.add("wishlist");
-        Userdata details = new Userdata(this);
+       ProductsData details = new ProductsData(this);
         Cursor cursor = details.getcategorydata();
         if (cursor.moveToFirst()) {
 
@@ -102,7 +116,6 @@ public class SearchbarActivity extends AppCompatActivity implements NavigationVi
             } while (cursor.moveToNext());
 
         }
-
 
        adapter.addfragment(new CategoryFragment(cnameList),"category");
         adapter.addfragment(new ItemsFragment(inameList),"items");
@@ -133,7 +146,75 @@ tabLayout.setTabsFromPagerAdapter(adapter);
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.notifications) {
+        if (id == R.id.action_search) {
+            final Dialog dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.content_searchdialogbox);
+            final Window window = dialog.getWindow();
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            dialog.show();
+
+
+            ProductsData details = new ProductsData(this);
+            Cursor cursor = details.getcategorydata();
+            if (cursor.moveToFirst()) {
+
+                do {
+                    String cname = cursor.getString(0);
+                    itemSearchList.add(cname);
+                    Cursor cursor2 = details.getitemsdata(cname);
+                    if (cursor2.moveToFirst()) {
+                        do {
+                            String iname;
+                            iname = cursor2.getString(0);
+                            itemSearchList.add(iname);
+                        } while (cursor2.moveToNext());
+
+                    }
+                } while (cursor.moveToNext());
+
+            }
+            AutoCompleteTextView search_bar = (AutoCompleteTextView) dialog.findViewById(R.id.search_product);
+            final ArrayAdapter<String> search_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, itemSearchList);
+            search_bar.setAdapter(search_adapter);
+            search_bar.setThreshold(1);
+            search_bar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String ch = search_adapter.getItem(position).toString().trim();
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    dialog.dismiss();
+                    searchResult(ch);
+                }
+            });
+
+
+            ImageView back_button = (ImageView) dialog.findViewById(R.id.back_button);
+            ImageView searchbutton = (ImageView) dialog.findViewById(R.id.search_go);
+
+            back_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    dialog.dismiss();
+
+                }
+            });
+
+            searchbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final EditText search_EditText = (EditText) dialog.findViewById(R.id.search_product);
+                    String ch = search_EditText.getText().toString().trim();
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    dialog.dismiss();
+                    searchResult(ch);
+                }
+            });
             return true;
         }
 
@@ -206,6 +287,12 @@ tabLayout.setTabsFromPagerAdapter(adapter);
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+    public void searchResult(String name)
+    {
+        ProductsData userdata=new ProductsData(this);
+        if(!userdata.search_result(name))
+            Toast.makeText(getBaseContext(),"No such category or item found",Toast.LENGTH_LONG).show();
     }
 }
 
