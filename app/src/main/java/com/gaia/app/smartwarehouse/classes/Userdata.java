@@ -24,7 +24,6 @@ public class Userdata extends SQLiteOpenHelper {
     private static final String Category_Table_name = "categorynames";
     private static final String create_Table_query = "CREATE TABLE userdata(email TEXT,pass TEXT,fname TEXT,lname TEXT,orgn TEXT,address TEXT,date TEXT)";
     private static final String categorynames_Table_query = "CREATE TABLE categorynames(cname TEXT)";
-    private static final String clear_Table_query = "DELETE * FROM userdata";
     private static final String TAG_NAME = "email";
     private static final String TAG_PASS = "pass";
     private static final String TAG_FNAME = "fname";
@@ -50,10 +49,6 @@ public class Userdata extends SQLiteOpenHelper {
         Log.e("Database  ", "database created");
     }
 
-
-    public Userdata(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
-    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -136,21 +131,6 @@ public class Userdata extends SQLiteOpenHelper {
         Log.e("Offline data", "Offline data updated");
     }
 
-    public Cursor getcategorydata() {
-        readable_db = this.getReadableDatabase();
-
-        String[] projections = {ITEM_CATEGORY};
-        Cursor cursor = readable_db.query(Category_Table_name, projections, null, null, null, null, null);
-
-        Log.e("Offline data", "Data Reading");
-        return cursor;
-    }
-
-    public Cursor getitemsdata(String cname) {
-        String[] category_projections = {ITEM_NAME, ITEM_UNIT, ITEM_WEIGHT, ITEM_QUANTITY};
-        Cursor cursor2 = readable_db.query(cname, category_projections, null, null, null, null, null);
-        return cursor2;
-    }
 
 
     @Override
@@ -158,32 +138,5 @@ public class Userdata extends SQLiteOpenHelper {
 
     }
 
-    public boolean search_result(String name) {
-        readable_db = this.getReadableDatabase();
-        Cursor cursor = readable_db.query(Category_Table_name, new String[]{ITEM_CATEGORY}, "cname = ?", new String[]{name}, null, null, null);
-        if (cursor.moveToFirst()) {
-            Intent intent = new Intent(context, ItemActivity.class);
-            intent.putExtra("Category", name);
-            context.startActivity(intent);
-            return true;
-        } else {
-            String[] projections = {ITEM_CATEGORY};
-            Cursor cursor2 = readable_db.query(Category_Table_name, projections, null, null, null, null, null);
-            if (cursor2.moveToFirst()) {
 
-                do {
-                    String cname = cursor2.getString(0);
-                    Cursor cursor4 = readable_db.query(cname, new String[]{ITEM_NAME}, "iname = ?", new String[]{name}, null, null, null);
-                    if (cursor4.moveToFirst()) {
-                        Intent intent = new Intent(context, DetailActivity.class);
-                        context.startActivity(intent);
-                        return true;
-                    }
-                } while (cursor2.moveToNext());
-
-            }
-
-        }
-        return false;
-    }
 }

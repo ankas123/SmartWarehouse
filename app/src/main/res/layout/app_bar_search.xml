@@ -29,9 +29,9 @@
             app:tabSelectedTextColor="#fff"
             android:background="@color/colorPrimary"
             app:tabGravity="center"
+            app:tabMode="fixed"
             android:elevation="6dp"
             android:translationZ="6dp"
-            app:tabMode="scrollable"
             >
         </android.support.design.widget.TabLayout>
 

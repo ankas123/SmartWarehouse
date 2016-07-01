@@ -11,7 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gaia.app.smartwarehouse.R;
-import com.gaia.app.smartwarehouse.adapters.FragmentDataAdapter;
+import com.gaia.app.smartwarehouse.adapters.CategoryTabAdapter;
+import com.gaia.app.smartwarehouse.adapters.WishListTabAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 public class WishlistFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private FragmentDataAdapter adapter;
+    private WishListTabAdapter adapter;
     private LinearLayoutManager layoutManager;
     private List<String> wishList = new ArrayList<String>();
 
@@ -45,7 +46,7 @@ public WishlistFragment()
         layoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new FragmentDataAdapter(this, (ArrayList<String>) wishList);
+        adapter = new WishListTabAdapter(this, (ArrayList<String>) wishList);
         recyclerView.setAdapter(adapter);
 
         return view;

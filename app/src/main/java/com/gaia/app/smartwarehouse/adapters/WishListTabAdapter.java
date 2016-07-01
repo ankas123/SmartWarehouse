@@ -1,6 +1,5 @@
 package com.gaia.app.smartwarehouse.adapters;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,17 +12,16 @@ import com.gaia.app.smartwarehouse.R;
 
 import java.util.ArrayList;
 
-import layout.CategoryFragment;
-
 /**
- * Created by praveen_gadi on 6/29/2016.
+ * Created by praveen_gadi on 7/1/2016.
  */
-public class FragmentDataAdapter extends RecyclerView.Adapter<FragmentDataAdapter.ViewHolder> {
+
+public class WishListTabAdapter extends RecyclerView.Adapter<WishListTabAdapter.ViewHolder> {
 
     private ArrayList<String> data;
     Fragment context;
 
-    public FragmentDataAdapter(Fragment context, ArrayList<String> data)
+    public WishListTabAdapter(Fragment context, ArrayList<String> data)
     {
         this.context=context;
         this.data=data;
@@ -39,7 +37,7 @@ public class FragmentDataAdapter extends RecyclerView.Adapter<FragmentDataAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-      holder.textView.setText(data.get(position));
+        holder.textView.setText(data.get(position));
     }
 
     @Override
@@ -47,20 +45,13 @@ public class FragmentDataAdapter extends RecyclerView.Adapter<FragmentDataAdapte
         return data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        CardView cardView;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
         TextView textView;
+
         public ViewHolder(View itemView) {
             super(itemView);
-            cardView= (CardView) itemView.findViewById(R.id.cv_fragment);
-            textView= (TextView) itemView.findViewById(R.id.text_data);
-            cardView.setOnClickListener(this);
-
+            textView = (TextView) itemView.findViewById(R.id.text_data);
         }
+    }}
 
-        @Override
-        public void onClick(View v) {
-
-        }
-    }
-}
