@@ -27,28 +27,22 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.gaia.app.smartwarehouse.adapters.CategoryTabAdapter;
 import com.gaia.app.smartwarehouse.adapters.SearchViewAdapter;
 import com.gaia.app.smartwarehouse.classes.ProductsData;
 import com.gaia.app.smartwarehouse.classes.TabViewerAdapter;
-import com.gaia.app.smartwarehouse.classes.Userdata;
+import com.gaia.app.smartwarehouse.fragments.CategoryFragment;
+import com.gaia.app.smartwarehouse.fragments.ItemsFragment;
+import com.gaia.app.smartwarehouse.fragments.WishlistFragment;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import layout.CategoryFragment;
-import layout.ItemsFragment;
-import layout.WishlistFragment;
 
 /**
  * Created by praveen_gadi on 6/29/2016.
