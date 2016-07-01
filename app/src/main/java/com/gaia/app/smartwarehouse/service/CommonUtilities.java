@@ -7,10 +7,10 @@ package com.gaia.app.smartwarehouse.service;
 public class CommonUtilities {
 
 
-    static final String SIGNUP_URL = "http://192.168.0.114:8888/signup.php";
-    static final String LOGIN_URL = "http://192.168.0.114:8888/login.php";
-    static final String ITEM_URL = "http://192.168.0.114:8888/getitems.php";
-    static final String ADDITEM_URL = "http://192.168.0.114:8888/additems.php";
-    static final String TOKEN_URL = "http://192.168.0.114:8888/addtoken.php";
+    static final String SIGNUP_URL = "http://iotwithesp8266.net23.net/signup.php";
+    static final String LOGIN_URL = "http://iotwithesp8266.net23.net/login.php";
+    static final String ITEM_URL = "http://iotwithesp8266.net23.net/getitems.php";
+    static final String ADDITEM_URL = "http://iotwithesp8266.net23.net/additems.php";
+    static final String TOKEN_URL = "http://iotwithesp8266.net23.net/addtoken.php";
 
 }
