@@ -1,14 +1,11 @@
 package com.gaia.app.smartwarehouse;
 
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -30,14 +27,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -55,15 +45,13 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 
-import static com.gaia.app.smartwarehouse.R.drawable.details;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private EditText editText_dialog;
     private String email;
     private RecyclerView recyclerView;
-    private  RecyclerRowAdapter adapter;
+    private RecyclerRowAdapter adapter;
     private LinearLayoutManager layoutManager;
     private ArrayList<String> itemSearchList = new ArrayList<String>();
 
@@ -94,7 +82,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.v("token",refreshedToken);
+        Log.v("token", refreshedToken);
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordi);
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.content_main, coordinatorLayout);
@@ -146,9 +134,7 @@ public class MainActivity extends AppCompatActivity
 
             }
 
-        }
-
-        else {
+        } else {
             final Userdata details = new Userdata(this);
             Cursor cursor = details.getuserdata();
 
@@ -166,9 +152,9 @@ public class MainActivity extends AppCompatActivity
                 public void setItems(Category output) {
                     adapter.add(output);
 
-                   details.create_category_table(output);
+                    details.create_category_table(output);
                 }
-            },spinner).execute(email);
+            }, spinner).execute(email);
 
 
         }
@@ -248,23 +234,21 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
-           Intent intent=new Intent(this,SearchbarActivity.class);
+            Intent intent = new Intent(this, SearchbarActivity.class);
             startActivity(intent);
             return true;
 
         }
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
 
 
     }
-public void searchResult(String name)
-{
-    ProductsData prodata= new ProductsData(this);
-    if(!prodata.search_result(name))
-        Toast.makeText(getBaseContext(),"No such category or item found",Toast.LENGTH_LONG).show();
-}
 
-
+    public void searchResult(String name) {
+        ProductsData prodata = new ProductsData(this);
+        if (!prodata.search_result(name))
+            Toast.makeText(getBaseContext(), "No such category or item found", Toast.LENGTH_LONG).show();
+    }
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -294,9 +278,6 @@ public void searchResult(String name)
             Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(i);
         }
-
-
-
 
 
         drawer.closeDrawer(GravityCompat.START);
@@ -348,8 +329,8 @@ public void searchResult(String name)
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.v("received","yes");
-            refreshMain(intent.getStringExtra("cat"),intent.getStringExtra("name"),intent.getStringExtra("weight"));
+            Log.v("received", "yes");
+            refreshMain(intent.getStringExtra("cat"), intent.getStringExtra("name"), intent.getStringExtra("weight"));
         }
     };
 
@@ -367,9 +348,9 @@ public void searchResult(String name)
     }
 
 
-    public void refreshMain(String cat, String name, String weight){
+    public void refreshMain(String cat, String name, String weight) {
         Log.v("cat", cat);
-        final String  fcat=cat,fname=name,fweight=weight;
+        final String fcat = cat, fname = name, fweight = weight;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -378,13 +359,13 @@ public void searchResult(String name)
         });
 
     }
-    class Updatedata extends AsyncTask<ArrayList<Category>,Void,Void>
-    {
-        Userdata details =new Userdata(MainActivity.this);
+
+    class Updatedata extends AsyncTask<ArrayList<Category>, Void, Void> {
+        Userdata details = new Userdata(MainActivity.this);
+
         @Override
         protected Void doInBackground(ArrayList<Category>... params) {
-            for(int i=0;i<params[0].size();i++)
-            {
+            for (int i = 0; i < params[0].size(); i++) {
                 details.create_category_table(params[0].get(i));
             }
             return null;
