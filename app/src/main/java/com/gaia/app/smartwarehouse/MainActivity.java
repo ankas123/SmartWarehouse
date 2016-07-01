@@ -442,12 +442,15 @@ public void searchResult(String name)
         });
 
     }
-    class Updatedata extends AsyncTask<Category,Void,Void>
+    class Updatedata extends AsyncTask<ArrayList<Category>,Void,Void>
     {
         Userdata details =new Userdata(MainActivity.this);
         @Override
-        protected Void doInBackground(Category... params) {
-          details.create_category_table(params[0]);
+        protected Void doInBackground(ArrayList<Category>... params) {
+            for(int i=0;i<params[0].size();i++)
+            {
+                details.create_category_table(params[0].get(i));
+            }
             return null;
         }
     }
