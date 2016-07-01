@@ -175,7 +175,7 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public static void refreshItem(String cat, String name, String weight) {
-        Log.v("cat", cat);
+
 
         if (str != null) {
             if (str.equals(cat)) {

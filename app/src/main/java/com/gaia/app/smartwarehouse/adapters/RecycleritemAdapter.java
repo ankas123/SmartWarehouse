@@ -23,13 +23,13 @@ import java.util.ArrayList;
  */
 public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapter.ViewHolder> {
     private ArrayList<Item> dataarray;
-    Context context;
+    private Context context;
+    private String category;
 
-    public RecycleritemAdapter(Context context,ArrayList<Item> dataArray)
-    {
-        this.context=context;
-        dataarray=dataArray;
-
+    public RecycleritemAdapter(Context context, String category, ArrayList<Item> dataArray) {
+        this.context = context;
+        this.dataarray = dataArray;
+        this.category = category;
     }
 
 
@@ -37,10 +37,11 @@ public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapte
         private TextView textView;
         private CardView card;
         private ImageView fill;
+
         public ViewHolder(View itemView) {
             super(itemView);
             card = (CardView) itemView.findViewById(R.id.cv2);
-            textView= (TextView)itemView.findViewById(R.id.itemtext);
+            textView = (TextView) itemView.findViewById(R.id.itemtext);
             fill = (ImageView) itemView.findViewById(R.id.itcardrec);
             card.setOnClickListener(this);
 
@@ -50,34 +51,33 @@ public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapte
         public void onClick(View v) {
 
 
-            Intent intent=new Intent(context, DetailActivity.class);
+            Intent intent = new Intent(context, DetailActivity.class);
             context.startActivity(intent);
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item,parent,false);
-        ViewHolder viewHolder=new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textView.setText(dataarray.get(position).getIname().trim());
-        Integer in =dataarray.size();
+        Integer in = dataarray.size();
         String weight = dataarray.get(position).getWeight();
 
-        if(weight.equals("null")) {
+        if (weight.equals("null")) {
             holder.fill.getLayoutParams().height = 0;
 
-        }
-        else{
+        } else {
 
             Float value = new Float(weight);
-            holder.fill.getLayoutParams().height=getPercentHeight(value);
+            holder.fill.getLayoutParams().height = getPercentHeight(value);
         }
-        Log.v("size",in.toString());
+        Log.v("size", in.toString());
 
     }
 
@@ -86,16 +86,28 @@ public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapte
 
         return dataarray.size();
     }
-    int getPercentHeight(float weight){
+
+    int getPercentHeight(float weight) {
 
         int height;
-        height= (int) ((weight/120)*50);
+        height = (int) ((weight / 120) * 50);
         int dimension = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, height, context.getResources().getDisplayMetrics());
         return dimension;
 
 
     }
 
+    public void changeWeight(String name, String weight) {
+        final int size = dataarray.size();
+        Log.v("name", name);
+        for (int i = 0; i <= size -1; i++) {
+            if (dataarray.get(i).getIname().equals(name)) {
+                Log.v("name", dataarray.get(i).getIname());
+                dataarray.get(i).setWeight(weight);
+                notifyItemChanged(i);
+                Log.v("change", weight);
 
-
+            }
+        }
+    }
 }

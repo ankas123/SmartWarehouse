@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,16 +99,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
             int dimension = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, height, context.getResources().getDisplayMetrics());
             return dimension;
-
     }
 
-    public void changeWeight(String name, String w){
+    public void changeWeight(String name, String weight){
         final int size = dataarray.size();
         for(int i = size - 1; i>= 0; i--) {
             if (dataarray.get(i).getIname().equals(name)) {
-                dataarray.get(i).setWeight(w);
+                dataarray.get(i).setWeight(weight);
                 notifyItemChanged(i);
-                Log.v("change",w);
+
             }
         }
     }
