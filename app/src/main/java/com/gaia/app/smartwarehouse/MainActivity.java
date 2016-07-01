@@ -44,6 +44,7 @@ import android.widget.Toast;
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
 import com.gaia.app.smartwarehouse.classes.Category;
 import com.gaia.app.smartwarehouse.classes.Item;
+import com.gaia.app.smartwarehouse.classes.ProductsData;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 import com.gaia.app.smartwarehouse.service.ItemGetTask;
 import com.gaia.app.smartwarehouse.service.MessageService;
@@ -53,6 +54,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
+
+import static com.gaia.app.smartwarehouse.R.drawable.details;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -115,7 +118,7 @@ public class MainActivity extends AppCompatActivity
             builder.setNegativeButton("Cancel", null);
             builder.show();
 
-            final Userdata details = new Userdata(this);
+            final ProductsData details = new ProductsData(this);
 
             Cursor cursor = details.getcategorydata();
             if (cursor.moveToFirst()) {
@@ -257,7 +260,8 @@ public class MainActivity extends AppCompatActivity
             dialog.show();
 
 
-            final Userdata details = new Userdata(this);
+            final ProductsData details;
+            details = new ProductsData(this);
             Cursor cursor = details.getcategorydata();
             if (cursor.moveToFirst()) {
 
@@ -276,7 +280,7 @@ public class MainActivity extends AppCompatActivity
                 } while (cursor.moveToNext());
 
             }
-            AutoCompleteTextView search_bar = (AutoCompleteTextView) dialog.findViewById(R.id.search_product);
+            EditText search_bar = (EditText) dialog.findViewById(R.id.search_product);
             final ArrayAdapter<String> search_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, itemSearchList);
             search_bar.setAdapter(search_adapter);
             search_bar.setThreshold(1);
@@ -323,8 +327,8 @@ public class MainActivity extends AppCompatActivity
     }
 public void searchResult(String name)
 {
-    Userdata userdata=new Userdata(this);
-    if(!userdata.search_result(name))
+    ProductsData prodata= new ProductsData(this);
+    if(!prodata.search_result(name))
         Toast.makeText(getBaseContext(),"No such category or item found",Toast.LENGTH_LONG).show();
 }
 
