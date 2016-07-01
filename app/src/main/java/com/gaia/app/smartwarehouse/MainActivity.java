@@ -1,9 +1,11 @@
 package com.gaia.app.smartwarehouse;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -44,6 +46,7 @@ import com.gaia.app.smartwarehouse.classes.Category;
 import com.gaia.app.smartwarehouse.classes.Item;
 import com.gaia.app.smartwarehouse.classes.Userdata;
 import com.gaia.app.smartwarehouse.service.ItemGetTask;
+import com.gaia.app.smartwarehouse.service.MessageService;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity
     private EditText editText_dialog;
     private String email;
     private RecyclerView recyclerView;
-    private RecyclerRowAdapter adapter;
+    private  RecyclerRowAdapter adapter;
     private LinearLayoutManager layoutManager;
     private ArrayList<String> itemSearchList = new ArrayList<String>();
 
@@ -179,6 +182,9 @@ public class MainActivity extends AppCompatActivity
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        this.registerReceiver(broadcastReceiver, new IntentFilter(MessageService.BROADCAST_ACTION));
+
     }
 
     private boolean isNetworkConnected() {
@@ -403,7 +409,39 @@ public void searchResult(String name)
         client.disconnect();
     }
 
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.v("received","yes");
+            refreshMain(intent.getStringExtra("cat"),intent.getStringExtra("name"),intent.getStringExtra("weight"));
+        }
+    };
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(MessageService.BROADCAST_ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+
+    }
+
+
+    public void refreshMain(String cat, String name, String weight){
+        Log.v("cat", cat);
+        final String  fcat=cat,fname=name,fweight=weight;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.refreshWeight(fcat, fname, fweight);
+            }
+        });
+
+    }
     class Updatedata extends AsyncTask<Category,Void,Void>
     {
         Userdata details =new Userdata(MainActivity.this);

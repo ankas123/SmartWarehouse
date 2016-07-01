@@ -24,12 +24,13 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     private LinearLayoutManager layoutManager;
     private Context context;
     private ArrayList<Category> items;
+    private ArrayList<RecycleritemAdapter> listrecyclerAdapter = new ArrayList<>();
+    private RecycleritemAdapter recyclerAdapter;
 
-    public RecyclerRowAdapter(Context context,ArrayList<Category> items)
-    {
+    public RecyclerRowAdapter(Context context, ArrayList<Category> items) {
 
-        this.context=context;
-        this.items=items;
+        this.context = context;
+        this.items = items;
     }
 
 
@@ -44,6 +45,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
         notifyDataSetChanged();
 
     }
+
     @Override
     public ItemRowHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -56,14 +58,27 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     public void onBindViewHolder(ItemRowHolder holder, int position) {
 
         holder.textView.setText(items.get(position).getCname().trim());
-        RecycleritemAdapter recyclerAdapter=new RecycleritemAdapter(context,items.get(position).getItems());
-        Integer in =items.size();
-        Log.v("catsize",in.toString());
-        layoutManager=new LinearLayoutManager(context);
+        recyclerAdapter = new RecycleritemAdapter(context, items.get(position).getCname(), items.get(position).getItems());
+        listrecyclerAdapter.add(recyclerAdapter);
+        Integer in = items.size();
+        Log.v("catsize", in.toString());
+        layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.recycler_view_list.setLayoutManager(layoutManager);
         holder.recycler_view_list.setAdapter(recyclerAdapter);
         holder.recycler_view_list.setNestedScrollingEnabled(true);
+
+    }
+
+    public void refreshWeight(String cat, String name, String weight) {
+        Log.v("row", weight);
+        final int size = items.size();
+        for (int i = 0; i <= size -1 ; i++) {
+            if (items.get(i).getCname().equals(cat)) {
+                Log.v("cat", items.get(i).getCname());
+                listrecyclerAdapter.get(i).changeWeight(name, weight);
+            }
+        }
 
     }
 
@@ -77,21 +92,22 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
         public RecyclerView recycler_view_list;
         public TextView textView;
         public Button button;
+
         public ItemRowHolder(View itemView) {
             super(itemView);
-            recycler_view_list=(RecyclerView)itemView.findViewById(R.id.recycler_view_list);
-            textView= (TextView)itemView.findViewById(R.id.textV);
-            button=(Button)itemView.findViewById(R.id.buttonid);
+            recycler_view_list = (RecyclerView) itemView.findViewById(R.id.recycler_view_list);
+            textView = (TextView) itemView.findViewById(R.id.textV);
+            button = (Button) itemView.findViewById(R.id.buttonid);
 
             button.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            int a=getAdapterPosition();
+            int a = getAdapterPosition();
 
-            Intent intent =new Intent(context,ItemActivity.class);
-            intent.putExtra("Category",items.get(a).getCname());
+            Intent intent = new Intent(context, ItemActivity.class);
+            intent.putExtra("Category", items.get(a).getCname());
             context.startActivity(intent);
         }
     }
