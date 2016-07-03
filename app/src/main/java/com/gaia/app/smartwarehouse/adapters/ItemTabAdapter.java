@@ -1,7 +1,5 @@
 package com.gaia.app.smartwarehouse.adapters;
 
-import android.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +10,7 @@ import com.gaia.app.smartwarehouse.R;
 
 import java.util.ArrayList;
 
-import layout.ItemsFragment;
+import com.gaia.app.smartwarehouse.fragments.ItemsFragment;
 
 /**
  * Created by praveen_gadi on 7/1/2016.

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.MainActivity;
@@ -108,7 +109,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-
+        Log.v("message",s);
         if (s == null)
             Toast.makeText(context, "Connection Error", Toast.LENGTH_LONG).show();
         else {
