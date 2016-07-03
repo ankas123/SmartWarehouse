@@ -26,6 +26,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     private ArrayList<Category> items;
     private ArrayList<RecycleritemAdapter> listrecyclerAdapter = new ArrayList<>();
     private RecycleritemAdapter recyclerAdapter;
+    private int prevposition=0;
 
     public RecyclerRowAdapter(Context context, ArrayList<Category> items) {
 
@@ -58,6 +59,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     public void onBindViewHolder(ItemRowHolder holder, int position) {
 
         holder.textView.setText(items.get(position).getCname().trim());
+
         recyclerAdapter = new RecycleritemAdapter(context, items.get(position).getCname(), items.get(position).getItems());
         listrecyclerAdapter.add(recyclerAdapter);
         Integer in = items.size();
@@ -67,6 +69,10 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
         holder.recycler_view_list.setLayoutManager(layoutManager);
         holder.recycler_view_list.setAdapter(recyclerAdapter);
         holder.recycler_view_list.setNestedScrollingEnabled(true);
+
+
+
+
 
     }
 

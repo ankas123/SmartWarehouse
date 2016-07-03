@@ -1,14 +1,11 @@
 package com.gaia.app.smartwarehouse;
 
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,6 +14,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -30,14 +28,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -54,8 +45,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
-
-import static com.gaia.app.smartwarehouse.R.drawable.details;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -111,12 +100,9 @@ public class MainActivity extends AppCompatActivity
 
 
         if (!isNetworkConnected()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogBoxStyle);
 
-            builder.setTitle(" No Internet Connection !");
-            builder.setPositiveButton("Refresh", null);
-            builder.setNegativeButton("Cancel", null);
-            builder.show();
+            Snackbar.make(coordinatorLayout, "No Network Connection", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Action", null).show();
 
             final ProductsData details = new ProductsData(this);
 

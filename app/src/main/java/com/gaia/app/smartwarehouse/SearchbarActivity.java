@@ -20,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,18 +28,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.gaia.app.smartwarehouse.adapters.CategoryTabAdapter;
 import com.gaia.app.smartwarehouse.adapters.SearchViewAdapter;
 import com.gaia.app.smartwarehouse.classes.ProductsData;
 import com.gaia.app.smartwarehouse.classes.TabViewerAdapter;
-import com.gaia.app.smartwarehouse.classes.Userdata;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -77,12 +73,14 @@ public class SearchbarActivity extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_searchbar);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
 
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_search);
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.content_searchbar, coordinatorLayout);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -128,8 +126,12 @@ public class SearchbarActivity extends AppCompatActivity implements NavigationVi
             } while (cursor.moveToNext());
 
         }
+        for (int i=0;i<100;i++)
+        {
+            searchList.add("ajcsna");
+        }
 
-       adapter.addfragment(new CategoryFragment(cnameList),"category");
+       adapter.addfragment(new CategoryFragment(searchList),"category");
         adapter.addfragment(new ItemsFragment(inameList),"items");
         adapter.addfragment(new WishlistFragment(wishList),"wishlist");
         viewPager.setAdapter(adapter);
@@ -147,15 +149,13 @@ tabLayout.setTabsFromPagerAdapter(adapter);
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchManager searchManager = (SearchManager) SearchbarActivity.this.getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = null;
-        if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-        }
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(SearchbarActivity.this.getComponentName()));
-        }
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.action_search).getActionView();
+        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        Log.e("search","search");
+
         return true;
     }
 

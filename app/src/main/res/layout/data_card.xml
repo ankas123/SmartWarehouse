@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.Android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_margin="5dp"
+    android:layout_gravity="center"
+    android:id="@+id/cv_anm"
+    card_view:cardCornerRadius="4dp"
+    android:translationZ="1dp"
+    card_view:cardElevation="1dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="28dp"
             android:layout_margin="10dp"
+
             android:text="data"
             android:paddingLeft="40dp"
             android:layout_gravity="center_horizontal"
@@ -14,10 +26,10 @@
             android:textSize="18sp"
             android:id="@+id/text_data"
             />
-<View
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="#ECEFF1"
-        />
+    </RelativeLayout>
 
-</LinearLayout>
+        </android.support.v7.widget.CardView>
+
+
+
+
