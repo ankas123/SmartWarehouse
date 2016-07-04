@@ -35,6 +35,9 @@ import android.widget.Toast;
 import com.gaia.app.smartwarehouse.adapters.SearchViewAdapter;
 import com.gaia.app.smartwarehouse.classes.ProductsData;
 import com.gaia.app.smartwarehouse.classes.TabViewerAdapter;
+import com.gaia.app.smartwarehouse.fragments.CategoryFragment;
+import com.gaia.app.smartwarehouse.fragments.ItemsFragment;
+import com.gaia.app.smartwarehouse.fragments.WishlistFragment;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,9 +45,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.ArrayList;
 import java.util.List;
 
-import layout.CategoryFragment;
-import layout.ItemsFragment;
-import layout.WishlistFragment;
+
 
 /**
  * Created by praveen_gadi on 6/29/2016.
