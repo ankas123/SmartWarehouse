@@ -1,7 +1,9 @@
 package com.gaia.app.smartwarehouse.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gaia.app.smartwarehouse.AnimationforAdapters;
 import com.gaia.app.smartwarehouse.DetailActivity;
 import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.classes.Item;
@@ -25,7 +28,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
     private Context context;
     private ArrayList<Item> dataarray;
-
+private  int prevposition=0;
     public ItemAdapter(Context context, ArrayList<Item> dataarray)
     {
         this.context=context;
@@ -49,8 +52,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
         @Override
         public void onClick(View v) {
-            Intent intent =new Intent(context,DetailActivity.class);
-            context.startActivity(intent);
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,null);
+            Intent intent = new Intent(context,DetailActivity.class);
+            context.startActivity(intent,activityOptionsCompat.toBundle());
         }
     }
 
@@ -75,6 +79,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
         holder.textView.setText(dataarray.get(position).getIname());
         String weight = dataarray.get(position).getWeight();
 
+        if(position>prevposition)
+            AnimationforAdapters.animate(holder,true);
+        else
+            AnimationforAdapters.animate(holder,false);
+
+        prevposition=position;
         if(weight.equals("null")) {
             holder.fill.getLayoutParams().height = 0;
 

@@ -1,6 +1,7 @@
 package com.gaia.app.smartwarehouse;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -11,6 +12,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -26,6 +29,13 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       if(Build.VERSION.SDK_INT>=21)
+       {
+           TransitionInflater transitionInflater=TransitionInflater.from(this);
+           Transition transition=transitionInflater.inflateTransition(R.transition.transition_slide_bottom);
+           getWindow().setEnterTransition(transition);
+           getWindow().setReturnTransition(transition);
+       }
         setContentView(R.layout.activity_detail);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbar);

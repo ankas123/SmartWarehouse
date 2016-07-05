@@ -2,15 +2,19 @@ package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +22,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.gaia.app.smartwarehouse.service.LoginTask;
+import com.gaia.app.smartwarehouse.service.SignupTask;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,7 +38,20 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT>=21)
+        {
+            TransitionInflater transitionInflater=TransitionInflater.from(this);
+            Transition transition=transitionInflater.inflateTransition(R.transition.transition_slide_right);
+            getWindow().setEnterTransition(transition);
+            getWindow().setReturnTransition(transition);
+
+            TransitionInflater transitionInflater2=TransitionInflater.from(this);
+            Transition transition2=transitionInflater2.inflateTransition(R.transition.transition_slide_left);
+            getWindow().setExitTransition(transition2);
+            getWindow().setReenterTransition(transition2);
+        }
         setContentView(R.layout.activity_login);
+
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -62,10 +80,12 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
 
     }
 
+
     public void signup(View view) {
 
-        Intent intent = new Intent(this, SignupActivity.class);
-        startActivity(intent);
+        ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+        Intent intent = new Intent(this,SignupTask.class);
+        this.startActivity(intent,activityOptionsCompat.toBundle());
     }
 
     public void login(View view) {

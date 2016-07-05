@@ -14,13 +14,13 @@ public class AnimationforAdapters {
     public static void animate(RecyclerView.ViewHolder holder, boolean direction)
     {
         AnimatorSet animatorSet=new AnimatorSet();
-        ObjectAnimator animator_Y=ObjectAnimator.ofFloat(holder.itemView,"translationY",direction==true?50f:-50f,0);
+        ObjectAnimator animator_Y=ObjectAnimator.ofFloat(holder.itemView,"translationY",direction==true?40f:-40f,0);
         animator_Y.setDuration(2000);
 
-        ObjectAnimator animator_X=ObjectAnimator.ofFloat(holder.itemView,"translationX",-60f,60f,-30f,30f,-10f,10f,0);
+        ObjectAnimator animator_X=ObjectAnimator.ofFloat(holder.itemView,"translationX",-30f,30f,-20f,20f,-10f,10f,0);
         animator_X.setDuration(2000);
-        animatorSet.playSequentially(animator_X,animator_Y);
-        //animatorSet.playTogether(animator_X,animator_Y);
+        //animatorSet.playSequentially(animator_X,animator_Y);
+        animatorSet.playTogether(animator_X,animator_Y);
         animatorSet.start();
 
         Log.e("animation","animation running");

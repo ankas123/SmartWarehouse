@@ -1,7 +1,9 @@
 package com.gaia.app.smartwarehouse.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.gaia.app.smartwarehouse.AnimationforAdapters;
 import com.gaia.app.smartwarehouse.ItemActivity;
 import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.classes.Category;
@@ -59,6 +62,12 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     public void onBindViewHolder(ItemRowHolder holder, int position) {
 
         holder.textView.setText(items.get(position).getCname().trim());
+        if(position>prevposition)
+            AnimationforAdapters.animate(holder,true);
+        else
+            AnimationforAdapters.animate(holder,false);
+
+        prevposition=position;
 
         recyclerAdapter = new RecycleritemAdapter(context, items.get(position).getCname(), items.get(position).getItems());
         listrecyclerAdapter.add(recyclerAdapter);
@@ -111,10 +120,10 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
         @Override
         public void onClick(View v) {
             int a = getAdapterPosition();
-
-            Intent intent = new Intent(context, ItemActivity.class);
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,null);
+            Intent intent = new Intent(context,ItemActivity.class);
             intent.putExtra("Category", items.get(a).getCname());
-            context.startActivity(intent);
+            context.startActivity(intent,activityOptionsCompat.toBundle());
         }
     }
 

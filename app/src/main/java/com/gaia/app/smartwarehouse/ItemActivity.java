@@ -3,6 +3,7 @@ package com.gaia.app.smartwarehouse;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -15,7 +16,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +25,6 @@ import android.view.MenuItem;
 import com.gaia.app.smartwarehouse.adapters.ItemAdapter;
 import com.gaia.app.smartwarehouse.classes.Item;
 import com.gaia.app.smartwarehouse.classes.ProductsData;
-import com.gaia.app.smartwarehouse.classes.Userdata;
 
 import java.util.ArrayList;
 
@@ -48,6 +49,13 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT>=21)
+        {
+            TransitionInflater transitionInflater=TransitionInflater.from(this);
+            Transition transition=transitionInflater.inflateTransition(R.transition.transition_slide_right);
+            getWindow().setEnterTransition(transition);
+            getWindow().setReturnTransition(transition);
+        }
         setContentView(R.layout.activity_main);
 
 

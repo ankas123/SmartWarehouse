@@ -1,7 +1,7 @@
 package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
-import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -10,6 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +19,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.gaia.app.smartwarehouse.service.LoginTask;
 import com.gaia.app.smartwarehouse.service.SignupTask;
 
 import java.util.regex.Matcher;
@@ -32,9 +33,16 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(Build.VERSION.SDK_INT>=21)
+        {
+            TransitionInflater transitionInflater=TransitionInflater.from(this);
+            Transition transition=transitionInflater.inflateTransition(R.transition.transition_slide_right);
+            getWindow().setEnterTransition(transition);
+            getWindow().setReturnTransition(transition);
+        }
+
         setContentView(R.layout.activity_signup);
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

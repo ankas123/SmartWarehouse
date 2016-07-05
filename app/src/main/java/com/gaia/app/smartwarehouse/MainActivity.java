@@ -9,12 +9,14 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,6 +25,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -77,6 +81,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT>=21)
+        {
+
+           TransitionInflater transitionInflater=TransitionInflater.from(this);
+            Transition transition=transitionInflater.inflateTransition(R.transition.transition_slide_left);
+            getWindow().setExitTransition(transition);
+            getWindow().setReenterTransition(transition);
+        }
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -87,6 +99,7 @@ public class MainActivity extends AppCompatActivity
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordi);
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.content_main, coordinatorLayout);
+
 
 
         recyclerView = (RecyclerView) findViewById(R.id.rv1);
@@ -180,7 +193,6 @@ public class MainActivity extends AppCompatActivity
         return cm.getActiveNetworkInfo() != null;
     }
 
-
     public void addproduct(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogBoxStyle);
 
@@ -232,8 +244,9 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
-            Intent intent = new Intent(this, SearchbarActivity.class);
-            startActivity(intent);
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this,SearchbarActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
             return true;
 
         }
@@ -260,8 +273,9 @@ public class MainActivity extends AppCompatActivity
 
 
         if (id == R.id.detail) {
-            Intent i = new Intent(getApplicationContext(), DetailActivity.class);
-            startActivity(i);
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this,DetailActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
 
         } else if (id == R.id.wishlist) {
 
@@ -269,8 +283,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.notifications) {
 
         } else if (id == R.id.login) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
             Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
 
         } else if (id == R.id.account_settings) {
             Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
