@@ -10,8 +10,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.adapters.SearchAdapter;
 import com.gaia.app.smartwarehouse.classes.ProductsData;
@@ -68,7 +70,7 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new SearchAdapter(this, (ArrayList<String>) searchList);
         ScaleInAnimationAdapter AnimationAdapter=new ScaleInAnimationAdapter(adapter);
-        AnimationAdapter.setDuration(2000);
+        AnimationAdapter.setDuration(500);
         AnimationAdapter.setInterpolator(new OvershootInterpolator());
         recyclerView.setAdapter(AnimationAdapter);
         searchsuggestions();
@@ -108,7 +110,7 @@ public class SearchActivity extends AppCompatActivity {
                 recyclerView.setLayoutManager(layoutManager);
                 adapter = new SearchAdapter(SearchActivity.this, (ArrayList<String>) filteredList);
                 ScaleInAnimationAdapter AnimationAdapter=new ScaleInAnimationAdapter(adapter);
-                AnimationAdapter.setDuration(2000);
+                AnimationAdapter.setDuration(500);
                 AnimationAdapter.setInterpolator(new OvershootInterpolator());
                 recyclerView.setAdapter(AnimationAdapter);
             }
@@ -118,5 +120,13 @@ public class SearchActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public void searchResult(View v)
+    {
+        editText.requestFocus();
+        String name=editText.getText().toString();
+        ProductsData userdata=new ProductsData(this);
+        if(!userdata.search_result(name))
+            Toast.makeText(getBaseContext(),"No such category or item found",Toast.LENGTH_LONG).show();
     }
 }

@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.R;
+import com.gaia.app.smartwarehouse.classes.ProductsData;
 
 import java.util.ArrayList;
 
@@ -53,7 +55,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
-
+            String name=data.get(getAdapterPosition());
+            ProductsData userdata=new ProductsData(context);
+            if(!userdata.search_result(name))
+                Toast.makeText(context,"No such category or item found",Toast.LENGTH_LONG).show();
         }
     }
 }

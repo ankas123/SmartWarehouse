@@ -8,16 +8,17 @@
         android:layout_margin="5dp"
         android:id="@+id/cv_datacard"
         android:background="#fff"
+        android:layout_gravity="center_horizontal"
         >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="data"
             android:paddingLeft="40dp"
-            android:layout_gravity="center_horizontal"
+           android:textColor="#689F38"
             android:textSize="20sp"
             android:id="@+id/text_data"
-            />
+            android:focusable="true" />
     </android.support.v7.widget.CardView>
 
 
