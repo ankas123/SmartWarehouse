@@ -2,16 +2,21 @@ package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
@@ -53,6 +58,13 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.content_signup, coordinatorLayout);
 
+        if (!isNetworkConnected()) {
+
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.cordisignup), "No Network Connection", Snackbar.LENGTH_INDEFINITE);
+            View view2 = snackbar.getView();
+            view2.setBackgroundColor(ContextCompat.getColor(this, R.color.snackbarcolor));
+            snackbar.show();
+        }
         et1=(EditText)findViewById(R.id.email);
         et3=(EditText)findViewById(R.id.editText_password);
         et4=(EditText)findViewById(R.id.reenter_password);
@@ -65,6 +77,57 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        et1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!validateEmail(s.toString()))
+                    et1.setError("Enter a valid E-mail address");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        et3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!validatePassword(s.toString()))
+                    et3.setError("Password must have minimum 6 characters");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        et4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!validatePassword(s.toString()))
+                    et4.setError("Password must have minimum 6 characters");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 
@@ -96,8 +159,19 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
                         Toast.makeText(getBaseContext(),"Passwords are not matching",Toast.LENGTH_LONG).show();
                         break;
                     case "11" :
-                        SignupTask httprequest = new SignupTask(SignupActivity.this);
-                        httprequest.execute(email,password);
+                        if (!isNetworkConnected()) {
+
+                            Snackbar snackbar = Snackbar.make(findViewById(R.id.cordisignup), "No Network Connection", Snackbar.LENGTH_INDEFINITE);
+                            View view2 = snackbar.getView();
+                            view2.setBackgroundColor(ContextCompat.getColor(this, R.color.snackbarcolor));
+                            snackbar.show();
+                        }
+                        else {
+                            SignupTask httprequest = new SignupTask(SignupActivity.this);
+                            httprequest.execute(email,password);
+                        }
+
+
                         break;
                     default:
                         Toast.makeText(getBaseContext(),"problem in validate password",Toast.LENGTH_LONG).show();
@@ -127,6 +201,12 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
             return "11";
         else
             return "00";
+    }
+    public boolean validatePassword(String password)
+    {
+        if(password.length()<6)
+            return false;
+        return true;
     }
 
     @Override
@@ -187,5 +267,9 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 }

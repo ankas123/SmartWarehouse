@@ -2,17 +2,22 @@ package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
@@ -65,7 +70,13 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         et1 = (EditText) findViewById(R.id.username);
         et2 = (EditText) findViewById(R.id.password);
 
+        if (!isNetworkConnected()) {
 
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.cordilogin), "No Network Connection", Snackbar.LENGTH_INDEFINITE);
+            View view2 = snackbar.getView();
+            view2.setBackgroundColor(ContextCompat.getColor(this, R.color.snackbarcolor));
+            snackbar.show();
+        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -77,6 +88,41 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        et1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!validateEmail(s.toString()))
+                    et1.setError("Enter a valid E-mail address");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        et2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!validatePassword(s.toString()))
+                    et2.setError("Password must have minimum 6 characters");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
 
@@ -100,8 +146,17 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
                 et2.setError("Password must have minimum 6 characters");
                 else
             {
-                LoginTask httprequest = new LoginTask(LoginActivity.this,LoginActivity.this);
-                httprequest.execute(email,password);
+                if (!isNetworkConnected()) {
+
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.cordilogin), "No Network Connection", Snackbar.LENGTH_INDEFINITE);
+                    View view2 = snackbar.getView();
+                    view2.setBackgroundColor(ContextCompat.getColor(this, R.color.snackbarcolor));
+                    snackbar.show();
+                }
+                else {
+                    LoginTask httprequest = new LoginTask(LoginActivity.this, LoginActivity.this);
+                    httprequest.execute(email, password);
+                }
 
             }
 
@@ -120,7 +175,9 @@ public boolean validateEmail(String email)
 
     public boolean validatePassword(String password)
     {
+        if(password.length()<6)
         return false;
+        return true;
     }
 
     @Override
@@ -182,6 +239,11 @@ public boolean validateEmail(String email)
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
     }
 }
 

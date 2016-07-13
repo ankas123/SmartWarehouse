@@ -3,12 +3,15 @@ package com.gaia.app.smartwarehouse;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,6 +24,7 @@ import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
 import com.gaia.app.smartwarehouse.adapters.ItemAdapter;
@@ -61,7 +65,9 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         }
         setContentView(R.layout.activity_main);
 
-
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordi);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater.inflate(R.layout.content_item, coordinatorLayout);
         Intent intent = getIntent();
         str = intent.getStringExtra("Category");
 
@@ -72,10 +78,6 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         toolbar.setTitle(str);
         setSupportActionBar(toolbar);
 
-
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordi);
-        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layoutInflater.inflate(R.layout.activity_item, coordinatorLayout);
 
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.viewall);
@@ -116,7 +118,17 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
             AnimationAdapter.setInterpolator(new OvershootInterpolator());
             recyclerView.setAdapter(AnimationAdapter);
 
-            //Navigation drawer code
+
+            if (!isNetworkConnected()) {
+
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.contentitem), "No Network Connection", Snackbar.LENGTH_INDEFINITE);
+                View view = snackbar.getView();
+                view.setBackgroundColor(ContextCompat.getColor(this, R.color.snackbarcolor));
+                snackbar.show();
+            }
+
+
+                //Navigation drawer code
             //TODO change navigation drawer
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -128,7 +140,17 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setNavigationItemSelectedListener(this);
         }
     }
+    public void additem(View v)
+    {
+        Intent intent = new Intent(this, Additem.class);
+        intent.putExtra("cname", str);
+        startActivity(intent);
+    }
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        return cm.getActiveNetworkInfo() != null;
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
