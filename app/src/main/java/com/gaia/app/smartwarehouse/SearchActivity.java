@@ -1,5 +1,6 @@
 package com.gaia.app.smartwarehouse;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -128,5 +130,14 @@ public class SearchActivity extends AppCompatActivity {
         ProductsData userdata=new ProductsData(this);
         if(!userdata.search_result(name))
             Toast.makeText(getBaseContext(),"No such category or item found",Toast.LENGTH_LONG).show();
+    }
+
+    public void removesearchbar(View view) {
+        //view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+        }
     }
 }
