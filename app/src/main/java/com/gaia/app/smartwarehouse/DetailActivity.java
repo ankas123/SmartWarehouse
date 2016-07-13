@@ -6,18 +6,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
-import com.gaia.app.smartwarehouse.adapters.QuantityLoader;
+import com.gaia.app.smartwarehouse.adapters.BoxAdapter;
+import com.gaia.app.smartwarehouse.classes.GetItemDetails;
+import com.gaia.app.smartwarehouse.classes.Item;
 
 /**
  * Created by anant on 14/06/16.
@@ -25,7 +31,11 @@ import com.gaia.app.smartwarehouse.adapters.QuantityLoader;
 
 public class DetailActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+     private BoxAdapter box;
+    private float weight;
+    private TextView cname,iname,iweight;
 
+    private Item item;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,21 +47,38 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
            getWindow().setReturnTransition(transition);
        }
         setContentView(R.layout.activity_detail);
+       GetItemDetails getItemDetails=new GetItemDetails();
+       item=getItemDetails.getItem();
+        String str=item.getUnit();
+          weight=Float.parseFloat(str);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbar);
-
-
         setSupportActionBar(toolbar);
 
         RecyclerView grid = (RecyclerView) findViewById(R.id.grid);
         grid.setHasFixedSize(true);
 
 
-        QuantityLoader quantityLoader = new QuantityLoader(getApplicationContext(),6.0f);
+       /* QuantityLoader quantityLoader = new QuantityLoader(getApplicationContext(),6.0f);
         grid.setAdapter(quantityLoader.returnAdapter());
-        grid.setLayoutManager(quantityLoader.returnManager());
+        grid.setLayoutManager(quantityLoader.returnManager());*/
+
+        GridLayoutManager manager = new GridLayoutManager(DetailActivity.this,4, LinearLayoutManager.VERTICAL,true);
+        grid.setLayoutManager(manager);
+        box =new BoxAdapter(weight);
+        grid.setAdapter(box);
+
 
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapse_toolbar);
+        collapsingToolbarLayout.setTitle(item.getIname());
+        cname= (TextView) findViewById(R.id.textView4);
+        cname.setText(item.getCname());
+        iname= (TextView) findViewById(R.id.textView6);
+        iname.setText(item.getUnit());
+
+
+
+
         //Navigation drawer code
         //TODO change navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout1);
@@ -80,7 +107,13 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if (id == R.id.action_search) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this,SearchActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
+            return true;
 
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -95,18 +128,15 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
 
         int id = item.getItemId();
 
-        if (id == R.id.detail) {
-            Intent i = new Intent(getApplicationContext(), DetailActivity.class);
-            startActivity(i);
-
-        }   else if (id == R.id.login) {
-            Intent intent=new Intent(this,LoginActivity.class);
-            startActivity(intent);
+        if (id == R.id.login) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this, LoginActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
 
         } else if (id == R.id.account_settings) {
-            Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
-            startActivity(i);
-
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
         }
 
         drawer.closeDrawer(GravityCompat.START);

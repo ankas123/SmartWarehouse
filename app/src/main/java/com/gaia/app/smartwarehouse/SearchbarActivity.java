@@ -1,6 +1,7 @@
 package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -10,6 +11,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -228,15 +230,16 @@ public class SearchbarActivity extends AppCompatActivity implements NavigationVi
 
         int id = item.getItemId();
 
-        if (id == R.id.detail) {
-
-
-        }   else if (id == R.id.login) {
+        if (id == R.id.login) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this, LoginActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
 
         } else if (id == R.id.account_settings) {
-
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
         }
-
         drawer.closeDrawer(GravityCompat.START);
 
         return true;

@@ -14,6 +14,12 @@ import com.gaia.app.smartwarehouse.R;
 
 public class BoxAdapter extends RecyclerView.Adapter<BoxAdapter.ViewHolder> {
 
+  private float weight=0;
+    private int boxes=0;
+    public BoxAdapter(float weight)
+    {
+        boxes=(int)weight/11;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -32,7 +38,7 @@ public class BoxAdapter extends RecyclerView.Adapter<BoxAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 18;
+        return boxes;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

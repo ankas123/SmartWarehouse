@@ -148,7 +148,13 @@ public boolean validateEmail(String email)
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.action_search) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this,SearchActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
+            return true;
 
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -162,13 +168,15 @@ public boolean validateEmail(String email)
 
         int id = item.getItemId();
 
-        if (id == R.id.detail) {
-
-
-        }   else if (id == R.id.login) {
+        if (id == R.id.login) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this, LoginActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
 
         } else if (id == R.id.account_settings) {
-
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
         }
 
         drawer.closeDrawer(GravityCompat.START);

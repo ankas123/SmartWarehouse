@@ -36,7 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
 import com.gaia.app.smartwarehouse.classes.Category;
@@ -279,12 +278,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void searchResult(String name) {
-        ProductsData prodata = new ProductsData(this);
-        if (!prodata.search_result(name))
-            Toast.makeText(getBaseContext(), "No such category or item found", Toast.LENGTH_LONG).show();
-    }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -296,13 +289,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
-        if (id == R.id.detail) {
-            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
-            Intent intent = new Intent(this,DetailActivity.class);
-            this.startActivity(intent,activityOptionsCompat.toBundle());
 
-        }
-        else if (id == R.id.login) {
+        if (id == R.id.login) {
             ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
             Intent intent = new Intent(this, LoginActivity.class);
             this.startActivity(intent,activityOptionsCompat.toBundle());
@@ -310,10 +298,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.account_settings) {
             ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
             Intent intent = new Intent(this, SettingsActivity.class);
-            this.startActivity(intent,activityOptionsCompat.toBundle());
-        } else if (id == R.id.accountdetails) {
-            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
-            Intent intent = new Intent(this, Accountdetails.class);
             this.startActivity(intent,activityOptionsCompat.toBundle());
         }
 

@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:text="data"
             android:paddingLeft="40dp"
-           android:textColor="#689F38"
+           android:textColor="#E91E63"
             android:textSize="20sp"
             android:id="@+id/text_data"
             android:focusable="true" />

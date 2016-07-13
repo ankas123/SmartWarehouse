@@ -33,7 +33,7 @@ public class QuantityLoader {
 
     public RecyclerView.Adapter returnAdapter(){
 
-        BoxAdapter box =new BoxAdapter();
+        BoxAdapter box =new BoxAdapter(67);
         return box;
     }
 }

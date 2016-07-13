@@ -1,11 +1,13 @@
 package com.gaia.app.smartwarehouse.classes;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.util.Log;
 
 import com.gaia.app.smartwarehouse.DetailActivity;
@@ -100,6 +102,7 @@ public class ProductsData extends SQLiteOpenHelper {
 
     public boolean search_result(String name) {
         readable_db = this.getReadableDatabase();
+        String[] item_projections = {ITEM_NAME, ITEM_UNIT, ITEM_WEIGHT, ITEM_QUANTITY};
         Cursor cursor = readable_db.query(Category_Table_name, new String[]{ITEM_CATEGORY}, "cname = ?", new String[]{name}, null, null, null);
         if (cursor.moveToFirst()) {
             Intent intent = new Intent(context, ItemActivity.class);
@@ -113,10 +116,19 @@ public class ProductsData extends SQLiteOpenHelper {
 
                 do {
                     String cname = cursor2.getString(0);
-                    Cursor cursor4 = readable_db.query(cname, new String[]{ITEM_NAME}, "iname = ?", new String[]{name}, null, null, null);
+                    Cursor cursor4 = readable_db.query(cname,item_projections, "iname = ?", new String[]{name}, null, null, null);
                     if (cursor4.moveToFirst()) {
-                        Intent intent = new Intent(context, DetailActivity.class);
-                        context.startActivity(intent);
+                        String iname, unit, weight, quant;
+                        iname = cursor4.getString(0);
+                        unit = cursor4.getString(1);
+                        weight = cursor4.getString(2);
+                        quant = cursor4.getString(3);
+                        Item item = new Item(iname, cname, unit, weight, quant);
+                        GetItemDetails itemdetails=new GetItemDetails();
+                        itemdetails.setItem(item);
+                        ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,null);
+                        Intent intent = new Intent(context,DetailActivity.class);
+                        context.startActivity(intent,activityOptionsCompat.toBundle());
                         return true;
                     }
                 } while (cursor2.moveToNext());

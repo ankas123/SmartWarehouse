@@ -1,10 +1,12 @@
 package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -152,7 +154,13 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         int id = item.getItemId();
 
 
+        if (id == R.id.action_search) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this,SearchActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
+            return true;
 
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -166,12 +174,15 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
 
         int id = item.getItemId();
 
-        if (id == R.id.detail) {
+        if (id == R.id.login) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this, LoginActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
 
-        }
-       else if (id == R.id.login) {
-
-        }  else if (id == R.id.account_settings) {
+        } else if (id == R.id.account_settings) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
         }
         drawer.closeDrawer(GravityCompat.START);
 

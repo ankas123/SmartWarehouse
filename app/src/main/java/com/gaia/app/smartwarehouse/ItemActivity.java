@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -151,7 +152,13 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if (id == R.id.action_search) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this,SearchActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
+            return true;
 
+        }
         //noinspection SimplifiableIfStatement
 
 
@@ -167,15 +174,15 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
 
         int id = item.getItemId();
 
-        if (id == R.id.detail) {
-            Intent i = new Intent(getApplicationContext(), DetailActivity.class);
-            startActivity(i);
-            finish();
-        } else if (id == R.id.login) {
+        if (id == R.id.login) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this, LoginActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
 
         } else if (id == R.id.account_settings) {
-            Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
-            startActivity(i);
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
         }
 
         drawer.closeDrawer(GravityCompat.START);
