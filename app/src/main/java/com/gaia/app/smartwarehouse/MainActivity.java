@@ -113,8 +113,8 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerRowAdapter(this, new ArrayList<Category>());
         ScaleInAnimationAdapter AnimationAdapter=new ScaleInAnimationAdapter(adapter);
-        AnimationAdapter.setDuration(2000);
-       AnimationAdapter.setInterpolator(new OvershootInterpolator());
+        AnimationAdapter.setDuration(750);
+        AnimationAdapter.setInterpolator(new OvershootInterpolator());
         recyclerView.setAdapter(AnimationAdapter);
 
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
