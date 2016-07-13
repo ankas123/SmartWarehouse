@@ -2,8 +2,6 @@ package com.gaia.app.smartwarehouse.service;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import com.gaia.app.smartwarehouse.classes.Category;
 import com.gaia.app.smartwarehouse.classes.Item;
@@ -44,23 +42,23 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
     private String TAG_QUANT="quant";
     private JSONObject jsonObject,JO;
     private JSONArray jsonArray;
-    private ProgressBar spinner;
 
     public interface PlottingItems {
         void setItems(Category cat);
+        void progress();
+        void stop();
     }
 
      PlottingItems plot = null;
 
-    public ItemGetTask(PlottingItems plot,ProgressBar spinner){
+    public ItemGetTask(PlottingItems plot){
         this.plot = plot;
-        this.spinner = spinner;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        spinner.setVisibility(View.VISIBLE);
+        plot.progress();
     }
 
     @Override
@@ -114,7 +112,7 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        spinner.setVisibility(View.GONE);
+        plot.stop();
         try {
 
             jsonObject = new JSONObject(s);

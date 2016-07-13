@@ -1,5 +1,6 @@
 package com.gaia.app.smartwarehouse;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,7 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.adapters.RecyclerRowAdapter;
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity
     private LinearLayoutManager layoutManager;
     private ArrayList<String> itemSearchList = new ArrayList<String>();
     private View view;
-    private ProgressBar spinner;
+    private ProgressDialog pdia;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity
         AnimationAdapter.setInterpolator(new OvershootInterpolator());
         recyclerView.setAdapter(AnimationAdapter);
 
-        spinner = (ProgressBar) findViewById(R.id.progressBar1);
 
 
         if (!isNetworkConnected()) {
@@ -176,7 +175,21 @@ public class MainActivity extends AppCompatActivity
 
                     details.create_category_table(output);
                 }
-            }, spinner).execute(email);
+
+                @Override
+                public void progress() {
+                    pdia = new ProgressDialog(MainActivity.this);
+                    pdia.setMessage("Loading...");
+                    pdia.show();
+                }
+
+                @Override
+                public void stop() {
+                    pdia.dismiss();
+                }
+
+
+            }).execute(email);
 
 
         }
