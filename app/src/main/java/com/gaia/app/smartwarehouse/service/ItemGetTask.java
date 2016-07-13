@@ -46,9 +46,6 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
     private JSONArray jsonArray;
     private ProgressBar spinner;
 
-
-
-
     public interface PlottingItems {
         void setItems(Category cat);
     }

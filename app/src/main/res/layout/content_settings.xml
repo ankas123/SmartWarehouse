@@ -1,19 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:focusableInTouchMode="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.gaia.app.smartwarehouse.SettingsActivity">
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:id="@+id/rvdata"
-        android:orientation="vertical"
-        android:scrollbars="none">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="E-mail"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
-    </android.support.v7.widget.RecyclerView>
+    <Button
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Email"
+        android:onClick="changeemail"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:textColor="#4FC3F7"
+        android:id="@+id/button5"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="57dp" />
 
+    <Button
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Password"
+        android:onClick="changepassword"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:textColor="#4FC3F7"
+        android:id="@+id/button6"
+        android:layout_alignTop="@+id/button5"
+        android:layout_alignParentEnd="true" />
 
-
+    <Button
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:onClick="logout"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:textColor="#4FC3F7"
+        android:layout_below="@+id/button5"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>

@@ -12,7 +12,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,12 +20,15 @@ import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.OvershootInterpolator;
 
 import com.gaia.app.smartwarehouse.adapters.ItemAdapter;
 import com.gaia.app.smartwarehouse.classes.Item;
 import com.gaia.app.smartwarehouse.classes.ProductsData;
 
 import java.util.ArrayList;
+
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 /**
  * Created by anant on 13/06/16.
@@ -80,14 +82,14 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
         itemAdapter = new ItemAdapter(this, new ArrayList<Item>());
-        DefaultItemAnimator animator = new DefaultItemAnimator() {
+       /* DefaultItemAnimator animator = new DefaultItemAnimator() {
             @Override
             public boolean canReuseUpdatedViewHolder(RecyclerView.ViewHolder viewHolder) {
                 return false;
             }
 
         };
-        recyclerView.getItemAnimator().setChangeDuration(0);
+        recyclerView.getItemAnimator().setChangeDuration(0);*/
 
         ProductsData details = new ProductsData(this);
 
@@ -108,7 +110,10 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
 
             itemAdapter.add(itemArrayList);
 
-            recyclerView.setAdapter(itemAdapter);
+            ScaleInAnimationAdapter AnimationAdapter=new ScaleInAnimationAdapter(itemAdapter);
+            AnimationAdapter.setDuration(2000);
+            AnimationAdapter.setInterpolator(new OvershootInterpolator());
+            recyclerView.setAdapter(AnimationAdapter);
 
             //Navigation drawer code
             //TODO change navigation drawer
@@ -148,9 +153,7 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.notifications) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -169,8 +172,6 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
             startActivity(i);
             finish();
         } else if (id == R.id.login) {
-
-        } else if (id == R.id.notifications) {
 
         } else if (id == R.id.account_settings) {
             Intent i = new Intent(getApplicationContext(), SettingsActivity.class);

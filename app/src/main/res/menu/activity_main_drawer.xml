@@ -7,10 +7,6 @@
             android:id="@+id/detail"
             android:icon="@mipmap/monitor"
             android:title="Monitor Present Stock" />
-        <item
-            android:id="@+id/wishlist"
-            android:icon="@mipmap/wishlist"
-            android:title="Wish List" />
 
     </group>
 
@@ -21,13 +17,13 @@
                 android:icon="@mipmap/login"
                 android:title="Login" />
             <item
-                android:id="@+id/notifications"
-                android:icon="@mipmap/notifications"
-                android:title="Notifications" />
+                android:id="@+id/accountdetails"
+                android:icon="@mipmap/login"
+                android:title="Account Details" />
             <item
                 android:id="@+id/account_settings"
                 android:icon="@mipmap/settings"
-                android:title="Account Settings" />
+                android:title="Settings" />
         </menu>
     </item>
 

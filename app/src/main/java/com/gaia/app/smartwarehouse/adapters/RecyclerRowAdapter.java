@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.gaia.app.smartwarehouse.AnimationforAdapters;
 import com.gaia.app.smartwarehouse.ItemActivity;
 import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.classes.Category;
@@ -29,7 +28,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     private ArrayList<Category> items;
     private ArrayList<RecycleritemAdapter> listrecyclerAdapter = new ArrayList<>();
     private RecycleritemAdapter recyclerAdapter;
-    private int prevposition=0;
+
 
     public RecyclerRowAdapter(Context context, ArrayList<Category> items) {
 
@@ -46,8 +45,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     public void add(Category catitems) {
 
         items.add(catitems);
-        notifyDataSetChanged();
-
+           notifyItemChanged(getItemCount());
     }
 
     @Override
@@ -62,12 +60,6 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     public void onBindViewHolder(ItemRowHolder holder, int position) {
 
         holder.textView.setText(items.get(position).getCname().trim());
-        if(position>prevposition)
-            AnimationforAdapters.animate(holder,true);
-        else
-            AnimationforAdapters.animate(holder,false);
-
-        prevposition=position;
 
         recyclerAdapter = new RecycleritemAdapter(context, items.get(position).getCname(), items.get(position).getItems());
         listrecyclerAdapter.add(recyclerAdapter);

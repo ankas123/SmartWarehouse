@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.gaia.app.smartwarehouse.AnimationforAdapters;
 import com.gaia.app.smartwarehouse.R;
 
 import java.util.ArrayList;
@@ -18,17 +17,31 @@ import java.util.ArrayList;
  */
 public class CategoryTabAdapter extends RecyclerView.Adapter<CategoryTabAdapter.ViewHolder> {
 
-    private ArrayList<String> data;
+    private ArrayList<String> data,data2;
     Fragment context;
-    private int prevposition=0;
+
+
 
     public CategoryTabAdapter(Fragment context, ArrayList<String> data)
     {
         this.context=context;
+
         this.data=data;
+        notifyDataSetChanged();
     }
 
+    public void clear() {
+        data.clear();
+        notifyDataSetChanged();
+    }
 
+    public void add(String string) {
+
+
+        data.add(string);
+        notifyDataSetChanged();
+
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.data_card, parent,false);
@@ -40,12 +53,7 @@ public class CategoryTabAdapter extends RecyclerView.Adapter<CategoryTabAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         holder.textView.setText(data.get(position));
-        if(position>prevposition)
-          AnimationforAdapters.animate(holder,true);
-        else
-            AnimationforAdapters.animate(holder,false);
 
-        prevposition=position;
 
 
     }
@@ -55,16 +63,24 @@ public class CategoryTabAdapter extends RecyclerView.Adapter<CategoryTabAdapter.
         return data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textView;
-        CardView cardView;
-
-
+       CardView cardView;
         public ViewHolder(View itemView) {
             super(itemView);
-
-            cardView=(CardView)itemView.findViewById(R.id.cv_anm);
+            cardView= (CardView) itemView.findViewById(R.id.cv_datacard);
             textView = (TextView) itemView.findViewById(R.id.text_data);
+            cardView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int a = getAdapterPosition();
+
+           /* ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,null);
+            Intent intent = new Intent(context,ItemActivity.class);
+            intent.putExtra("Category", data.get(a));
+            context.startActivity(intent,activityOptionsCompat.toBundle());*/
         }
     }}

@@ -7,11 +7,13 @@
     android:id="@+id/coordinator_search"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true"
     tools:context="com.gaia.app.smartwarehouse.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/appbar_search"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -21,11 +23,18 @@
             android:background="?attr/colorPrimary"
             android:elevation="6dp"
             android:translationZ="6dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <include layout="@layout/content_searchbar"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:id="@+id/searchbar"
+                />
+        </android.support.v7.widget.Toolbar>
+
         <android.support.design.widget.TabLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:id="@+id/tab_layout"
             app:tabSelectedTextColor="#fff"
             android:background="@color/colorPrimary"

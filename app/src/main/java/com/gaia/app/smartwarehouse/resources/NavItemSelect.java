@@ -44,13 +44,9 @@ public class NavItemSelect extends AppCompatActivity  {
             startActivity(i);
 
         }
-        else if (id == R.id.wishlist) {
-
-        }else if (id == R.id.login) {
+        else if (id == R.id.login) {
             Intent intent =new Intent(this,SignupActivity.class);
             startActivity(intent);
-
-        } else if (id == R.id.notifications) {
 
         } else if (id == R.id.account_settings) {
 

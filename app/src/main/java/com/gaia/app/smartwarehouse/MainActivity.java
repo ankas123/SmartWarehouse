@@ -17,6 +17,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,6 +33,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -50,6 +52,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerRowAdapter adapter;
     private LinearLayoutManager layoutManager;
     private ArrayList<String> itemSearchList = new ArrayList<String>();
-
+    private View view;
     private ProgressBar spinner;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -103,19 +107,26 @@ public class MainActivity extends AppCompatActivity
 
 
         recyclerView = (RecyclerView) findViewById(R.id.rv1);
+
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecyclerRowAdapter(this, new ArrayList<Category>());
-        recyclerView.setAdapter(adapter);
+        ScaleInAnimationAdapter AnimationAdapter=new ScaleInAnimationAdapter(adapter);
+        AnimationAdapter.setDuration(2000);
+       AnimationAdapter.setInterpolator(new OvershootInterpolator());
+        recyclerView.setAdapter(AnimationAdapter);
 
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
 
 
         if (!isNetworkConnected()) {
 
-            Snackbar.make(coordinatorLayout, "No Network Connection", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Action", null).show();
+            Snackbar snackbar=Snackbar.make(findViewById(R.id.contentmain), "No Network Connection", Snackbar.LENGTH_INDEFINITE);
+            View view=snackbar.getView();
+            view.setBackgroundColor(ContextCompat.getColor(this,R.color.snackbarcolor));
+            snackbar.show();
+
 
             final ProductsData details = new ProductsData(this);
 
@@ -140,7 +151,7 @@ public class MainActivity extends AppCompatActivity
                     }
                     Category cat = new Category(cname, itemArrayList);
 
-                    adapter.add(cat);
+                    adapter. add(cat);
                 } while (cursor.moveToNext());
 
             }
@@ -245,7 +256,7 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
             ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
-            Intent intent = new Intent(this,SearchbarActivity.class);
+            Intent intent = new Intent(this,SearchActivity.class);
             this.startActivity(intent,activityOptionsCompat.toBundle());
             return true;
 
@@ -277,19 +288,20 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this,DetailActivity.class);
             this.startActivity(intent,activityOptionsCompat.toBundle());
 
-        } else if (id == R.id.wishlist) {
-
-
-        } else if (id == R.id.notifications) {
-
-        } else if (id == R.id.login) {
+        }
+        else if (id == R.id.login) {
             ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
             Intent intent = new Intent(this, LoginActivity.class);
             this.startActivity(intent,activityOptionsCompat.toBundle());
 
         } else if (id == R.id.account_settings) {
-            Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
-            startActivity(i);
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
+        } else if (id == R.id.accountdetails) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this, Accountdetails.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
         }
 
 

@@ -9,12 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 
 import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.adapters.ItemTabAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +50,10 @@ public class ItemsFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ItemTabAdapter(this, (ArrayList<String>) itemList);
-        recyclerView.setAdapter(adapter);
+        ScaleInAnimationAdapter AnimationAdapter=new ScaleInAnimationAdapter(adapter);
+        AnimationAdapter.setDuration(2000);
+        AnimationAdapter.setInterpolator(new OvershootInterpolator());
+        recyclerView.setAdapter(AnimationAdapter);
 
         return view;
 

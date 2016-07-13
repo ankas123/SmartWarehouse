@@ -2,7 +2,6 @@ package com.gaia.app.smartwarehouse.classes;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ public class TabViewerAdapter extends FragmentStatePagerAdapter {
 
 
     public TabViewerAdapter(FragmentManager fragmentManager) {
+
         super(fragmentManager);
     }
 
@@ -41,6 +41,11 @@ public class TabViewerAdapter extends FragmentStatePagerAdapter {
     {
         search_FragmentList.add(fragment);
         search_FragmentTitleList.add(title);
+    }
+    public void updatefragment(Fragment fragment, String title)
+    {
+       search_FragmentList.set(0,fragment);
+        notifyDataSetChanged();
     }
 
 }

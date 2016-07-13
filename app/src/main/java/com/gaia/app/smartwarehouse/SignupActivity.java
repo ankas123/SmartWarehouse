@@ -151,10 +151,7 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.notifications) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -172,13 +169,9 @@ public class SignupActivity extends AppCompatActivity implements NavigationView.
         if (id == R.id.detail) {
 
         }
-        else if (id == R.id.wishlist) {
+       else if (id == R.id.login) {
 
-        }else if (id == R.id.login) {
-
-        } else if (id == R.id.notifications) {
-
-        } else if (id == R.id.account_settings) {
+        }  else if (id == R.id.account_settings) {
         }
         drawer.closeDrawer(GravityCompat.START);
 

@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.gaia.app.smartwarehouse.service.LoginTask;
-import com.gaia.app.smartwarehouse.service.SignupTask;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -84,8 +83,8 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
     public void signup(View view) {
 
         ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
-        Intent intent = new Intent(this,SignupTask.class);
-        this.startActivity(intent,activityOptionsCompat.toBundle());
+        Intent intent = new Intent(this,SignupActivity.class);
+        startActivity(intent,activityOptionsCompat.toBundle());
     }
 
     public void login(View view) {
@@ -149,9 +148,7 @@ public boolean validateEmail(String email)
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.notifications) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -168,12 +165,7 @@ public boolean validateEmail(String email)
         if (id == R.id.detail) {
 
 
-        } else if (id == R.id.wishlist) {
-
-
-        } else if (id == R.id.notifications) {
-
-        } else if (id == R.id.login) {
+        }   else if (id == R.id.login) {
 
         } else if (id == R.id.account_settings) {
 

@@ -80,10 +80,7 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.notifications) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -102,12 +99,7 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
             Intent i = new Intent(getApplicationContext(), DetailActivity.class);
             startActivity(i);
 
-        } else if (id == R.id.wishlist) {
-
-
-        } else if (id == R.id.notifications) {
-
-        } else if (id == R.id.login) {
+        }   else if (id == R.id.login) {
             Intent intent=new Intent(this,LoginActivity.class);
             startActivity(intent);
 

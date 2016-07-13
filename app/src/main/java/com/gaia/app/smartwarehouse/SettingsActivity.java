@@ -1,48 +1,78 @@
 package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.gaia.app.smartwarehouse.adapters.DataAdapter;
-import com.gaia.app.smartwarehouse.adapters.ListAdapter;
-import com.gaia.app.smartwarehouse.classes.Dataclass;
 import com.gaia.app.smartwarehouse.classes.Userdata;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by praveen_gadi on 6/19/2016.
  */
 public class SettingsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
-    ListView listView;
+
     public LinearLayoutManager layoutManager;
     private Userdata details;
+    private ProgressBar progressBar;
+    private TextView textView;
+    private EditText et_changemail;
+    private EditText et1,et2,et3;
+    String email,password;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT>=21)
+        {
+            TransitionInflater transitionInflater=TransitionInflater.from(this);
+            Transition transition=transitionInflater.inflateTransition(R.transition.transition_slide_right);
+            getWindow().setEnterTransition(transition);
+            getWindow().setReturnTransition(transition);
+
+            TransitionInflater transitionInflater2=TransitionInflater.from(this);
+            Transition transition2=transitionInflater2.inflateTransition(R.transition.transition_slide_left);
+            getWindow().setExitTransition(transition2);
+            getWindow().setReenterTransition(transition2);
+        }
         setContentView(R.layout.activity_settings);
 
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordi);
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.content_settings, coordinatorLayout);
 
-        ListAdapter listAdapter=new ListAdapter(this,1);
+        textView= (TextView) findViewById(R.id.textView);
+
+      /*  ProgressDialog progressDialog=new ProgressDialog(SettingsActivity.this);
+        progressDialog.setMessage("Loading..... ");
+        progressDialog.show();*/
 
         Userdata details =new Userdata(this);
         Cursor cursor=details.getuserdata();
@@ -50,26 +80,15 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         if(cursor.moveToFirst())
         {
             do{
-                String email,fname,lname,orgn,address,date;
+
                 email=cursor.getString(0);
-                fname=cursor.getString(1);
-                lname=cursor.getString(2);
-                orgn=cursor.getString(3);
-                address=cursor.getString(4);
-                date=cursor.getString(5);
-                Dataclass data=new Dataclass(email,fname+" "+lname,orgn,address,date);
-                listAdapter.add(data);
+                password=cursor.getString(1);
+                textView.setText(email);
+                Toast.makeText(getBaseContext(),password,Toast.LENGTH_LONG).show();
 
             }while (cursor.moveToNext());
 
-            RecyclerView recyclerView=(RecyclerView)findViewById(R.id.rvdata) ;
 
-            layoutManager=new LinearLayoutManager(this);
-            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(layoutManager);
-
-            DataAdapter adapter=new DataAdapter(this,listAdapter);
-            recyclerView.setAdapter(adapter);
 
         }
 
@@ -79,6 +98,10 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
 
 
+        /*ObjectAnimator objectAnimator=ObjectAnimator.ofInt(progressBar,"progress",0,100);
+        objectAnimator.setDuration(2000);
+        objectAnimator.setInterpolator(new DecelerateInterpolator());
+        objectAnimator.start();*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -91,12 +114,8 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
 
     }
 
-    public void addproduct(View view)
-    {
-        Intent intent=new Intent(this,Addproduct.class);
-        startActivity(intent);
 
-    }
+
 
 
     @Override
@@ -135,9 +154,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.notifications) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -157,20 +173,183 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
             startActivity(i);
 
         }
-        else if (id == R.id.wishlist) {
-
-        }else if (id == R.id.login) {
+        else if (id == R.id.login) {
             Intent intent=new Intent(this,LoginActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.notifications) {
-
-        } else if (id == R.id.account_settings) {
+        }else if (id == R.id.account_settings) {
 
         }
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
     }
+
+
+    public void changeemail(View view)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogBoxStyle);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogview = inflater.inflate(R.layout.content_dialogbox, null);
+        builder.setView(dialogview);
+        et_changemail = (EditText) dialogview.findViewById(R.id.editText_dialogbox);
+        et_changemail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!validateEmail(s.toString()))
+                    et_changemail.setError("Enter a valid E-mail address");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        builder.setTitle("Change email");
+        builder.setPositiveButton("change", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String string = et_changemail.getText().toString().trim();
+                if(!validateEmail(string))
+                {
+                    Toast.makeText(getBaseContext(),"Invalid Email Address ",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+
+                }
+
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
+    public void changepassword(View view)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogBoxStyle);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogview = inflater.inflate(R.layout.content_changepassword, null);
+        builder.setView(dialogview);
+        builder.setTitle("Change Password");
+        et1= (EditText)dialogview.findViewById(R.id.et_changepassword);
+        et2= (EditText)dialogview.findViewById(R.id.et_newpassword);
+        et3= (EditText)dialogview.findViewById(R.id.et_renternewpassword);
+        et1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+               if(!validatePassword(s.toString()))
+               {
+                   et1.setError("Password must have minimum 6 characters");
+               }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        et2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!validatePassword(s.toString()))
+                {
+                    et2.setError("Password must have minimum 6 characters");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        et3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!validatePassword(s.toString()))
+                {
+                    et3.setError("Password must have minimum 6 characters");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                 String str=validatechangingPassword(et1.getText().toString().trim(),et2.getText().toString().trim(),et3.getText().toString().trim());
+                switch (str)
+                {
+                    case "00" :
+                        Toast.makeText(getBaseContext(),"Password not matching with previous",Toast.LENGTH_LONG).show();
+                        break;
+                    case "01" :
+                        Toast.makeText(getBaseContext(),"new passwords are not matching",Toast.LENGTH_LONG).show();
+                        break;
+                    case "11" :
+
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
+    public boolean validateEmail(String email)
+    {
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        Pattern pattern=Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher=pattern.matcher(email);
+        return matcher.matches();
+    }
+    public boolean validatePassword(String password)
+    {
+        if(password.length()<6)
+            return false;
+        else
+            return true;
+
+    }
+    public String validatechangingPassword(String changepassword,String newpassword,String renewpassword)
+    {
+
+       if(!password.equals(changepassword) && password.length()>0 && changepassword.length()>0)
+           return "00";
+       else if(!newpassword.equals(renewpassword) && newpassword.length()>0 && renewpassword.length()>0 )
+           return "01";
+         else
+           return "11";
+
+    }
+
+
 }
 

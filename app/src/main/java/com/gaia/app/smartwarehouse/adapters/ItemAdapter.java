@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gaia.app.smartwarehouse.AnimationforAdapters;
 import com.gaia.app.smartwarehouse.DetailActivity;
 import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.classes.Item;
@@ -28,7 +27,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
     private Context context;
     private ArrayList<Item> dataarray;
-private  int prevposition=0;
+
     public ItemAdapter(Context context, ArrayList<Item> dataarray)
     {
         this.context=context;
@@ -79,12 +78,7 @@ private  int prevposition=0;
         holder.textView.setText(dataarray.get(position).getIname());
         String weight = dataarray.get(position).getWeight();
 
-        if(position>prevposition)
-            AnimationforAdapters.animate(holder,true);
-        else
-            AnimationforAdapters.animate(holder,false);
 
-        prevposition=position;
         if(weight.equals("null")) {
             holder.fill.getLayoutParams().height = 0;
 

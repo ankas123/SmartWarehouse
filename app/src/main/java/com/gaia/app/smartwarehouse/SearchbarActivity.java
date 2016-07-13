@@ -1,14 +1,12 @@
 package com.gaia.app.smartwarehouse;
 
-import android.app.Dialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -19,28 +17,24 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.Html;
+import android.text.TextWatcher;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.gaia.app.smartwarehouse.adapters.SearchViewAdapter;
 import com.gaia.app.smartwarehouse.classes.ProductsData;
 import com.gaia.app.smartwarehouse.classes.TabViewerAdapter;
 import com.gaia.app.smartwarehouse.fragments.CategoryFragment;
 import com.gaia.app.smartwarehouse.fragments.ItemsFragment;
-import com.gaia.app.smartwarehouse.fragments.WishlistFragment;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -65,12 +59,14 @@ public class SearchbarActivity extends AppCompatActivity implements NavigationVi
     private ViewPager  viewPager;
     private List<String> cnameList=new ArrayList<>();
     private List<String> inameList=new ArrayList<>();
-    private List<String> wishList=new ArrayList<>();
     private List<String> searchList = new ArrayList<>();
-
+    private View view_searchbar,view_tablayout;
     private RecyclerView recyclerView;
-    private SearchViewAdapter adapter;
+
     private LinearLayoutManager layoutManager;
+    private AppBarLayout appBarLayout;
+    private EditText searchtext;
+    TabViewerAdapter adapter;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +74,7 @@ public class SearchbarActivity extends AppCompatActivity implements NavigationVi
         if(Build.VERSION.SDK_INT>=21)
         {
             TransitionInflater transitionInflater=TransitionInflater.from(this);
-            Transition transition=transitionInflater.inflateTransition(R.transition.transition_slide_top);
+            Transition transition=transitionInflater.inflateTransition(R.transition.transition_slide_right);
             getWindow().setEnterTransition(transition);
             getWindow().setReturnTransition(transition);
         }
@@ -89,8 +85,16 @@ public class SearchbarActivity extends AppCompatActivity implements NavigationVi
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.content_searchbar, coordinatorLayout);
 
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        view_searchbar=toolbar.findViewById(R.id.searchbar);
+        searchtext= (EditText) view_searchbar.findViewById(R.id.editText_search);
         setSupportActionBar(toolbar);
+        view_searchbar.setVisibility(View.INVISIBLE);
+        appBarLayout= (AppBarLayout) findViewById(R.id.appbar_search);
+        view_tablayout=appBarLayout.findViewById(R.id.tab_layout);
+
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -112,9 +116,9 @@ public class SearchbarActivity extends AppCompatActivity implements NavigationVi
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        TabViewerAdapter adapter = new TabViewerAdapter(getSupportFragmentManager());
+        adapter = new TabViewerAdapter(getSupportFragmentManager());
 
-       wishList.add("wishlist");
+
        ProductsData details = new ProductsData(this);
         Cursor cursor = details.getcategorydata();
         if (cursor.moveToFirst()) {
@@ -122,28 +126,24 @@ public class SearchbarActivity extends AppCompatActivity implements NavigationVi
             do {
                 String cname = cursor.getString(0);
                 cnameList.add(cname);
-                searchList.add(cname);
+                //searchList.add(cname);
                 Cursor cursor2 = details.getitemsdata(cname);
                 if (cursor2.moveToFirst()) {
                     do {
                         String iname;
                         iname = cursor2.getString(0);
                         inameList.add(iname);
-                        searchList.add(iname);
+                       // searchList.add(iname);
                     } while (cursor2.moveToNext());
 
                 }
             } while (cursor.moveToNext());
 
         }
-        for (int i=0;i<100;i++)
-        {
-            searchList.add("ajcsna");
-        }
 
-       adapter.addfragment(new CategoryFragment(searchList),"category");
+       adapter.addfragment(new CategoryFragment(cnameList,""),"category");
         adapter.addfragment(new ItemsFragment(inameList),"items");
-        adapter.addfragment(new WishlistFragment(wishList),"wishlist");
+
         viewPager.setAdapter(adapter);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
@@ -151,7 +151,7 @@ public class SearchbarActivity extends AppCompatActivity implements NavigationVi
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout) {});
-tabLayout.setTabsFromPagerAdapter(adapter);
+        tabLayout.setTabsFromPagerAdapter(adapter);
     }
 
 
@@ -159,12 +159,6 @@ tabLayout.setTabsFromPagerAdapter(adapter);
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.action_search).getActionView();
-        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        Log.e("search","search");
 
         return true;
     }
@@ -178,13 +172,51 @@ tabLayout.setTabsFromPagerAdapter(adapter);
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
-
+           searchbarview();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void searchbarview() {
+        int getvisibility=view_searchbar.getVisibility();
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if(getvisibility>0)
+        {
+            view_searchbar.setVisibility(View.VISIBLE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
+        else
+        {
+            view_searchbar.setVisibility(View.INVISIBLE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
+        searchtext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length()==0)
+                    searchtext.setError(Html.fromHtml("<font color='#fffffff'>enter valid data</font>"));
+                else
+                {
+
+                    adapter.updatefragment(new CategoryFragment(inameList,""),"category");
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -199,12 +231,7 @@ tabLayout.setTabsFromPagerAdapter(adapter);
         if (id == R.id.detail) {
 
 
-        } else if (id == R.id.wishlist) {
-
-
-        } else if (id == R.id.notifications) {
-
-        } else if (id == R.id.login) {
+        }   else if (id == R.id.login) {
 
         } else if (id == R.id.account_settings) {
 
@@ -264,50 +291,15 @@ tabLayout.setTabsFromPagerAdapter(adapter);
             Toast.makeText(getBaseContext(),"No such category or item found",Toast.LENGTH_LONG).show();
     }
 
+class SearchTask extends AsyncTask<String,Void,Void>
+{
+    @Override
+    protected Void doInBackground(String... params) {
+        String s=params[0];
 
-    public void searchview()
-    {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.content_searchdialogbox);
-        final Window window = dialog.getWindow();
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-        dialog.show();
-
-        recyclerView = (RecyclerView)dialog.findViewById(R.id.search_recyclerview);
-        layoutManager = new LinearLayoutManager(SearchbarActivity.this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new SearchViewAdapter(this,(ArrayList<String>)searchList);
-        recyclerView.setAdapter(adapter);
-
-
-
-        ImageView back_button = (ImageView) dialog.findViewById(R.id.back_button);
-        ImageView searchbutton = (ImageView) dialog.findViewById(R.id.search_go);
-
-        back_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                dialog.dismiss();
-
-            }
-        });
-        searchbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final EditText search_EditText = (EditText) dialog.findViewById(R.id.search_product);
-                String ch = search_EditText.getText().toString().trim();
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                dialog.dismiss();
-                searchResult(ch);
-            }
-        });
+        return null;
     }
+}
+
 }
 
