@@ -80,11 +80,9 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         if(cursor.moveToFirst())
         {
             do{
-
                 email=cursor.getString(0);
                 password=cursor.getString(1);
                 textView.setText(email);
-                Toast.makeText(getBaseContext(),password,Toast.LENGTH_LONG).show();
 
             }while (cursor.moveToNext());
 
@@ -96,12 +94,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
-        /*ObjectAnimator objectAnimator=ObjectAnimator.ofInt(progressBar,"progress",0,100);
-        objectAnimator.setDuration(2000);
-        objectAnimator.setInterpolator(new DecelerateInterpolator());
-        objectAnimator.start();*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

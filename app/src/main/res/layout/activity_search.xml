@@ -20,6 +20,7 @@
             android:id="@+id/iv"
             android:paddingRight="20dp"
             android:layout_gravity="left|center_vertical"
+            android:onClick="removesearchbar"
             />
 <android.support.design.widget.TextInputLayout
     android:layout_width="match_parent"
@@ -44,6 +45,7 @@
             android:id="@+id/iv2"
             android:paddingRight="10dp"
             android:layout_gravity="right|center_vertical"
+            android:onClick="searchResult"
             />
     </FrameLayout>
 
