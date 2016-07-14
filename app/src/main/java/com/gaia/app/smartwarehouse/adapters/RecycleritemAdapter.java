@@ -68,7 +68,7 @@ public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textView.setText(dataarray.get(position).getIname().trim());
         Integer in = dataarray.size();
-        String weight = dataarray.get(position).getUnit();
+        String weight = dataarray.get(position).getWeight();
 
         if (weight.equals("null")) {
             holder.fill.getLayoutParams().height = 0;

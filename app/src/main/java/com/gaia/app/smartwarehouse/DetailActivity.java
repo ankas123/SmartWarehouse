@@ -49,9 +49,6 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
         setContentView(R.layout.activity_detail);
        GetItemDetails getItemDetails=new GetItemDetails();
        item=getItemDetails.getItem();
-        String str=item.getUnit();
-          weight=Float.parseFloat(str);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbar);
         setSupportActionBar(toolbar);
 

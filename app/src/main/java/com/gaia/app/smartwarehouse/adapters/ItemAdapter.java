@@ -76,7 +76,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textView.setText(dataarray.get(position).getIname());
-        String weight = dataarray.get(position).getUnit();
+        String weight = dataarray.get(position).getWeight();
 
 
         if(weight.equals("null")) {
