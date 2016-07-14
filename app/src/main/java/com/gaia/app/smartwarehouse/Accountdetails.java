@@ -1,10 +1,12 @@
 package com.gaia.app.smartwarehouse;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -91,7 +93,13 @@ public class Accountdetails extends AppCompatActivity implements NavigationView.
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if (id == R.id.action_search) {
+            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            Intent intent = new Intent(this,SearchActivity.class);
+            this.startActivity(intent,activityOptionsCompat.toBundle());
+            return true;
 
+        }
         //noinspection SimplifiableIfStatement
 
 
@@ -107,10 +115,7 @@ public class Accountdetails extends AppCompatActivity implements NavigationView.
 
         int id = item.getItemId();
 
-        if (id == R.id.detail) {
-
-
-        }   else if (id == R.id.login) {
+        if (id == R.id.login) {
 
         } else if (id == R.id.account_settings) {
 

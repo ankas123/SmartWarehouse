@@ -1,9 +1,6 @@
 package com.gaia.app.smartwarehouse.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -12,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.gaia.app.smartwarehouse.DetailActivity;
 import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.classes.Item;
+import com.gaia.app.smartwarehouse.classes.ProductsData;
 
 import java.util.ArrayList;
 
@@ -51,11 +49,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
         @Override
         public void onClick(View v) {
-            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,null);
-            Intent intent = new Intent(context,DetailActivity.class);
-            context.startActivity(intent,activityOptionsCompat.toBundle());
+            String name=dataarray.get(getAdapterPosition()).getIname();
+            ProductsData userdata=new ProductsData(context);
+            if(!userdata.search_result(name))
+                Toast.makeText(context,"No such category or item found",Toast.LENGTH_LONG).show();
         }
-    }
+        }
+
 
     public void add(ArrayList<Item> items) {
          dataarray.addAll(items);
@@ -76,7 +76,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textView.setText(dataarray.get(position).getIname());
-        String weight = dataarray.get(position).getWeight();
+        String weight = dataarray.get(position).getUnit();
 
 
         if(weight.equals("null")) {
