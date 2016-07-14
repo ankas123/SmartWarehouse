@@ -176,7 +176,8 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void setItems(Category output) {
                     adapter.add(output);
-                     cnameList.add(output);
+                     //cnameList.add(output);
+                    details.create_category_table(output);
 
                 }
 
@@ -194,7 +195,7 @@ public class MainActivity extends AppCompatActivity
 
 
             }).execute(email);
-           new  UpdateCategoryData().execute(cnameList);
+           //new  UpdateCategoryData().execute(cnameList);
 
         }
 

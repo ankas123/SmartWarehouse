@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 /**
  * Created by praveen_gadi on 6/17/2016.
  */
@@ -61,6 +63,7 @@ public class Userdata extends SQLiteOpenHelper {
         *
         * */
         db.execSQL(create_Table_query);
+        db.execSQL(categorynames_Table_query);
         Log.e("Table ", "Table created");
     }
 
@@ -123,7 +126,37 @@ public class Userdata extends SQLiteOpenHelper {
         cursor = readable_db.query(Table_name, projections, null, null, null, null, null);
         return cursor;
     }
+    public void create_category_table(Category category) {
+        /*
+        * This method is called  at the starting of app  when data is loaded from online server from MainActivity
+        * In this method, Actually the data is updated.Tables are previously created and the data is updates in those tables
+        *
+        * */
+        writable_db = this.getWritableDatabase();
+        writable_db.execSQL("DROP TABLE IF EXISTS " + category.getCname());
 
+        writable_db.delete(Category_Table_name, "cname = ?", new String[]{category.getCname().trim()});
+
+        ContentValues cnames = new ContentValues();
+        cnames.put(ITEM_CATEGORY, category.getCname());
+        writable_db.insert(Category_Table_name, null, cnames);
+
+        String create_category_table = "CREATE TABLE " + category.getCname().trim() + "(iname TEXT ,unit TEXT,weight TEXT,quant TEXT)";
+        writable_db.execSQL(create_category_table);
+
+        ArrayList<Item> items = category.getItems();
+
+        for (int i = 0; i < items.size(); i++) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(ITEM_NAME, items.get(i).getIname());
+            contentValues.put(ITEM_UNIT, items.get(i).getUnit());
+            contentValues.put(ITEM_WEIGHT, items.get(i).getWeight());
+            contentValues.put(ITEM_QUANTITY, items.get(i).getQuant());
+
+            writable_db.insert(category.getCname(), null, contentValues);
+        }
+        Log.e("Offline data", "Offline data updated");
+    }
 
 
 

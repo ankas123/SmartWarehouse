@@ -32,7 +32,7 @@ import com.gaia.app.smartwarehouse.classes.Item;
 public class DetailActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
      private BoxAdapter box;
-    private float weight;
+    private Float weight;
     private TextView cname,iname,iweight;
 
     private Item item;
@@ -47,8 +47,21 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
            getWindow().setReturnTransition(transition);
        }
         setContentView(R.layout.activity_detail);
+
        GetItemDetails getItemDetails=new GetItemDetails();
        item=getItemDetails.getItem();
+        String string=item.getWeight();
+        if(!string.equals("null"))
+            weight=Float.parseFloat(item.getWeight());
+        else
+            weight=new Float(0);
+
+        cname= (TextView) findViewById(R.id.textView4);
+        cname.setText(item.getCname());
+        iweight= (TextView) findViewById(R.id.textView6);
+        iweight.setText(weight.toString());
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbar);
         setSupportActionBar(toolbar);
 
@@ -62,16 +75,18 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
 
         GridLayoutManager manager = new GridLayoutManager(DetailActivity.this,4, LinearLayoutManager.VERTICAL,true);
         grid.setLayoutManager(manager);
+
+
+
+
+
         box =new BoxAdapter(weight);
         grid.setAdapter(box);
 
 
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapse_toolbar);
         collapsingToolbarLayout.setTitle(item.getIname());
-        cname= (TextView) findViewById(R.id.textView4);
-        cname.setText(item.getCname());
-        iweight= (TextView) findViewById(R.id.textView6);
-        iweight.setText(item.getWeight());
+
 
 
 
