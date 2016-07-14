@@ -19,6 +19,14 @@ import java.util.ArrayList;
  * Created by praveen_gadi on 6/30/2016.
  */
 public class ProductsData extends SQLiteOpenHelper {
+      /*
+    * SQLite is an open-source relational database
+    * i.e. used to perform database operations on android devices such as storing, manipulating or retrieving persistent data from the database.
+
+     * It is embedded in android bydefault.
+
+     * SQLiteOpenHelper class provides the functionality to use the SQLite database.
+    */
 
     private static final String DB_name = "appdatabase";
     private static final int DB_version=1;
@@ -35,6 +43,7 @@ public class ProductsData extends SQLiteOpenHelper {
     private static SQLiteDatabase readable_db, writable_db;
 
     public ProductsData(Context context) {
+        //Context of an Activity is necessary
         super(context,DB_name,null,DB_version);
         this.context=context;
         Log.e("Database  ", "product database created");
@@ -42,6 +51,11 @@ public class ProductsData extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+         /*It is called only once when the Database is created. Tables which are compulsory have to be created here
+        *
+        * Here we are creating only one table for storing User details
+        *
+        * */
         db.execSQL(categorynames_Table_query);
         Log.e("Table ", "Product Table created");
 
@@ -50,6 +64,11 @@ public class ProductsData extends SQLiteOpenHelper {
 
 
     public void create_category_table(Category category) {
+        /*
+        * This method is called  at the starting of app  when data is loaded from online server from MainActivity
+        * In this method, Actually the data is updated.Tables are previously created and the data is updates in those tables
+        *
+        * */
         writable_db = this.getWritableDatabase();
         writable_db.execSQL("DROP TABLE IF EXISTS " + category.getCname());
 
@@ -73,12 +92,17 @@ public class ProductsData extends SQLiteOpenHelper {
 
             writable_db.insert(category.getCname(), null, contentValues);
         }
-        Log.e("Offline data", "product Offline data updated");
+        Log.e("Offline data", "Offline data updated");
     }
 
 
 
+
     public Cursor getcategorydata() {
+        /*
+        * This method is used for retrieving the category details
+        * It returns all the item names in the form of cursor object
+        * */
         readable_db = this.getReadableDatabase();
 
         String[] projections = {ITEM_CATEGORY};
@@ -91,6 +115,10 @@ public class ProductsData extends SQLiteOpenHelper {
 
 
     public Cursor getitemsdata(String cname) {
+          /*
+        * This method is used for retrieving the item details
+        * It returns all the item names in the form of cursor object
+        * */
         readable_db = this.getReadableDatabase();
         String[] category_projections = {ITEM_NAME, ITEM_UNIT, ITEM_WEIGHT, ITEM_QUANTITY};
         Cursor cursor2 = readable_db.query(cname, category_projections, null, null, null, null, null);
@@ -101,6 +129,11 @@ public class ProductsData extends SQLiteOpenHelper {
 
 
     public boolean search_result(String name) {
+        /*
+        * This method will be invoked, when the user enters in SearchActivity
+        * name(String) is being searched in database
+        * if it is a Category name then
+        * */
         readable_db = this.getReadableDatabase();
         String[] item_projections = {ITEM_NAME, ITEM_UNIT, ITEM_WEIGHT, ITEM_QUANTITY};
         Cursor cursor = readable_db.query(Category_Table_name, new String[]{ITEM_CATEGORY}, "cname = ?", new String[]{name}, null, null, null);

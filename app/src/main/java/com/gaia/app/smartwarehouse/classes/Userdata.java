@@ -2,21 +2,23 @@ package com.gaia.app.smartwarehouse.classes;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.gaia.app.smartwarehouse.DetailActivity;
-import com.gaia.app.smartwarehouse.ItemActivity;
-
-import java.util.ArrayList;
-
 /**
  * Created by praveen_gadi on 6/17/2016.
  */
 public class Userdata extends SQLiteOpenHelper {
+    /*
+    * SQLite is an open-source relational database
+    * i.e. used to perform database operations on android devices such as storing, manipulating or retrieving persistent data from the database.
+
+     * It is embedded in android bydefault.
+
+     * SQLiteOpenHelper class provides the functionality to use the SQLite database.
+    */
 
     private static final String DB_name = "appdatabase";
     private static final int DB_version = 1;
@@ -44,6 +46,7 @@ public class Userdata extends SQLiteOpenHelper {
 
 
     public Userdata(Context context) {
+        //Context of an Activity is necessary
         super(context, DB_name, null, DB_version);
         this.context = context;
         Log.e("Database  ", "database created");
@@ -52,12 +55,21 @@ public class Userdata extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        /*It is called only once when the Database is created. Tables which are compulsory have to be created here
+        *
+        * Here we are creating only one table for storing User details
+        *
+        * */
         db.execSQL(create_Table_query);
-        db.execSQL(categorynames_Table_query);
         Log.e("Table ", "Table created");
     }
 
     public void cleardata() {
+
+        /*
+        * This method is called when user made logout
+         * database is completely cleared execpt userdata and categorynames Tables(empty)
+        * */
         writable_db = this.getWritableDatabase();
         readable_db = this.getReadableDatabase();
 
@@ -80,6 +92,10 @@ public class Userdata extends SQLiteOpenHelper {
 
 
     public void updateuserdata(String email, String password, String fname, String lname, String orgn, String address, String date) {
+        /*
+        * This method is called  at the starting of app and  when an  another user logins
+        *
+        * */
         writable_db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TAG_NAME, email);
@@ -96,6 +112,11 @@ public class Userdata extends SQLiteOpenHelper {
 
 
     public Cursor getuserdata() {
+        /*
+        *
+        *This method is called whenever there is a need of userdetails
+        * It is usually called for getting email address of the user.
+        * */
         readable_db = this.getReadableDatabase();
         Cursor cursor;
         String[] projections = {TAG_NAME, TAG_FNAME, TAG_LNAME, TAG_ORGN, TAG_ADDRESS, TAG_DATE};
@@ -104,32 +125,6 @@ public class Userdata extends SQLiteOpenHelper {
     }
 
 
-    public void create_category_table(Category category) {
-        writable_db = this.getWritableDatabase();
-        writable_db.execSQL("DROP TABLE IF EXISTS " + category.getCname());
-
-        writable_db.delete(Category_Table_name, "cname = ?", new String[]{category.getCname().trim()});
-
-        ContentValues cnames = new ContentValues();
-        cnames.put(ITEM_CATEGORY, category.getCname());
-        writable_db.insert(Category_Table_name, null, cnames);
-
-        String create_category_table = "CREATE TABLE " + category.getCname().trim() + "(iname TEXT ,unit TEXT,weight TEXT,quant TEXT)";
-        writable_db.execSQL(create_category_table);
-
-        ArrayList<Item> items = category.getItems();
-
-        for (int i = 0; i < items.size(); i++) {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(ITEM_NAME, items.get(i).getIname());
-            contentValues.put(ITEM_UNIT, items.get(i).getUnit());
-            contentValues.put(ITEM_WEIGHT, items.get(i).getWeight());
-            contentValues.put(ITEM_QUANTITY, items.get(i).getQuant());
-
-            writable_db.insert(category.getCname(), null, contentValues);
-        }
-        Log.e("Offline data", "Offline data updated");
-    }
 
 
 

@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<String> itemSearchList = new ArrayList<String>();
     private View view;
     private ProgressDialog pdia;
+    private ArrayList<Category> cnameList=new ArrayList<>();
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -173,8 +174,8 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void setItems(Category output) {
                     adapter.add(output);
+                     cnameList.add(output);
 
-                    details.create_category_table(output);
                 }
 
                 @Override
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity
 
 
             }).execute(email);
-
+           new  UpdateCategoryData().execute(cnameList);
 
         }
 
@@ -395,6 +396,16 @@ public class MainActivity extends AppCompatActivity
             Log.v("working","yes");
             contentValues.put("weight",weight);
             db.update(cname,contentValues,"iname = ?", new String[]{iname});
+            return null;
+        }
+    }
+    class UpdateCategoryData extends AsyncTask<ArrayList<Category>,Void,Void>
+    {
+           ProductsData details=new ProductsData(MainActivity.this);
+        @Override
+        protected Void doInBackground(ArrayList<Category>... params) {
+            for(int i=0;i<params[0].size();i++)
+                details.create_category_table(params[0].get(i));
             return null;
         }
     }
