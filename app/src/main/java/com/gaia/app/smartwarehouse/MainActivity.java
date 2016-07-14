@@ -2,11 +2,13 @@ package com.gaia.app.smartwarehouse;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -369,6 +371,7 @@ public class MainActivity extends AppCompatActivity
         public void onReceive(Context context, Intent intent) {
             Log.v("received", "yes");
             refreshMain(intent.getStringExtra("cat"), intent.getStringExtra("name"), intent.getStringExtra("weight"));
+            new RefreshItemWeight().execute(intent.getStringExtra("cat"), intent.getStringExtra("name"), intent.getStringExtra("weight"));
         }
     };
 
@@ -398,14 +401,15 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    class Updatedata extends AsyncTask<ArrayList<Category>, Void, Void> {
-        Userdata details = new Userdata(MainActivity.this);
-
+    class RefreshItemWeight extends AsyncTask<String,Void,Void> {
+        ProductsData refresh_data=new ProductsData(MainActivity.this);
+        SQLiteDatabase db=refresh_data.getWritableDatabase();
         @Override
-        protected Void doInBackground(ArrayList<Category>... params) {
-            for (int i = 0; i < params[0].size(); i++) {
-                details.create_category_table(params[0].get(i));
-            }
+        protected Void doInBackground(String... params) {
+            String cname=params[0],iname=params[1],weight=params[2];
+            ContentValues contentValues=new ContentValues();
+            contentValues.put("weight",weight);
+            db.update(cname,contentValues,"iname = ?", new String[]{iname});
             return null;
         }
     }

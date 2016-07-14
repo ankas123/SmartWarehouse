@@ -2,10 +2,7 @@ package com.gaia.app.smartwarehouse.service;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -13,7 +10,6 @@ import android.util.Log;
 import com.gaia.app.smartwarehouse.ItemActivity;
 import com.gaia.app.smartwarehouse.MainActivity;
 import com.gaia.app.smartwarehouse.R;
-import com.gaia.app.smartwarehouse.classes.ProductsData;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -29,7 +25,6 @@ public class MessageService extends FirebaseMessagingService {
     Intent intent = new Intent(BROADCAST_ACTION);
     private Runnable sendUpdatesToUI = new Runnable() {
         public void run() {
-            Log.v("sending","yay");
             intent.putExtra("cat", cat);
             intent.putExtra("name", name);
             intent.putExtra("weight", weight);
@@ -68,20 +63,9 @@ public class MessageService extends FirebaseMessagingService {
         handler.removeCallbacks(sendUpdatesToUI);
         handler.post(sendUpdatesToUI);
 
-        new RefreshItemWeight().execute(cat,name,weight);
+
 
     }
 
-    class RefreshItemWeight extends AsyncTask<String,Void,Void> {
-        ProductsData refresh_data=new ProductsData(MessageService.this);
-        SQLiteDatabase db=refresh_data.getWritableDatabase();
-        @Override
-        protected Void doInBackground(String... params) {
-            String cname=params[0],iname=params[1],weight=params[2];
-            ContentValues contentValues=new ContentValues();
-            contentValues.put("weight",weight);
-            db.update(cname,contentValues,"iname = ?", new String[]{iname});
-            return null;
-        }
-    }
+
 }
