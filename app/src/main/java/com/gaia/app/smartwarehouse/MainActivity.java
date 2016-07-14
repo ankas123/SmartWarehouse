@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -31,8 +30,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -89,14 +86,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(Build.VERSION.SDK_INT>=21)
-        {
 
-           TransitionInflater transitionInflater=TransitionInflater.from(this);
-            Transition transition=transitionInflater.inflateTransition(R.transition.transition_slide_left);
-            getWindow().setExitTransition(transition);
-            getWindow().setReenterTransition(transition);
-        }
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -115,12 +105,16 @@ public class MainActivity extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerRowAdapter(this, new ArrayList<Category>());
+        adapter = new RecyclerRowAdapter(new RecyclerRowAdapter.DoAnimation() {
+            @Override
+            public void doanimation() {
+
+            }
+        }, MainActivity.this, new ArrayList<Category>());
         ScaleInAnimationAdapter AnimationAdapter=new ScaleInAnimationAdapter(adapter);
         AnimationAdapter.setDuration(750);
         AnimationAdapter.setInterpolator(new OvershootInterpolator());
         recyclerView.setAdapter(AnimationAdapter);
-
 
 
         if (!isNetworkConnected()) {
@@ -185,6 +179,7 @@ public class MainActivity extends AppCompatActivity
                 public void progress() {
                     pdia = new ProgressDialog(MainActivity.this);
                     pdia.setMessage("Loading...");
+                    pdia.setCancelable(false);
                     pdia.show();
                 }
 

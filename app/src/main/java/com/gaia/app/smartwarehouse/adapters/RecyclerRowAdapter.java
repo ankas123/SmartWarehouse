@@ -29,9 +29,13 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
     private ArrayList<RecycleritemAdapter> listrecyclerAdapter = new ArrayList<>();
     private RecycleritemAdapter recyclerAdapter;
 
+    public interface DoAnimation{
+        void doanimation();
+    }
 
-    public RecyclerRowAdapter(Context context, ArrayList<Category> items) {
-
+    private DoAnimation anim;
+    public RecyclerRowAdapter(DoAnimation anim,Context context, ArrayList<Category> items) {
+        this.anim = anim;
         this.context = context;
         this.items = items;
     }
@@ -112,6 +116,7 @@ public class RecyclerRowAdapter extends RecyclerView.Adapter<RecyclerRowAdapter.
         @Override
         public void onClick(View v) {
             int a = getAdapterPosition();
+            anim.doanimation();
             ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,null);
             Intent intent = new Intent(context,ItemActivity.class);
             intent.putExtra("Category", items.get(a).getCname());
