@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().length()!=0)
+                if(s.toString().length()<1)
                     editText_dialog.setError("Enter Valid category name");
             }
 
