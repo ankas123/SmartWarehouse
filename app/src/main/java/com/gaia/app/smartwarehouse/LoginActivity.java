@@ -6,14 +6,12 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -34,7 +32,7 @@ import java.util.regex.Pattern;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class LoginActivity extends AppCompatActivity  {
 
 
     private EditText et1, et2;
@@ -79,14 +77,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         }
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
 
         et1.addTextChangedListener(new TextWatcher() {
@@ -186,7 +177,8 @@ public boolean validateEmail(String email)
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            finish();
+
         }
     }
 
@@ -217,29 +209,7 @@ public boolean validateEmail(String email)
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-
-        int id = item.getItemId();
-
-        if (id == R.id.login) {
-            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
-            Intent intent = new Intent(this, LoginActivity.class);
-            this.startActivity(intent,activityOptionsCompat.toBundle());
-
-        } else if (id == R.id.account_settings) {
-            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
-            Intent intent = new Intent(this, SettingsActivity.class);
-            this.startActivity(intent,activityOptionsCompat.toBundle());
-        }
-
-        drawer.closeDrawer(GravityCompat.START);
-
-        return true;
-    }
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 

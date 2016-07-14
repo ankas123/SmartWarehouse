@@ -264,6 +264,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
             finish();
+            System.exit(0);
         }
     }
 
