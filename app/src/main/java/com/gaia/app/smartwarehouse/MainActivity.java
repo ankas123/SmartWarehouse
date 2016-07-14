@@ -29,6 +29,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.Log;
@@ -226,6 +228,23 @@ public class MainActivity extends AppCompatActivity
         final View dialogview = inflater.inflate(R.layout.content_dialogbox, null);
         builder.setView(dialogview);
         editText_dialog = (EditText) dialogview.findViewById(R.id.editText_dialogbox);
+        editText_dialog.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().length()!=0)
+                    editText_dialog.setError("Enter Valid category name");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         builder.setTitle("Add Category");
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
