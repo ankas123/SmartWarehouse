@@ -73,8 +73,8 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
         collapsingToolbarLayout.setTitle(item.getIname());
         cname= (TextView) findViewById(R.id.textView4);
         cname.setText(item.getCname());
-        iname= (TextView) findViewById(R.id.textView6);
-        iname.setText(item.getUnit());
+        iweight= (TextView) findViewById(R.id.textView6);
+        iweight.setText(item.getWeight());
 
 
 

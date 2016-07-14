@@ -392,6 +392,7 @@ public class MainActivity extends AppCompatActivity
         protected Void doInBackground(String... params) {
             String cname=params[0],iname=params[1],weight=params[2];
             ContentValues contentValues=new ContentValues();
+            Log.v("working","yes");
             contentValues.put("weight",weight);
             db.update(cname,contentValues,"iname = ?", new String[]{iname});
             return null;
