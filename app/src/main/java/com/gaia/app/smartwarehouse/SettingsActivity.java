@@ -27,7 +27,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.classes.Userdata;
@@ -44,7 +43,6 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
     public LinearLayoutManager layoutManager;
     private Userdata details;
     private ProgressBar progressBar;
-    private TextView textView;
     private EditText et_changemail;
     private EditText et1,et2,et3;
     String email,password;
@@ -68,8 +66,10 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordi);
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.content_settings, coordinatorLayout);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        textView= (TextView) findViewById(R.id.textView);
+
+
 
       /*  ProgressDialog progressDialog=new ProgressDialog(SettingsActivity.this);
         progressDialog.setMessage("Loading..... ");
@@ -83,7 +83,9 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
             do{
                 email=cursor.getString(0);
                 password=cursor.getString(1);
-                textView.setText(email);
+                toolbar.setTitle(email);
+                setSupportActionBar(toolbar);
+
 
             }while (cursor.moveToNext());
 
@@ -92,8 +94,7 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         }
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -126,8 +127,9 @@ public class SettingsActivity extends AppCompatActivity implements NavigationVie
         details = new Userdata(this);
         SQLiteDatabase sqLiteDatabase = details.getWritableDatabase();
         details.cleardata();
-        finish();
+        //finish();
         Intent intent =new Intent(this,LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
     }

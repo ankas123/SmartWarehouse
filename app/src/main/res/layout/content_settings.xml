@@ -18,16 +18,6 @@
     android:layout_height="match_parent">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="E-mail"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-
 
 
     <Button
@@ -40,7 +30,6 @@
         android:paddingLeft="15dp"
         android:textColor="#4FC3F7"
         android:layout_marginTop="43dp"
-        android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
