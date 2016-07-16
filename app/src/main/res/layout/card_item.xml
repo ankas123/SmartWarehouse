@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_item"
     android:layout_width="120dp"
-    android:layout_height="150dp"
+    android:layout_height="135dp"
     android:layout_gravity="center"
     android:layout_margin="5dp"
     android:elevation="4dp"
@@ -13,57 +13,33 @@
 
 
 
-    <RelativeLayout
+    <RelativeLayout android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:gravity="center_horizontal"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        >
 
-        <FrameLayout
-            android:id="@+id/frame"
-            android:layout_width="30dp"
-            android:layout_height="60dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp">
-            <ImageView
-                android:id="@+id/border"
-                android:layout_width="30dp"
-                android:layout_height="60dp"
-                android:scaleType="fitXY"
-
-                android:src="@drawable/border" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/cardrec"
-                    android:layout_width="28dp"
-                    android:layout_height="41dp"
-
-
-                    android:scaleType="fitXY"
-                    android:src="@drawable/rectangle"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="2dp" />
-
-            </RelativeLayout>
-
-
-
-        </FrameLayout>
-
+        <com.gaia.app.smartwarehouse.resources.Drawrectangle
+            android:layout_width="40dp"
+            android:layout_height="80dp"
+            android:id="@+id/rectView"
+            android:background="#ffffff"
+            custom:fillColor_rect="#6bcae2"
+            custom:strokeColor_rect="#FF3D00"
+            custom:strokeWidth_rect="8"
+            custom:value_rect="0"
+            android:layout_above="@+id/cardtext"
+            android:layout_centerHorizontal="true" />
 
         <TextView
-            android:id="@+id/cardtext"
-
+            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/frame"
+            android:id="@+id/cardtext"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:text="TextView" />
+            android:layout_marginBottom="16dp" />
+
     </RelativeLayout>
 
 

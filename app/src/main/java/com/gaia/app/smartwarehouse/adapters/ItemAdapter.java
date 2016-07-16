@@ -7,13 +7,13 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.classes.Item;
 import com.gaia.app.smartwarehouse.classes.ProductsData;
+import com.gaia.app.smartwarehouse.resources.Drawrectangle;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
     private Context context;
     private ArrayList<Item> dataarray;
-
+    Drawrectangle drawrectangle;
     public ItemAdapter(Context context, ArrayList<Item> dataarray)
     {
         this.context=context;
@@ -34,16 +34,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
     public  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView imageView;
+
         TextView textView;
-        ImageView fill;
+       // ImageView fill;
         CardView card;
         public ViewHolder(View v){
             super(v);
             card = (CardView) v.findViewById(R.id.card_item);
-            imageView = (ImageView) v.findViewById(R.id.cardrec);
+
             textView = (TextView) v.findViewById(R.id.cardtext);
-            fill = (ImageView) v.findViewById(R.id.cardrec);
+         //   fill = (ImageView) v.findViewById(R.id.cardrec);
+            drawrectangle= (Drawrectangle) v.findViewById(R.id.rectView);
+
             card.setOnClickListener(this);
         }
 
@@ -79,15 +81,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
         String weight = dataarray.get(position).getWeight();
 
 
-        if(weight.equals("null")) {
-            holder.fill.getLayoutParams().height = 0;
+        if (weight.equals("null")) {
+            //  holder.fill.getLayoutParams().height = 0;
+            drawrectangle.setValue(0);
 
-        }
-        else{
+        } else {
 
             Float value = new Float(weight);
-            holder.fill.getLayoutParams().height=getPercentHeight(value);
-
+            //holder.fill.getLayoutParams().height = getPercentHeight(value);
+            drawrectangle.setValue(Math.round(value));
         }
 
     }

@@ -3,7 +3,8 @@
     xmlns:card_view="http://schemas.Android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="110dp"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_height="125dp"
     android:layout_gravity="center"
     android:id="@+id/cv2"
     android:background="#fff"
@@ -13,50 +14,28 @@
     android:layout_width="80dp"
     android:layout_margin="5dp">
     <RelativeLayout android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        >
 
-        <FrameLayout
-            android:id="@+id/itframe"
-            android:layout_width="27dp"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp">
-            <ImageView
-                android:id="@+id/itborder"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:scaleType="fitXY"
-
-                android:src="@drawable/border" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/itcardrec"
-                    android:layout_width="26dp"
-                    android:layout_height="41dp"
-
-
-                    android:scaleType="fitXY"
-                    android:src="@drawable/rectangle"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="1dp" />
-
-            </RelativeLayout>
-
-
-
-        </FrameLayout>
-
+        <com.gaia.app.smartwarehouse.resources.Drawrectangle
+            android:layout_width="40dp"
+            android:layout_height="80dp"
+            android:id="@+id/rectView"
+            android:background="#ffffff"
+            custom:fillColor_rect="#6bcae2"
+            custom:strokeColor_rect="#FF3D00"
+            custom:strokeWidth_rect="8"
+            custom:value_rect="0"
+            android:layout_above="@+id/itemtext"
+            android:layout_centerHorizontal="true" />
         <TextView
             android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/itemtext"
+
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="16dp" />

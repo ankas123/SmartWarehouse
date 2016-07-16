@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="Drawrectangle" >
+        <attr name="fillColor_rect" format="color" />
+        <attr name="strokeColor_rect" format="color" />
+        <attr name="strokeWidth_rect" format="float" />
+        <attr name="value_rect" format="integer" />
+    </declare-styleable>
+</resources>
