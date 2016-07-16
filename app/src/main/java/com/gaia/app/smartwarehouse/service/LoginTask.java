@@ -126,7 +126,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
                         Toast.makeText(context, "Password is Wrong", Toast.LENGTH_LONG).show();
                         break;
                     case "100":
-                        activity.finish();
+
                         email = jsonObject.getString(TAG_NAME);
                         pass = jsonObject.getString(TAG_PASS);
                         fname = jsonObject.getString(TAG_FNAME);
@@ -147,7 +147,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
                         details.close();
                         Intent intent = new Intent(context, MainActivity.class);
                         context.startActivity(intent);
-
+                        activity.finish();
                         break;
                     default:
                         Toast.makeText(context, "Connection Error", Toast.LENGTH_LONG).show();
