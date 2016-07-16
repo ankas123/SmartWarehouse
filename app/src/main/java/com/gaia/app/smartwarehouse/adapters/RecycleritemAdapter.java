@@ -1,31 +1,27 @@
 package com.gaia.app.smartwarehouse.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.classes.Item;
-import com.gaia.app.smartwarehouse.classes.ProductsData;
-import com.gaia.app.smartwarehouse.resources.Drawrectangle;
+import com.gaia.app.smartwarehouse.resources.ItemViewHolder;
 
 import java.util.ArrayList;
 
 /**
  * Created by praveen_gadi on 6/14/2016.
  */
-public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapter.ViewHolder> {
+public class RecycleritemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     private ArrayList<Item> dataarray;
     private Context context;
     private String category;
-    private Drawrectangle drawrectangle;
+
 
 
     public RecycleritemAdapter(Context context, String category, ArrayList<Item> dataArray) {
@@ -35,52 +31,29 @@ public class RecycleritemAdapter extends RecyclerView.Adapter<RecycleritemAdapte
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView textView;
-        private CardView card;
-      //  private ImageView fill;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            card = (CardView) itemView.findViewById(R.id.cv2);
-            textView = (TextView) itemView.findViewById(R.id.itemtext);
-            //fill = (ImageView) itemView.findViewById(R.id.itcardrec);
-            drawrectangle= (Drawrectangle) itemView.findViewById(R.id.rectView);
-            card.setOnClickListener(this);
-
-        }
-
-        @Override
-        public void onClick(View v) {
-            String name=dataarray.get(getAdapterPosition()).getIname();
-            ProductsData userdata=new ProductsData(context);
-            if(!userdata.search_result(name))
-                Toast.makeText(context,"No such category or item found",Toast.LENGTH_LONG).show();
-        }
-    }
-
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        ItemViewHolder viewHolder = new ItemViewHolder(context, view, dataarray, false);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ItemViewHolder holder, int position) {
         holder.textView.setText(dataarray.get(position).getIname().trim());
         Integer in = dataarray.size();
         String weight = dataarray.get(position).getWeight();
 
         if (weight.equals("null")) {
           //  holder.fill.getLayoutParams().height = 0;
-            drawrectangle.setValue(0);
+            holder.drawrectangle.setValue(0);
+            holder.setInput(Float.valueOf(0));
 
         } else {
-
-          Float value = new Float(weight);
+            holder.setInput(Float.valueOf(weight));
+            Float value = Float.valueOf(weight);
             //holder.fill.getLayoutParams().height = getPercentHeight(value);
-            drawrectangle.setValue(Math.round(value));
+            holder.drawrectangle.setValue(Math.round(value));
         }
         Log.v("size", in.toString());
 
