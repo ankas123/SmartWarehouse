@@ -37,7 +37,8 @@ public class Userdata extends SQLiteOpenHelper {
     private static final String TAG_DATE = "date";
 
     private static final String ITEM_CATEGORY = "cname";
-    private static final String ITEM_NAME = "iname";
+    private static final String ITEM_ID = "id";
+;    private static final String ITEM_NAME = "iname";
     private static final String ITEM_UNIT = "unit";
     private static final String ITEM_WEIGHT = "weight";
     private static final String ITEM_QUANTITY = "quant";
@@ -141,13 +142,14 @@ public class Userdata extends SQLiteOpenHelper {
         cnames.put(ITEM_CATEGORY, category.getCname());
         writable_db.insert(Category_Table_name, null, cnames);
 
-        String create_category_table = "CREATE TABLE " + category.getCname().trim() + "(iname TEXT ,unit TEXT,weight TEXT,quant TEXT)";
+        String create_category_table = "CREATE TABLE " + category.getCname().trim() + "(id TEXT ,iname TEXT ,unit TEXT,weight TEXT,quant TEXT)";
         writable_db.execSQL(create_category_table);
 
         ArrayList<Item> items = category.getItems();
 
         for (int i = 0; i < items.size(); i++) {
             ContentValues contentValues = new ContentValues();
+            contentValues.put(ITEM_ID,items.get(i).getId());
             contentValues.put(ITEM_NAME, items.get(i).getIname());
             contentValues.put(ITEM_UNIT, items.get(i).getUnit());
             contentValues.put(ITEM_WEIGHT, items.get(i).getWeight());

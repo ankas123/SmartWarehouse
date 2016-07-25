@@ -15,6 +15,8 @@ import com.gaia.app.smartwarehouse.ItemActivity;
 
 import java.util.ArrayList;
 
+import static com.gaia.app.smartwarehouse.R.layout.item;
+
 /**
  * Created by praveen_gadi on 6/30/2016.
  */
@@ -135,7 +137,7 @@ public class ProductsData extends SQLiteOpenHelper {
         * if it is a Category name then
         * */
         readable_db = this.getReadableDatabase();
-        String[] item_projections = {ITEM_NAME, ITEM_UNIT, ITEM_WEIGHT, ITEM_QUANTITY};
+        String[] item_projections = {ITEM_NAME, ITEM_UNIT, ITEM_WEIGHT, ITEM_QUANTITY, "id"};
         Cursor cursor = readable_db.query(Category_Table_name, new String[]{ITEM_CATEGORY}, "cname = ?", new String[]{name}, null, null, null);
         if (cursor.moveToFirst()) {
             Intent intent = new Intent(context, ItemActivity.class);
@@ -151,12 +153,13 @@ public class ProductsData extends SQLiteOpenHelper {
                     String cname = cursor2.getString(0);
                     Cursor cursor4 = readable_db.query(cname,item_projections, "iname = ?", new String[]{name}, null, null, null);
                     if (cursor4.moveToFirst()) {
-                        String iname, unit, weight, quant;
+                        String id, iname, unit, weight, quant;
                         iname = cursor4.getString(0);
                         unit = cursor4.getString(1);
                         weight = cursor4.getString(2);
                         quant = cursor4.getString(3);
-                        Item item = new Item(iname, cname, unit, weight, quant);
+                        id = cursor4.getString(4);
+                        Item item = new Item(id, iname, cname, unit, weight, quant);
                         GetItemDetails itemdetails=new GetItemDetails();
                         itemdetails.setItem(item);
                         ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,null);

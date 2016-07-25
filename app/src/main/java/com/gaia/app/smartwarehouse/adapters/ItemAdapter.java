@@ -2,17 +2,17 @@ package com.gaia.app.smartwarehouse.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.gaia.app.smartwarehouse.R;
 import com.gaia.app.smartwarehouse.classes.Item;
-import com.gaia.app.smartwarehouse.resources.Drawrectangle;
 import com.gaia.app.smartwarehouse.resources.ItemViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by anant on 13/06/16.
@@ -22,11 +22,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
 
     private Context context;
     private ArrayList<Item> dataarray;
-    Drawrectangle drawrectangle;
+    private SparseBooleanArray selectedItems;
+
     public ItemAdapter(Context context, ArrayList<Item> dataarray)
     {
         this.context=context;
         this.dataarray=dataarray;
+        selectedItems = new SparseBooleanArray();
     }
 
 
@@ -51,7 +53,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         holder.textView.setText(dataarray.get(position).getIname());
         String weight = dataarray.get(position).getWeight();
-
+        holder.itemView.setActivated(selectedItems.get(position, false));
 
         if (weight.equals("null")) {
             //  holder.fill.getLayoutParams().height = 0;
@@ -71,13 +73,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
         return dataarray.size();
     }
 
-    int getPercentHeight(float weight){
-            int height;
-            height= (int) ((weight/120)*60);
 
-            int dimension = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, height, context.getResources().getDisplayMetrics());
-            return dimension;
-    }
 
     public void changeWeight(String name, String weight){
         final int size = dataarray.size();
@@ -89,4 +85,34 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
             }
         }
     }
+
+
+    public void toggleSelection(int pos) {
+        if (selectedItems.get(pos, false)) {
+            selectedItems.delete(pos);
+        }
+        else {
+            selectedItems.put(pos, true);
+        }
+        notifyItemChanged(pos);
+    }
+
+    public void clearSelections() {
+        selectedItems.clear();
+        notifyDataSetChanged();
+    }
+
+    public int getSelectedItemCount() {
+        return selectedItems.size();
+    }
+
+    public List<Integer> getSelectedItems() {
+        List<Integer> items =
+                new ArrayList<Integer>(selectedItems.size());
+        for (int i = 0; i < selectedItems.size(); i++) {
+            items.add(selectedItems.keyAt(i));
+        }
+        return items;
+    }
+
 }

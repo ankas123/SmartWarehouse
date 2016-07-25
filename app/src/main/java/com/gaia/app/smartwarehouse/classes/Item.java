@@ -5,8 +5,17 @@ package com.gaia.app.smartwarehouse.classes;
  */
 
 public class Item {
-    private String iname, cname, unit, weight, quant;
+    private String iname, cname, unit, weight, quant, id;
     private int size;
+
+    public Item(String id, String iname, String cname, String unit, String weight, String quant) {
+        this.iname = iname;
+        this.id = id;
+        this.cname = cname;
+        this.unit = unit;
+        this.weight = weight;
+        this.quant = quant;
+    }
 
     public Item(String iname, String cname, String unit, String weight, String quant) {
         this.iname = iname;
@@ -19,6 +28,14 @@ public class Item {
     public String getIname() {
 
         return iname;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setIname(String iname) {

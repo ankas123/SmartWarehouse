@@ -91,7 +91,7 @@ public class Drawrectangle extends View {
     private void setPaths()
     {
         int x= (int) (center.y-(value*center.y/180));
-     Innerrect.set(0,x,center.x,center.y);
+        Innerrect.set(0,x,center.x,center.y);
         Log.e("Canvas Drawing","In setpaths") ;
     }
     @Override

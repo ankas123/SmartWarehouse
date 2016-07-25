@@ -33,7 +33,8 @@ import static com.gaia.app.smartwarehouse.service.CommonUtilities.ITEM_URL;
 
 public class ItemGetTask extends AsyncTask <String, Void, String> {
 
-    private String email,JSON_STRING, iname, cname, unit, weight, quant;
+    private String id, email,JSON_STRING, iname, cname, unit, weight, quant;
+    private String TAG_ID="id";
     private String TAG_ITEM="items";
     private String TAG_NAME="iname";
     private String TAG_CAT="cname";
@@ -132,13 +133,13 @@ public class ItemGetTask extends AsyncTask <String, Void, String> {
 
                 for (int j=0; j<items.length(); j++) {
                     JO=items.getJSONObject(j);
+                    id = JO.getString(TAG_ID);
                     iname = JO.getString(TAG_NAME);
                     weight = JO.getString(TAG_WEIGHT);
                     unit = JO.getString(TAG_UNIT);
                     quant = JO.getString(TAG_QUANT);
-                    Item item = new Item(iname, cname, unit, weight, quant);
+                    Item item = new Item(id, iname, cname, unit, weight, quant);
                     itemArrayList.add(item);
-                    Log.v("itemg",itemArrayList.get(j).getIname());
                 }
 
                 Category cat = new Category(cname,itemArrayList);

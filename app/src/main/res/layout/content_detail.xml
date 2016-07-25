@@ -176,6 +176,7 @@
                     android:layout_column="0" />
                 <TextView
                     android:text="Number"
+                    android:id="@+id/num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"

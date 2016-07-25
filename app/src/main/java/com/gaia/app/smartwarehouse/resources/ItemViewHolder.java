@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,8 @@ import java.util.ArrayList;
 public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public TextView textView;
     private ArrayList<Item> dataarray;
-    public CardView card;
+    public FrameLayout frame;
+    private CardView card;
     public float input;
     public Drawrectangle drawrectangle;
     private Context context;
@@ -29,15 +31,16 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         super(itemView);
         this.context = context;
         this.dataarray = dataarray;
-        card = (CardView) itemView.findViewById(R.id.recycler_card);
         textView = (TextView) itemView.findViewById(R.id.itemtext);
-
+        card = (CardView) itemView.findViewById(R.id.recycler_card);
         drawrectangle= (Drawrectangle) itemView.findViewById(R.id.rectView);
-        card.setOnClickListener(this);
+
+
 
         if(bigger==true)
             bigger(card);
-
+        else
+            card.setOnClickListener(this);
     }
 
     public void bigger(CardView card) {

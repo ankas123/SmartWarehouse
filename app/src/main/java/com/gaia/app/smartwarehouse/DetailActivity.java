@@ -61,7 +61,6 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
         iweight= (TextView) findViewById(R.id.textView6);
         iweight.setText(weight.toString());
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbar);
         setSupportActionBar(toolbar);
 
@@ -75,10 +74,6 @@ public class DetailActivity extends AppCompatActivity implements NavigationView.
 
         GridLayoutManager manager = new GridLayoutManager(DetailActivity.this,4, LinearLayoutManager.VERTICAL,true);
         grid.setLayoutManager(manager);
-
-
-
-
 
         box =new BoxAdapter(weight);
         grid.setAdapter(box);

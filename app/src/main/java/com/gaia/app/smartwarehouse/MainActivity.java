@@ -66,10 +66,7 @@ public class MainActivity extends AppCompatActivity
     private View view;
     private ProgressDialog pdia;
     private ArrayList<Category> cnameList=new ArrayList<>();
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
+
     private GoogleApiClient client;
 
     @Override
@@ -158,10 +155,7 @@ public class MainActivity extends AppCompatActivity
             Cursor cursor = details.getuserdata();
 
             if (cursor.moveToFirst()) {
-                do {
                     email = cursor.getString(0);
-
-                } while (cursor.moveToNext());
             }
 
 

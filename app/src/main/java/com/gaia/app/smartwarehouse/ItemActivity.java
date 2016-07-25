@@ -8,10 +8,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,9 +23,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
+import android.view.ActionMode;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
@@ -39,12 +45,17 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
  * Created by anant on 13/06/16.
  */
 
-public class ItemActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ItemActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
+        ActionMode.Callback {
 
     private Context context;
     private Toolbar toolbar;
+    private GestureDetectorCompat gestureDetector;
     private static String str;
     private static ItemAdapter itemAdapter;
+    private RecyclerView recyclerView;
+    private ActionMode actionMode;
+    private FloatingActionButton fab;
 
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
@@ -56,10 +67,9 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(Build.VERSION.SDK_INT>=21)
-        {
-            TransitionInflater transitionInflater=TransitionInflater.from(this);
-            Transition transition=transitionInflater.inflateTransition(R.transition.transition_slide_right);
+        if (Build.VERSION.SDK_INT >= 21) {
+            TransitionInflater transitionInflater = TransitionInflater.from(this);
+            Transition transition = transitionInflater.inflateTransition(R.transition.transition_slide_right);
             getWindow().setEnterTransition(transition);
             getWindow().setReturnTransition(transition);
         }
@@ -79,20 +89,32 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
 
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.viewall);
+        recyclerView = (RecyclerView) findViewById(R.id.viewall);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
+        gestureDetector =
+                new GestureDetectorCompat(this, new RecyclerViewGestureListener());
+
         itemAdapter = new ItemAdapter(this, new ArrayList<Item>());
-       /* DefaultItemAnimator animator = new DefaultItemAnimator() {
+
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
-            public boolean canReuseUpdatedViewHolder(RecyclerView.ViewHolder viewHolder) {
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                gestureDetector.onTouchEvent(e);
                 return false;
             }
 
-        };
-        recyclerView.getItemAnimator().setChangeDuration(0);*/
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
 
         ProductsData details = new ProductsData(this);
 
@@ -113,7 +135,7 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
 
             itemAdapter.add(itemArrayList);
 
-            ScaleInAnimationAdapter AnimationAdapter=new ScaleInAnimationAdapter(itemAdapter);
+            ScaleInAnimationAdapter AnimationAdapter = new ScaleInAnimationAdapter(itemAdapter);
             AnimationAdapter.setDuration(2000);
             AnimationAdapter.setInterpolator(new OvershootInterpolator());
             recyclerView.setAdapter(AnimationAdapter);
@@ -128,7 +150,7 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
             }
 
 
-                //Navigation drawer code
+            //Navigation drawer code
             //TODO change navigation drawer
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -138,19 +160,24 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
+
+            fab = (FloatingActionButton) findViewById(R.id.item_fab);
+
         }
     }
-    public void additem(View v)
-    {
+
+    public void additem(View v) {
         Intent intent = new Intent(this, Additem.class);
         intent.putExtra("cname", str);
         startActivity(intent);
     }
+
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null;
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -175,9 +202,9 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_search) {
-            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
-            Intent intent = new Intent(this,SearchActivity.class);
-            this.startActivity(intent,activityOptionsCompat.toBundle());
+            ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, null);
+            Intent intent = new Intent(this, SearchActivity.class);
+            this.startActivity(intent, activityOptionsCompat.toBundle());
             return true;
 
         }
@@ -197,14 +224,14 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.login) {
-            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, null);
             Intent intent = new Intent(this, LoginActivity.class);
-            this.startActivity(intent,activityOptionsCompat.toBundle());
+            this.startActivity(intent, activityOptionsCompat.toBundle());
 
         } else if (id == R.id.account_settings) {
-            ActivityOptionsCompat activityOptionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(this,null);
+            ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, null);
             Intent intent = new Intent(this, SettingsActivity.class);
-            this.startActivity(intent,activityOptionsCompat.toBundle());
+            this.startActivity(intent, activityOptionsCompat.toBundle());
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -214,11 +241,89 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
 
     public static void refreshItem(String cat, String name, String weight) {
 
-
         if (str != null) {
             if (str.equals(cat)) {
                 itemAdapter.changeWeight(name, weight);
             }
+        }
+    }
+
+
+    private void myToggleSelection(int idx) {
+        itemAdapter.toggleSelection(idx);
+        String title = getString(R.string.selected_count, Integer.valueOf(itemAdapter.getSelectedItemCount()).toString());
+        actionMode.setTitle(title);
+    }
+
+    @Override
+    public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+        this.getMenuInflater().inflate(R.menu.delete_item,menu);
+        fab.setVisibility(View.GONE);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.menu_delete:
+                //TODO: add code for delete item
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode actionMode) {
+        this.actionMode = null;
+        itemAdapter.clearSelections();
+        fab.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if (view != null) {
+
+            int idx = recyclerView.getChildPosition(view);
+            Log.v("id", Integer.valueOf(idx).toString());
+            if (actionMode != null) {
+                myToggleSelection(idx);
+                if (itemAdapter.getSelectedItemCount()==0) {
+                    actionMode.finish();
+                }
+                return;
+
+            }
+
+        }
+    }
+
+    class RecyclerViewGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            Log.v("single", "confirmed");
+            View view = recyclerView.findChildViewUnder(e.getX(), e.getY());
+            onClick(view);
+            return super.onSingleTapConfirmed(e);
+        }
+
+        public void onLongPress(MotionEvent e) {
+            Log.v("long press", "is made");
+            View view = recyclerView.findChildViewUnder(e.getX(), e.getY());
+            if (actionMode != null) {
+                return;
+            }
+            // Start the CAB using the ActionMode.Callback defined above
+            actionMode = startActionMode(ItemActivity.this);
+            int idx = recyclerView.getChildPosition(view);
+            myToggleSelection(idx);
+            super.onLongPress(e);
         }
     }
 }
