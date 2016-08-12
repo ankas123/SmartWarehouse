@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF3D00</color>
     <color name="colorToolbar">#FFFFFF</color>
     <color name="snackbarcolor">#8BC34A</color>
+    <color name="actionbar">#009688</color>
 </resources>

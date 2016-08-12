@@ -18,16 +18,17 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -57,12 +58,7 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
     private ActionMode actionMode;
     private FloatingActionButton fab;
 
-    @Override
-    public void setSupportActionBar(@Nullable Toolbar toolbar) {
-        super.setSupportActionBar(toolbar);
-        this.toolbar = toolbar;
 
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,8 +79,7 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
 
         // Adding custom toolbar to the page
 
-        context = getApplicationContext();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(str);
         setSupportActionBar(toolbar);
 
@@ -257,7 +252,9 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-        this.getMenuInflater().inflate(R.menu.delete_item,menu);
+        MenuInflater inflater = actionMode.getMenuInflater();
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        inflater.inflate(R.menu.delete_item, menu);
         fab.setVisibility(View.GONE);
         return true;
     }
@@ -288,11 +285,14 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onClick(View view) {
 
-        if (view != null) {
+        if (view != null && view.getId()==R.id.recycler_card) {
 
             int idx = recyclerView.getChildPosition(view);
             Log.v("id", Integer.valueOf(idx).toString());
+
             if (actionMode != null) {
+                Log.v("yes", Integer.valueOf(idx).toString());
+
                 myToggleSelection(idx);
                 if (itemAdapter.getSelectedItemCount()==0) {
                     actionMode.finish();
@@ -319,8 +319,8 @@ public class ItemActivity extends AppCompatActivity implements NavigationView.On
             if (actionMode != null) {
                 return;
             }
-            // Start the CAB using the ActionMode.Callback defined above
-            actionMode = startActionMode(ItemActivity.this);
+
+            actionMode = startSupportActionMode(ItemActivity.this);
             int idx = recyclerView.getChildPosition(view);
             myToggleSelection(idx);
             super.onLongPress(e);

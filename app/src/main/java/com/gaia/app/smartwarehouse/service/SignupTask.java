@@ -98,9 +98,6 @@ public class SignupTask extends AsyncTask<String, Void, String> {
             String message = jsonObject.getString(TAG_RESULT);
             switch (message) {
                 case "100":
-
-
-
                     //Sending token generated back to the database when the app is installed for the first time but the user
                     //is already a registered
 
